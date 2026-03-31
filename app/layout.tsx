@@ -21,10 +21,10 @@ export default function RootLayout({
           <div className="pointer-events-none absolute inset-0 bg-lattice bg-[size:120px_120px] opacity-30" />
           <div className="relative">
             <SiteHeader />
-            <main className="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-12">
+            <main className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-10 lg:px-8 lg:py-12">
               {children}
             </main>
-            <footer className="mx-auto max-w-7xl border-t border-line/70 px-6 py-8 text-sm text-ink-600 lg:px-8">
+            <footer className="mx-auto max-w-7xl border-t border-line/70 px-4 py-6 text-xs leading-6 text-ink-600 md:px-6 md:py-8 md:text-sm md:leading-normal lg:px-8">
               Mock MVP for implementation-based AGI tracking. Evidence items in this demo are sample evidence only.
             </footer>
           </div>

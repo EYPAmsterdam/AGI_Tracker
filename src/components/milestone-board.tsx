@@ -166,7 +166,7 @@ export const MilestoneBoard = ({ milestones }: { milestones: Milestone[] }) => {
   };
 
   return (
-    <div ref={boardRef} className="space-y-4">
+    <div ref={boardRef} className="space-y-3 md:space-y-4">
       {rows.map((row, rowIndex) => {
         const rowKey = row.map((milestone) => milestone.id).join("|");
         const rowIsActive = rowIndex === activeRowIndex;
@@ -177,10 +177,10 @@ export const MilestoneBoard = ({ milestones }: { milestones: Milestone[] }) => {
             ref={(element) => {
               rowRefs.current[rowKey] = element;
             }}
-            className="space-y-4"
+            className="space-y-3 md:space-y-4"
           >
             <div
-              className="grid gap-4"
+              className="grid gap-3 md:gap-4"
               style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
             >
               {row.map((milestone) => {
@@ -194,31 +194,31 @@ export const MilestoneBoard = ({ milestones }: { milestones: Milestone[] }) => {
                     aria-expanded={isOpen}
                     onClick={() => handleMilestoneToggle(milestone)}
                     className={cn(
-                      "w-full rounded-[1.75rem] border bg-white/75 p-5 text-left shadow-panel transition duration-200",
+                      "w-full rounded-[1.4rem] border bg-white/75 p-4 text-left shadow-panel transition duration-200 md:rounded-[1.75rem] md:p-5",
                       isOpen
                         ? "border-ink-900/70 bg-white ring-1 ring-ink-900/10"
                         : "border-line/80 hover:-translate-y-0.5 hover:border-ink-700/40"
                     )}
                   >
                     <div className="flex items-start justify-between gap-4">
-                      <p className="max-w-[16rem] font-serif text-xl leading-tight text-ink-900">
+                      <p className="max-w-[12rem] font-serif text-lg leading-tight text-ink-900 md:max-w-[16rem] md:text-xl">
                         {milestone.title}
                       </p>
-                      <span className="rounded-full border border-line bg-paper-50 px-2.5 py-1 text-xs uppercase tracking-[0.18em] text-ink-700">
+                      <span className="rounded-full border border-line bg-paper-50 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-ink-700 md:px-2.5 md:text-xs md:tracking-[0.18em]">
                         {milestone.category}
                       </span>
                     </div>
 
-                    <div className="mt-4 flex flex-wrap gap-2">
+                    <div className="mt-3 flex flex-wrap gap-1.5 md:mt-4 md:gap-2">
                       <StatusBadge status={milestone.status} />
                       <ConfidenceBadge confidence={milestone.confidence} />
                     </div>
 
-                    <div className="mt-5">
+                    <div className="mt-4 md:mt-5">
                       <ProgressMeter value={milestone.progressPercent} compact />
                     </div>
 
-                    <div className="mt-4 flex items-center justify-between text-sm text-ink-700">
+                    <div className="mt-3 flex items-center justify-between gap-3 text-xs text-ink-700 md:mt-4 md:text-sm">
                       <span>
                         {metCount}/{milestone.subQuestions.length} sub-questions met
                       </span>
@@ -235,7 +235,7 @@ export const MilestoneBoard = ({ milestones }: { milestones: Milestone[] }) => {
               className={cn(
                 "grid overflow-hidden transition-[grid-template-rows,opacity,padding] px-1",
                 rowIsActive && activeMilestone && selectedSubQuestion
-                  ? "grid-rows-[1fr] opacity-100 pt-2"
+                  ? "grid-rows-[1fr] opacity-100 pt-1.5 md:pt-2"
                   : "grid-rows-[0fr] opacity-0"
               )}
               style={BOARD_EXPAND_STYLE}

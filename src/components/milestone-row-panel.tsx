@@ -26,22 +26,22 @@ export const MilestoneRowPanel = ({
   onSelectSubQuestion
 }: MilestoneRowPanelProps) => {
   return (
-    <div className="rounded-[1.9rem] border border-line/80 bg-white/86 p-6 shadow-panel md:p-7">
-      <div className="grid gap-6 xl:grid-cols-[1.14fr_0.86fr]">
-        <div className="space-y-5">
+    <div className="rounded-[1.55rem] border border-line/80 bg-white/86 p-4 shadow-panel md:rounded-[1.9rem] md:p-7">
+      <div className="grid gap-4 md:gap-6 xl:grid-cols-[1.14fr_0.86fr]">
+        <div className="space-y-4 md:space-y-5">
           <div className="grid gap-3 lg:grid-cols-[1.3fr_0.7fr]">
-            <div className="rounded-[1.5rem] border border-line/80 bg-paper-50/62 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink-600">
+            <div className="rounded-[1.25rem] border border-line/80 bg-paper-50/62 p-4 md:rounded-[1.5rem] md:p-5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.22em]">
                 Deep dive
               </p>
-              <p className="mt-3 text-sm leading-7 text-ink-700">{milestone.description}</p>
+              <p className="mt-2 text-[13px] leading-6 text-ink-700 md:mt-3 md:text-sm md:leading-7">{milestone.description}</p>
             </div>
 
-            <div className="rounded-[1.5rem] border border-line/80 bg-paper-50/62 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink-600">
+            <div className="rounded-[1.25rem] border border-line/80 bg-paper-50/62 p-4 md:rounded-[1.5rem] md:p-5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.22em]">
                 Coverage summary
               </p>
-              <div className="mt-4 space-y-3 text-sm text-ink-700">
+              <div className="mt-3 space-y-2.5 text-[13px] text-ink-700 md:mt-4 md:space-y-3 md:text-sm">
                 <p>
                   <span className="font-medium text-ink-900">{countMet(milestone)}</span> met
                 </p>
@@ -61,7 +61,7 @@ export const MilestoneRowPanel = ({
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5 md:space-y-3">
             {milestone.subQuestions.map((subQuestion) => {
               const active = subQuestion.id === selectedSubQuestion.id;
 
@@ -71,7 +71,7 @@ export const MilestoneRowPanel = ({
                   type="button"
                   onClick={() => onSelectSubQuestion(subQuestion.id)}
                   className={cn(
-                    "w-full rounded-[1.4rem] border p-4 text-left transition duration-300",
+                    "w-full rounded-[1.15rem] border p-3.5 text-left transition duration-300 md:rounded-[1.4rem] md:p-4",
                     active
                       ? "border-ink-900/60 bg-white shadow-panel"
                       : "border-line/80 bg-paper-50/50 hover:border-ink-700/35 hover:bg-white/85"
@@ -79,14 +79,14 @@ export const MilestoneRowPanel = ({
                 >
                   <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                     <div>
-                      <p className="text-base font-semibold text-ink-900">{subQuestion.title}</p>
+                      <p className="text-sm font-semibold text-ink-900 md:text-base">{subQuestion.title}</p>
                     </div>
                     <div className="flex shrink-0 flex-wrap gap-2">
                       <StatusBadge status={subQuestion.status} />
                       <ConfidenceBadge confidence={subQuestion.confidence} />
                     </div>
                   </div>
-                  <p className="mt-3 text-xs uppercase tracking-[0.18em] text-ink-600">
+                  <p className="mt-2.5 text-[11px] uppercase tracking-[0.16em] text-ink-600 md:mt-3 md:text-xs md:tracking-[0.18em]">
                     {subQuestion.proofItems.length} evidence items
                   </p>
                 </button>
@@ -95,30 +95,30 @@ export const MilestoneRowPanel = ({
           </div>
         </div>
 
-        <aside className="rounded-[1.6rem] border border-line/80 bg-white/88 p-5 shadow-panel">
-          <div className="space-y-4 border-b border-line/70 pb-5">
-            <div className="flex flex-wrap gap-2">
+        <aside className="rounded-[1.35rem] border border-line/80 bg-white/88 p-4 shadow-panel md:rounded-[1.6rem] md:p-5">
+          <div className="space-y-3.5 border-b border-line/70 pb-4 md:space-y-4 md:pb-5">
+            <div className="flex flex-wrap gap-1.5 md:gap-2">
               <StatusBadge status={selectedSubQuestion.status} />
               <ConfidenceBadge confidence={selectedSubQuestion.confidence} />
             </div>
             <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink-600">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.22em]">
                 Evidence focus
               </p>
-              <h4 className="font-serif text-2xl tracking-tight text-ink-900">
+              <h4 className="font-serif text-xl tracking-tight text-ink-900 md:text-2xl">
                 {selectedSubQuestion.title}
               </h4>
-              <p className="text-sm leading-7 text-ink-700">
+              <p className="text-[13px] leading-6 text-ink-700 md:text-sm md:leading-7">
                 {selectedSubQuestion.description}
               </p>
-              <p className="text-sm leading-7 text-ink-700">
+              <p className="text-[13px] leading-6 text-ink-700 md:text-sm md:leading-7">
                 {selectedSubQuestion.rationale}
               </p>
             </div>
 
             <ProgressMeter value={milestone.progressPercent} />
 
-            <p className="text-xs uppercase tracking-[0.18em] text-ink-600">
+            <p className="text-[11px] uppercase tracking-[0.16em] text-ink-600 md:text-xs md:tracking-[0.18em]">
               Best evidence forms:{" "}
               {selectedSubQuestion.evaluationModes
                 .map((mode) => EVALUATION_MODE_LABELS[mode])
@@ -126,31 +126,31 @@ export const MilestoneRowPanel = ({
             </p>
           </div>
 
-          <div className="mt-5 space-y-4">
+          <div className="mt-4 space-y-3.5 md:mt-5 md:space-y-4">
             {selectedSubQuestion.proofItems.map((proofItem) => (
               <article
                 key={proofItem.id}
-                className="rounded-[1.25rem] border border-line/80 bg-paper-50/70 p-4"
+                className="rounded-[1.1rem] border border-line/80 bg-paper-50/70 p-3.5 md:rounded-[1.25rem] md:p-4"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="space-y-1">
-                    <p className="font-medium text-ink-900">{proofItem.title}</p>
-                    <p className="text-sm text-ink-700">{proofItem.source}</p>
+                    <p className="text-sm font-medium text-ink-900 md:text-base">{proofItem.title}</p>
+                    <p className="text-[13px] text-ink-700 md:text-sm">{proofItem.source}</p>
                   </div>
                   <ProofTypeBadge type={proofItem.type} />
                 </div>
-                <p className="mt-3 text-sm leading-7 text-ink-700">
+                <p className="mt-2.5 text-[13px] leading-6 text-ink-700 md:mt-3 md:text-sm md:leading-7">
                   {proofItem.shortExplanation}
                 </p>
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-xs uppercase tracking-[0.16em] text-ink-600">
+                  <p className="text-[11px] uppercase tracking-[0.14em] text-ink-600 md:text-xs md:tracking-[0.16em]">
                     {formatLongDate(proofItem.date)}
                   </p>
                   <a
                     href={proofItem.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm font-medium text-sky transition hover:text-ink-900"
+                    className="text-xs font-medium text-sky transition hover:text-ink-900 md:text-sm"
                   >
                     Open source
                   </a>
@@ -161,7 +161,7 @@ export const MilestoneRowPanel = ({
 
           <Link
             href={`/milestones/${milestone.id}`}
-            className="mt-5 inline-flex rounded-full border border-ink-900 bg-ink-900 px-4 py-2 text-sm font-medium text-paper-50 transition hover:bg-ink-800"
+            className="mt-4 inline-flex rounded-full border border-ink-900 bg-ink-900 px-3.5 py-2 text-xs font-medium text-paper-50 transition hover:bg-ink-800 md:mt-5 md:px-4 md:text-sm"
           >
             Open full milestone detail
           </Link>

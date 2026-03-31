@@ -12,7 +12,7 @@ const milestoneSeeds = [
 ];
 
 export const methodologyNote =
-  "Mock MVP. These public-facing capability pillars are plain-language summaries built on a deeper coverage map spanning reasoning, learning, truthfulness, self-monitoring, social competence, multimodal understanding, safety, and robustness. Each granular question is intended to be backable by benchmarks, controlled studies, audits, red-team exercises, longitudinal trials, or expert-blind review.";
+  "These public-facing capability pillars are plain-language summaries built on a deeper coverage map spanning reasoning, learning, truthfulness, self-monitoring, social competence, multimodal understanding, safety, and robustness. Each granular question is intended to be backable by benchmarks, controlled studies, audits, red-team exercises, longitudinal trials, or expert-blind review.";
 
 export const milestones: Milestone[] = milestoneSeeds.map(buildMilestone);
 
