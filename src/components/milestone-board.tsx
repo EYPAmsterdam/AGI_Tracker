@@ -1,158 +1,272 @@
 "use client";
 
-import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { ConfidenceBadge, StatusBadge } from "@/components/badges";
+import { MilestoneRowPanel } from "@/components/milestone-row-panel";
 import { ProgressMeter } from "@/components/progress-meter";
 import { cn } from "@/lib/cn";
 import { Milestone } from "@/types/agi";
 
+const BOARD_EXPAND_DURATION_MS = 520;
+const BOARD_EXPAND_EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
+const BOARD_FLIP_DURATION_MS = 460;
+const BOARD_FLIP_EASING = "cubic-bezier(0.2, 0.95, 0.28, 1)";
+const BOARD_EXPAND_STYLE = {
+  transitionDuration: `${BOARD_EXPAND_DURATION_MS}ms`,
+  transitionTimingFunction: BOARD_EXPAND_EASING
+} as const;
+
 const countMet = (milestone: Milestone) =>
   milestone.subQuestions.filter((subQuestion) => subQuestion.status === "met").length;
 
-export const MilestoneBoard = ({ milestones }: { milestones: Milestone[] }) => {
-  const [selectedId, setSelectedId] = useState(milestones[0]?.id);
-
-  const selectedMilestone = useMemo(
-    () => milestones.find((milestone) => milestone.id === selectedId) ?? milestones[0],
-    [milestones, selectedId]
-  );
-
-  if (!selectedMilestone) {
-    return null;
+const getColumnCount = (width: number) => {
+  if (width >= 1280) {
+    return 3;
   }
 
+  if (width >= 768) {
+    return 2;
+  }
+
+  return 1;
+};
+
+const chunkMilestones = (milestones: Milestone[], columns: number) => {
+  const rows: Milestone[][] = [];
+
+  for (let index = 0; index < milestones.length; index += columns) {
+    rows.push(milestones.slice(index, index + columns));
+  }
+
+  return rows;
+};
+
+export const MilestoneBoard = ({ milestones }: { milestones: Milestone[] }) => {
+  const [openMilestoneId, setOpenMilestoneId] = useState<string | null>(null);
+  const [selectedSubQuestions, setSelectedSubQuestions] = useState<Record<string, string>>(
+    () =>
+      Object.fromEntries(
+        milestones
+          .filter((milestone) => milestone.subQuestions[0])
+          .map((milestone) => [milestone.id, milestone.subQuestions[0].id])
+      )
+  );
+  const [columns, setColumns] = useState(1);
+  const boardRef = useRef<HTMLDivElement | null>(null);
+  const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const previousRowPositionsRef = useRef<Map<string, DOMRect>>(new Map());
+
+  useLayoutEffect(() => {
+    const boardElement = boardRef.current;
+
+    if (!boardElement) {
+      return;
+    }
+
+    const updateColumns = (width: number) => {
+      setColumns((current) => {
+        const next = getColumnCount(width);
+        return current === next ? current : next;
+      });
+    };
+
+    updateColumns(boardElement.clientWidth);
+
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+
+      if (!entry) {
+        return;
+      }
+
+      updateColumns(entry.contentRect.width);
+    });
+
+    observer.observe(boardElement);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const rows = chunkMilestones(milestones, columns);
+  const activeMilestone =
+    milestones.find((milestone) => milestone.id === openMilestoneId) ?? null;
+  const activeMilestoneIndex = activeMilestone
+    ? milestones.findIndex((milestone) => milestone.id === activeMilestone.id)
+    : -1;
+  const activeRowIndex =
+    activeMilestoneIndex === -1 ? -1 : Math.floor(activeMilestoneIndex / columns);
+  const selectedSubQuestion =
+    activeMilestone?.subQuestions.find(
+      (subQuestion) => subQuestion.id === selectedSubQuestions[activeMilestone.id]
+    ) ?? activeMilestone?.subQuestions[0];
+
+  const captureRowPositions = () => {
+    previousRowPositionsRef.current = new Map(
+      rows
+        .map((row) => {
+          const key = row.map((milestone) => milestone.id).join("|");
+          const element = rowRefs.current[key];
+
+          return element ? [key, element.getBoundingClientRect()] : null;
+        })
+        .filter((entry): entry is [string, DOMRect] => entry !== null)
+    );
+  };
+
+  useLayoutEffect(() => {
+    const previousRowPositions = previousRowPositionsRef.current;
+
+    if (previousRowPositions.size === 0) {
+      return;
+    }
+
+    rows.forEach((row) => {
+      const key = row.map((milestone) => milestone.id).join("|");
+      const element = rowRefs.current[key];
+      const previousPosition = previousRowPositions.get(key);
+
+      if (!element || !previousPosition) {
+        return;
+      }
+
+      const currentPosition = element.getBoundingClientRect();
+      const deltaY = previousPosition.top - currentPosition.top;
+
+      if (Math.abs(deltaY) < 1) {
+        return;
+      }
+
+      element.animate(
+        [
+          { transform: `translateY(${deltaY}px)` },
+          { transform: "translateY(0px)" }
+        ],
+        {
+          duration: BOARD_FLIP_DURATION_MS,
+          easing: BOARD_FLIP_EASING,
+          fill: "both"
+        }
+      );
+    });
+
+    previousRowPositionsRef.current = new Map();
+  }, [rows, openMilestoneId, selectedSubQuestions]);
+
+  const handleMilestoneToggle = (milestone: Milestone) => {
+    captureRowPositions();
+    setOpenMilestoneId((current) => (current === milestone.id ? null : milestone.id));
+    setSelectedSubQuestions((current) =>
+      current[milestone.id]
+        ? current
+        : {
+            ...current,
+            [milestone.id]: milestone.subQuestions[0]?.id ?? ""
+          }
+    );
+  };
+
   return (
-    <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {milestones.map((milestone) => {
-          const isSelected = milestone.id === selectedMilestone.id;
-          const metCount = countMet(milestone);
+    <div ref={boardRef} className="space-y-4">
+      {rows.map((row, rowIndex) => {
+        const rowKey = row.map((milestone) => milestone.id).join("|");
+        const rowIsActive = rowIndex === activeRowIndex;
 
-          return (
-            <button
-              key={milestone.id}
-              type="button"
-              onClick={() => setSelectedId(milestone.id)}
-              className={cn(
-                "group relative overflow-visible rounded-[1.75rem] border bg-white/75 p-5 text-left shadow-panel transition duration-200",
-                isSelected
-                  ? "border-ink-900/70 bg-white ring-1 ring-ink-900/10"
-                  : "border-line/80 hover:-translate-y-0.5 hover:border-ink-700/40"
-              )}
+        return (
+          <div
+            key={rowKey}
+            ref={(element) => {
+              rowRefs.current[rowKey] = element;
+            }}
+            className="space-y-4"
+          >
+            <div
+              className="grid gap-4"
+              style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
             >
-              <div className="flex items-start justify-between gap-4">
-                <p className="max-w-[16rem] font-serif text-xl leading-tight text-ink-900">
-                  {milestone.title}
-                </p>
-                <span className="rounded-full border border-line bg-paper-50 px-2.5 py-1 text-xs uppercase tracking-[0.18em] text-ink-700">
-                  {milestone.category}
-                </span>
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <StatusBadge status={milestone.status} />
-                <ConfidenceBadge confidence={milestone.confidence} />
-              </div>
-              <div className="mt-5">
-                <ProgressMeter value={milestone.progressPercent} compact />
-              </div>
-              <div className="mt-4 flex items-center justify-between text-sm text-ink-700">
-                <span>
-                  {metCount}/{milestone.subQuestions.length} sub-questions met
-                </span>
-                <span className="font-medium text-ink-900">Open detail</span>
-              </div>
-              <div className="pointer-events-none absolute right-4 top-4 hidden w-72 rounded-2xl border border-ink-900/15 bg-ink-900 p-4 text-sm leading-6 text-paper-50 shadow-panel group-hover:block xl:block xl:opacity-0 xl:transition xl:duration-200 xl:group-hover:opacity-100">
-                <p className="text-[11px] uppercase tracking-[0.2em] text-paper-100/70">
-                  Preview
-                </p>
-                <p className="mt-2 text-paper-50/90">{milestone.description}</p>
-              </div>
-            </button>
-          );
-        })}
-      </div>
+              {row.map((milestone) => {
+                const isOpen = milestone.id === openMilestoneId;
+                const metCount = countMet(milestone);
 
-      <div className="rounded-[2rem] border border-line/80 bg-white/85 p-6 shadow-panel md:p-8">
-        <div className="flex flex-col gap-5 border-b border-line/70 pb-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink-600">
-              Selected milestone
-            </p>
-            <div className="space-y-2">
-              <h3 className="font-serif text-3xl tracking-tight text-ink-900">
-                {selectedMilestone.title}
-              </h3>
-              <p className="max-w-3xl text-sm leading-7 text-ink-700">
-                {selectedMilestone.description}
-              </p>
+                return (
+                  <button
+                    key={milestone.id}
+                    type="button"
+                    aria-expanded={isOpen}
+                    onClick={() => handleMilestoneToggle(milestone)}
+                    className={cn(
+                      "w-full rounded-[1.75rem] border bg-white/75 p-5 text-left shadow-panel transition duration-200",
+                      isOpen
+                        ? "border-ink-900/70 bg-white ring-1 ring-ink-900/10"
+                        : "border-line/80 hover:-translate-y-0.5 hover:border-ink-700/40"
+                    )}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <p className="max-w-[16rem] font-serif text-xl leading-tight text-ink-900">
+                        {milestone.title}
+                      </p>
+                      <span className="rounded-full border border-line bg-paper-50 px-2.5 py-1 text-xs uppercase tracking-[0.18em] text-ink-700">
+                        {milestone.category}
+                      </span>
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <StatusBadge status={milestone.status} />
+                      <ConfidenceBadge confidence={milestone.confidence} />
+                    </div>
+
+                    <div className="mt-5">
+                      <ProgressMeter value={milestone.progressPercent} compact />
+                    </div>
+
+                    <div className="mt-4 flex items-center justify-between text-sm text-ink-700">
+                      <span>
+                        {metCount}/{milestone.subQuestions.length} sub-questions met
+                      </span>
+                      <span className="font-medium text-ink-900">
+                        {isOpen ? "Close detail" : "Open detail"}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <StatusBadge status={selectedMilestone.status} />
-            <ConfidenceBadge confidence={selectedMilestone.confidence} />
-          </div>
-        </div>
 
-        <div className="mt-6 grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
-          <div className="grid gap-3">
-            {selectedMilestone.subQuestions.map((subQuestion) => (
+            <div
+              className={cn(
+                "grid overflow-hidden transition-[grid-template-rows,opacity,padding] px-1",
+                rowIsActive && activeMilestone && selectedSubQuestion
+                  ? "grid-rows-[1fr] opacity-100 pt-2"
+                  : "grid-rows-[0fr] opacity-0"
+              )}
+              style={BOARD_EXPAND_STYLE}
+            >
               <div
-                key={subQuestion.id}
-                className="rounded-[1.25rem] border border-line/80 bg-paper-50/65 p-4 transition hover:border-ink-700/35"
+                className={cn(
+                  "min-h-0 overflow-hidden transition-[opacity,transform]",
+                  rowIsActive && activeMilestone && selectedSubQuestion
+                    ? "translate-y-0 opacity-100"
+                    : "-translate-y-2 opacity-0"
+                )}
+                style={BOARD_EXPAND_STYLE}
               >
-                <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="space-y-2">
-                    <p className="text-base font-semibold text-ink-900">{subQuestion.title}</p>
-                    <p className="text-sm leading-6 text-ink-700">{subQuestion.rationale}</p>
-                  </div>
-                  <div className="flex shrink-0 flex-wrap gap-2">
-                    <StatusBadge status={subQuestion.status} />
-                    <ConfidenceBadge confidence={subQuestion.confidence} />
-                  </div>
-                </div>
-                <div className="mt-3 text-xs uppercase tracking-[0.18em] text-ink-600">
-                  {subQuestion.proofItems.length} evidence items
-                </div>
+                {rowIsActive && activeMilestone && selectedSubQuestion ? (
+                  <MilestoneRowPanel
+                    milestone={activeMilestone}
+                    selectedSubQuestion={selectedSubQuestion}
+                    onSelectSubQuestion={(subQuestionId) => {
+                      captureRowPositions();
+                      setSelectedSubQuestions((current) => ({
+                        ...current,
+                        [activeMilestone.id]: subQuestionId
+                      }));
+                    }}
+                  />
+                ) : null}
               </div>
-            ))}
-          </div>
-
-          <div className="rounded-[1.5rem] border border-line/80 bg-paper-50/70 p-5">
-            <div className="space-y-4">
-              <ProgressMeter value={selectedMilestone.progressPercent} />
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-                <div className="rounded-2xl border border-line/80 bg-white/75 p-4">
-                  <p className="text-xs uppercase tracking-[0.2em] text-ink-600">Updated</p>
-                  <p className="mt-2 text-sm font-medium text-ink-900">
-                    {selectedMilestone.updatedAt}
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-line/80 bg-white/75 p-4">
-                  <p className="text-xs uppercase tracking-[0.2em] text-ink-600">
-                    Sub-question coverage
-                  </p>
-                  <p className="mt-2 text-sm font-medium text-ink-900">
-                    {countMet(selectedMilestone)} met,{" "}
-                    {
-                      selectedMilestone.subQuestions.filter(
-                        (subQuestion) => subQuestion.status === "in_progress"
-                      ).length
-                    }{" "}
-                    in progress
-                  </p>
-                </div>
-              </div>
-              <Link
-                href={`/milestones/${selectedMilestone.id}`}
-                className="inline-flex rounded-full border border-ink-900 bg-ink-900 px-4 py-2 text-sm font-medium text-paper-50 transition hover:bg-ink-800"
-              >
-                Open full milestone detail
-              </Link>
             </div>
           </div>
-        </div>
-      </div>
+        );
+      })}
     </div>
   );
 };
