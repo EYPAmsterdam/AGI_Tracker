@@ -3,12 +3,14 @@ import { cn } from "@/lib/cn";
 import { Confidence, ProofType, Status } from "@/types/agi";
 
 const statusStyles: Record<Status, string> = {
+  unassessed: "border-ink-700/20 bg-paper-100 text-ink-700",
   met: "border-sage/30 bg-sage/10 text-sage",
   in_progress: "border-amber/30 bg-amber/10 text-amber",
   not_met: "border-rust/30 bg-rust/10 text-rust"
 };
 
 const confidenceStyles: Record<Confidence, string> = {
+  unassessed: "border-ink-700/20 bg-paper-100 text-ink-700",
   high: "border-sky/25 bg-sky/10 text-sky",
   medium: "border-amber/25 bg-amber/10 text-amber",
   low: "border-rust/25 bg-rust/10 text-rust"

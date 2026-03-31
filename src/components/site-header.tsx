@@ -7,8 +7,7 @@ import { cn } from "@/lib/cn";
 const navigation = [
   { href: "/", label: "Overview" },
   { href: "/milestones", label: "Milestones" },
-  { href: "/evidence", label: "Evidence" },
-  { href: "/community", label: "Community" }
+  { href: "/evidence", label: "Evidence" }
 ];
 
 export const SiteHeader = () => {
@@ -26,7 +25,7 @@ export const SiteHeader = () => {
               AGI Milestone Tracker
             </p>
             <p className="text-[10px] uppercase tracking-[0.2em] text-ink-600 md:text-xs md:tracking-[0.22em]">
-              Mock MVP | Sample evidence
+              Workbook-backed MVP
             </p>
           </div>
         </Link>

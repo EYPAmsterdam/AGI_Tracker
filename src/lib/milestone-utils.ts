@@ -3,19 +3,21 @@ import {
   CoverageReference,
   EvaluationMode,
   Milestone,
-  MilestoneSeed,
   ProofType,
   Status,
   SubQuestion
 } from "@/types/agi";
+import { MilestoneContent } from "@/types/content";
 
 export const STATUS_LABELS: Record<Status, string> = {
+  unassessed: "Unassessed",
   not_met: "Not met",
   in_progress: "In progress",
   met: "Met"
 };
 
 export const CONFIDENCE_LABELS: Record<Confidence, string> = {
+  unassessed: "Unassessed",
   low: "Low confidence",
   medium: "Medium confidence",
   high: "High confidence"
@@ -52,12 +54,20 @@ export const statusToProgressValue = (status: Status): number => {
 };
 
 export const deriveMilestoneStatus = (subQuestions: SubQuestion[]): Status => {
-  const total = subQuestions.length;
-  const metCount = subQuestions.filter((item) => item.status === "met").length;
-  const inProgressCount = subQuestions.filter(
+  const assessedSubQuestions = subQuestions.filter(
+    (item) => item.status !== "unassessed"
+  );
+
+  if (assessedSubQuestions.length === 0) {
+    return "unassessed";
+  }
+
+  const total = assessedSubQuestions.length;
+  const metCount = assessedSubQuestions.filter((item) => item.status === "met").length;
+  const inProgressCount = assessedSubQuestions.filter(
     (item) => item.status === "in_progress"
   ).length;
-  const notMetCount = subQuestions.filter(
+  const notMetCount = assessedSubQuestions.filter(
     (item) => item.status === "not_met"
   ).length;
 
@@ -75,6 +85,10 @@ export const deriveMilestoneStatus = (subQuestions: SubQuestion[]): Status => {
 export const deriveMilestoneProgressPercent = (
   subQuestions: SubQuestion[]
 ): number => {
+  if (subQuestions.length === 0) {
+    return 0;
+  }
+
   const totalValue = subQuestions.reduce(
     (sum, item) => sum + statusToProgressValue(item.status),
     0
@@ -88,6 +102,11 @@ export const deriveMilestoneConfidence = (
 ): Confidence => {
   const proofItems = subQuestions.flatMap((item) => item.proofItems);
   const total = proofItems.length;
+
+  if (total === 0) {
+    return "unassessed";
+  }
+
   const strongEvidenceCount = proofItems.filter((item) =>
     ["benchmark", "leaderboard", "research_paper"].includes(item.type)
   ).length;
@@ -137,20 +156,23 @@ export const deriveMilestoneCoverage = (
   }));
 };
 
-export const buildMilestone = (seed: MilestoneSeed): Milestone => {
-  const status = deriveMilestoneStatus(seed.subQuestions);
-  const progressPercent = deriveMilestoneProgressPercent(seed.subQuestions);
-  const confidence = deriveMilestoneConfidence(seed.subQuestions);
-  const updatedAt = deriveUpdatedAt(seed.subQuestions);
-  const coverage = deriveMilestoneCoverage(seed.subQuestions);
+export const buildMilestoneFromContent = (content: MilestoneContent): Milestone => {
+  const status = deriveMilestoneStatus(content.subQuestions);
+  const progressPercent = deriveMilestoneProgressPercent(content.subQuestions);
+  const confidence = deriveMilestoneConfidence(content.subQuestions);
+  const coverage = deriveMilestoneCoverage(content.subQuestions);
 
   return {
-    ...seed,
+    id: content.id,
+    title: content.title,
+    description: content.description,
+    category: content.category,
     status,
     confidence,
     progressPercent,
-    updatedAt,
-    coverage
+    updatedAt: content.updatedAt,
+    coverage,
+    subQuestions: content.subQuestions
   };
 };
 

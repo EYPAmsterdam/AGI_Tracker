@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 export const metadata: Metadata = {
   title: "AGI Milestone Tracker",
   description:
-    "A mock MVP that tracks AGI through implementation-focused milestone statements, sub-questions, and sample evidence."
+    "A workbook-backed MVP that tracks AGI-relevant capability dimensions, source recommendations, and curated evidence."
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
               {children}
             </main>
             <footer className="mx-auto max-w-7xl border-t border-line/70 px-4 py-6 text-xs leading-6 text-ink-600 md:px-6 md:py-8 md:text-sm md:leading-normal lg:px-8">
-              Mock MVP for implementation-based AGI tracking. Evidence items in this demo are sample evidence only.
+              Workbook-backed MVP for capability tracking. Published evidence appears only when added to the workbook&apos;s Evidence Entries sheet.
             </footer>
           </div>
         </div>

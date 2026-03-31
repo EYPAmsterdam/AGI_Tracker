@@ -98,46 +98,55 @@ export const EvidenceExplorer = ({
       </div>
 
       <div className="space-y-3">
-        {filteredRecords.map((record) => (
-          <article
-            key={`${record.subQuestionId}-${record.proofItem.id}`}
-            className="rounded-[1.5rem] border border-line/80 bg-white/80 p-5 shadow-panel"
-          >
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-              <div className="space-y-2">
-                <div className="flex flex-wrap gap-2">
-                  <ProofTypeBadge type={record.proofItem.type} />
-                  <StatusBadge status={record.subQuestionStatus} />
+        {filteredRecords.length > 0 ? (
+          filteredRecords.map((record) => (
+            <article
+              key={`${record.subQuestionId}-${record.proofItem.id}`}
+              className="rounded-[1.5rem] border border-line/80 bg-white/80 p-5 shadow-panel"
+            >
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <div className="space-y-2">
+                  <div className="flex flex-wrap gap-2">
+                    <ProofTypeBadge type={record.proofItem.type} />
+                    <StatusBadge status={record.subQuestionStatus} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-ink-900">
+                    {record.proofItem.title}
+                  </h3>
+                  <p className="text-sm text-ink-700">{record.proofItem.source}</p>
+                  <p className="text-sm leading-7 text-ink-700">
+                    {record.proofItem.shortExplanation}
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold text-ink-900">
-                  {record.proofItem.title}
-                </h3>
-                <p className="text-sm text-ink-700">{record.proofItem.source}</p>
-                <p className="text-sm leading-7 text-ink-700">
-                  {record.proofItem.shortExplanation}
-                </p>
+                <div className="rounded-[1.25rem] border border-line/80 bg-paper-50/70 p-4 text-sm text-ink-700 lg:w-80">
+                  <p className="text-xs uppercase tracking-[0.18em] text-ink-600">Linked to</p>
+                  <p className="mt-2 font-medium text-ink-900">{record.milestoneTitle}</p>
+                  <p className="mt-1 leading-6">{record.subQuestionTitle}</p>
+                  <p className="mt-3 text-xs uppercase tracking-[0.16em] text-ink-600">
+                    {formatLongDate(record.proofItem.date)}
+                  </p>
+                </div>
               </div>
-              <div className="rounded-[1.25rem] border border-line/80 bg-paper-50/70 p-4 text-sm text-ink-700 lg:w-80">
-                <p className="text-xs uppercase tracking-[0.18em] text-ink-600">Linked to</p>
-                <p className="mt-2 font-medium text-ink-900">{record.milestoneTitle}</p>
-                <p className="mt-1 leading-6">{record.subQuestionTitle}</p>
-                <p className="mt-3 text-xs uppercase tracking-[0.16em] text-ink-600">
-                  {formatLongDate(record.proofItem.date)}
-                </p>
+              <div className="mt-4">
+                <a
+                  href={record.proofItem.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm font-medium text-sky hover:text-ink-900"
+                >
+                  Open source
+                </a>
               </div>
-            </div>
-            <div className="mt-4">
-              <a
-                href={record.proofItem.url}
-                target="_blank"
-                rel="noreferrer"
-                className="text-sm font-medium text-sky hover:text-ink-900"
-              >
-                Open source
-              </a>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))
+        ) : (
+          <div className="rounded-[1.5rem] border border-dashed border-line/80 bg-white/75 p-5 shadow-panel">
+            <p className="text-sm leading-7 text-ink-700">
+              No published evidence entries match the current filters. Fill the workbook&apos;s
+              Evidence Entries sheet to populate this page.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

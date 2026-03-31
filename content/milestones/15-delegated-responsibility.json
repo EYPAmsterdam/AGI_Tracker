@@ -1,0 +1,173 @@
+{
+  "id": "delegated-responsibility",
+  "title": "AI can be trusted with meaningful delegated responsibility",
+  "description": "An AI system can integrate many capabilities into one governed, monitorable, and dependable system that institutions would plausibly trust with serious responsibility.",
+  "category": "Delegation",
+  "sortOrder": 15,
+  "updatedAt": "2026-03-17",
+  "subQuestions": [
+    {
+      "id": "delegated-responsibility-role-coverage",
+      "title": "Can it perform reliably across varied role types?",
+      "description": "Measures whether one coherent system can cover a broad set of meaningful roles rather than a narrow slice of tasks.",
+      "status": "not_met",
+      "confidence": "low",
+      "rationale": "Capability breadth is increasing, but dependable cross-role performance remains far from demonstrated in the real world.",
+      "evaluationModes": [
+        "longitudinal_trial",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "learning_generalization",
+          "capabilityIds": [
+            "transfer_generalization"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-delegated-responsibility-1",
+          "type": "implementation",
+          "title": "Deployment audit: Cross-role reliability in real deployments",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/cross-role-reliability-in-real-deployments",
+          "shortExplanation": "Deployment inventories show wider assistant use, but not reliable performance across a broad portfolio of meaningful delegated roles.",
+          "date": "2026-03-09"
+        }
+      ]
+    },
+    {
+      "id": "delegated-responsibility-integration",
+      "title": "Can it integrate multiple capabilities into one coherent system?",
+      "description": "Tests whether reasoning, learning, tool use, grounding, and safety behaviors remain aligned when combined in one operational system.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Integrated systems are increasingly impressive, but capability composition still creates brittleness, especially over longer runs.",
+      "evaluationModes": [
+        "deployment_audit",
+        "longitudinal_trial"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "execution_control",
+            "tool_use_reliability"
+          ]
+        },
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "long_horizon_drift_resistance"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-delegated-responsibility-2",
+          "type": "implementation",
+          "title": "Deployment audit: Integrated capability coherence",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/integrated-capability-coherence",
+          "shortExplanation": "System audits show increasingly capable end-to-end behavior, but also document brittle interactions once many capabilities are composed together.",
+          "date": "2026-02-23"
+        }
+      ]
+    },
+    {
+      "id": "delegated-responsibility-governance",
+      "title": "Can it be monitored and governed after the fact?",
+      "description": "Measures whether institutions can reconstruct, inspect, and govern the system's actions in a practically meaningful way.",
+      "status": "not_met",
+      "confidence": "low",
+      "rationale": "Current governance tooling is still too partial and too workflow-specific for broad delegated responsibility.",
+      "evaluationModes": [
+        "deployment_audit",
+        "expert_blind_review"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "safety_controllability",
+          "capabilityIds": [
+            "steerability_constraint_adherence"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-delegated-responsibility-3",
+          "type": "implementation",
+          "title": "Deployment audit: Post-hoc governance and monitoring quality",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/post-hoc-governance-and-monitoring-quality",
+          "shortExplanation": "Governance audits show some usable traces and controls, but not enough coverage or reliability for broad institutional delegation.",
+          "date": "2026-03-14"
+        }
+      ]
+    },
+    {
+      "id": "delegated-responsibility-severe-failure",
+      "title": "Can it avoid severe failures in high-impact settings?",
+      "description": "Tests tail-risk behavior rather than average-case competence under ordinary conditions.",
+      "status": "not_met",
+      "confidence": "low",
+      "rationale": "Evidence on rare but severe failure prevention remains too weak for broad trust in high-impact delegation.",
+      "evaluationModes": [
+        "red_team",
+        "longitudinal_trial"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "safety_controllability",
+          "capabilityIds": [
+            "harmfulness_prevention",
+            "misuse_resistance"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-delegated-responsibility-4",
+          "type": "benchmark",
+          "title": "Red-team evaluation: Severe-failure resistance in high-impact scenarios",
+          "source": "Model Red-Team Exchange",
+          "url": "https://capability-evals.example/red-team/severe-failure-resistance-in-high-impact-scenarios",
+          "shortExplanation": "Tail-risk evaluations continue to find too much uncertainty and too many unresolved severe-failure modes for broad delegation.",
+          "date": "2026-03-16"
+        }
+      ]
+    },
+    {
+      "id": "delegated-responsibility-real-deployments",
+      "title": "Can it show strong evidence from real deployments, not only lab wins?",
+      "description": "Measures whether serious institutions have already delegated meaningful responsibility in practice, with convincing evidence of success.",
+      "status": "not_met",
+      "confidence": "low",
+      "rationale": "Real deployment evidence is still dominated by bounded copilots, pilots, and supervised assistance rather than genuine responsibility transfer.",
+      "evaluationModes": [
+        "longitudinal_trial",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "long_horizon_drift_resistance"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-delegated-responsibility-5",
+          "type": "implementation",
+          "title": "Deployment audit: Real-world evidence for meaningful delegation",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/real-world-evidence-for-meaningful-delegation",
+          "shortExplanation": "Deployment reviews show expanding use, but not the sustained, high-responsibility institutional delegation that this threshold would require.",
+          "date": "2026-03-17"
+        }
+      ]
+    }
+  ]
+}

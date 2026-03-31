@@ -1,18 +1,21 @@
 import { MethodologyNote } from "@/components/methodology-note";
 import { MilestonesExplorer } from "@/components/milestones-explorer";
 import { SectionHeading } from "@/components/section-heading";
-import { milestones } from "@/data/milestones";
+import { getMilestoneCategories, getMilestones } from "@/data/milestones";
 
 export default function MilestonesPage() {
+  const milestones = getMilestones();
+  const milestoneCategories = getMilestoneCategories();
+
   return (
     <div className="space-y-8">
       <SectionHeading
         eyebrow="Milestones"
-        title="Full milestone registry"
-        description="Filter the top-level AGI milestones by status, confidence, and category. Each result opens into a dedicated detail view with sub-question evidence."
+        title="Capability dimension registry"
+        description="Filter the workbook-backed capability dimensions by status, confidence, and category. Each result opens into a dedicated detail view with capability-level source recommendations and published evidence."
       />
       <MethodologyNote />
-      <MilestonesExplorer milestones={milestones} />
+      <MilestonesExplorer milestones={milestones} categories={milestoneCategories} />
     </div>
   );
 }

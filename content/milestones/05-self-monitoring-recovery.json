@@ -1,0 +1,172 @@
+{
+  "id": "self-monitoring-recovery",
+  "title": "AI knows when it may be wrong and can recover",
+  "description": "An AI system can estimate uncertainty, abstain when needed, detect its own errors, and improve after feedback instead of bluffing through risk.",
+  "category": "Self-monitoring",
+  "sortOrder": 5,
+  "updatedAt": "2026-03-12",
+  "subQuestions": [
+    {
+      "id": "self-monitoring-calibration",
+      "title": "Can it produce calibrated confidence?",
+      "description": "Measures whether expressed confidence tracks actual correctness rather than sounding persuasive by default.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Calibration is improving, but many systems still sound too certain in the very cases where error rates are highest.",
+      "evaluationModes": [
+        "benchmark",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "metacognition_ethics",
+          "capabilityIds": [
+            "uncertainty_calibration"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-self-monitoring-1",
+          "type": "benchmark",
+          "title": "Benchmark suite: Confidence calibration against answer correctness",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/confidence-calibration-against-answer-correctness",
+          "shortExplanation": "Calibration benchmarks show meaningful progress, but still reveal overconfidence on harder and more ambiguous tasks.",
+          "date": "2026-03-04"
+        }
+      ]
+    },
+    {
+      "id": "self-monitoring-abstention",
+      "title": "Can it abstain when evidence is insufficient?",
+      "description": "Tests whether the system declines or narrows an answer when the available evidence does not justify a confident response.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Abstention behavior exists, but it is still not reliably triggered in all of the cases where it should be.",
+      "evaluationModes": [
+        "benchmark",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "metacognition_ethics",
+          "capabilityIds": [
+            "abstention"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-self-monitoring-2",
+          "type": "research_paper",
+          "title": "Controlled study: Abstention under insufficient evidence",
+          "source": "Center for Applied AI Evaluation",
+          "url": "https://capability-evals.example/studies/abstention-under-insufficient-evidence",
+          "shortExplanation": "Controlled evaluations show more frequent and more useful abstention than earlier systems, but still leave critical misses.",
+          "date": "2026-02-07"
+        }
+      ]
+    },
+    {
+      "id": "self-monitoring-contradictions",
+      "title": "Can it detect internal contradictions?",
+      "description": "Measures whether the system notices when its own intermediate claims or outputs conflict with one another.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Self-diagnosis works in many simpler cases, but hidden contradictions inside longer outputs still slip through too often.",
+      "evaluationModes": [
+        "benchmark",
+        "expert_blind_review"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "metacognition_ethics",
+          "capabilityIds": [
+            "self_evaluation"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-self-monitoring-3",
+          "type": "research_paper",
+          "title": "Expert blind review: Internal contradiction detection",
+          "source": "Expert Review Panel on AI Performance",
+          "url": "https://capability-evals.example/expert-review/internal-contradiction-detection",
+          "shortExplanation": "Review panels found reliable detection of obvious inconsistencies, but weaker performance once contradictions depended on longer output context.",
+          "date": "2026-01-24"
+        }
+      ]
+    },
+    {
+      "id": "self-monitoring-self-correction",
+      "title": "Can it self-correct after feedback or tool results?",
+      "description": "Tests whether new evidence, critique, or tool output leads to an improved answer rather than defensive persistence.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Explicit critique and tool feedback often lead to materially better second-pass answers in a wide range of workflows.",
+      "evaluationModes": [
+        "controlled_study",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "metacognition_ethics",
+          "capabilityIds": [
+            "self_correction"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-self-monitoring-4",
+          "type": "research_paper",
+          "title": "Controlled study: Second-pass improvement after critique",
+          "source": "Center for Applied AI Evaluation",
+          "url": "https://capability-evals.example/studies/second-pass-improvement-after-critique",
+          "shortExplanation": "Repeated-answer studies show strong gains after critique or tool feedback, especially on factual and coding tasks.",
+          "date": "2026-02-27"
+        }
+      ]
+    },
+    {
+      "id": "self-monitoring-escalation",
+      "title": "Can it escalate uncertainty instead of bluffing in high-risk cases?",
+      "description": "Measures whether the system hands off or narrows scope when risk is high and confidence is weak.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Escalation behavior is present in some high-stakes copilots, but trigger quality and consistency remain uneven.",
+      "evaluationModes": [
+        "deployment_audit",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "metacognition_ethics",
+          "capabilityIds": [
+            "uncertainty_calibration",
+            "abstention"
+          ]
+        },
+        {
+          "dimensionId": "epistemic_reliability",
+          "capabilityIds": [
+            "factual_honesty"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-self-monitoring-5",
+          "type": "implementation",
+          "title": "Deployment audit: High-risk uncertainty escalation",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/high-risk-uncertainty-escalation",
+          "shortExplanation": "Operational audits show improving escalation behavior in bounded workflows, but also document cases where the model still pressed ahead too confidently.",
+          "date": "2026-03-12"
+        }
+      ]
+    }
+  ]
+}

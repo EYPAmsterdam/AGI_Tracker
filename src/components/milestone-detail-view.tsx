@@ -64,7 +64,7 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
               </span>
             </p>
             <p>
-              Sub-questions{" "}
+              Capabilities{" "}
               <span className="font-medium text-ink-900">
                 {milestone.subQuestions.length}
               </span>
@@ -77,6 +77,10 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
         <div className="space-y-3">
           {milestone.subQuestions.map((subQuestion) => {
             const active = subQuestion.id === selectedSubQuestion.id;
+            const panelLabel =
+              subQuestion.proofItems.length > 0
+                ? `${subQuestion.proofItems.length} evidence items`
+                : `${subQuestion.sourceRecommendations.length} recommended sources`;
 
             return (
               <button
@@ -94,7 +98,9 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
                   <div className="space-y-2">
                     <p className="text-lg font-semibold text-ink-900">{subQuestion.title}</p>
                     <p className="text-sm leading-7 text-ink-700">{subQuestion.description}</p>
-                    <p className="text-sm leading-7 text-ink-600">{subQuestion.rationale}</p>
+                    {subQuestion.rationale ? (
+                      <p className="text-sm leading-7 text-ink-600">{subQuestion.rationale}</p>
+                    ) : null}
                   </div>
                   <div className="flex shrink-0 flex-wrap gap-2">
                     <StatusBadge status={subQuestion.status} />
@@ -102,7 +108,7 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
                   </div>
                 </div>
                 <p className="mt-4 text-xs uppercase tracking-[0.18em] text-ink-600">
-                  Click to inspect evidence | {subQuestion.proofItems.length} items
+                  Click to inspect sources | {panelLabel}
                 </p>
               </button>
             );
@@ -112,7 +118,7 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
         <aside className="rounded-[1.75rem] border border-line/80 bg-white/85 p-6 shadow-panel">
           <div className="border-b border-line/70 pb-5">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink-600">
-              Evidence panel
+              Capability panel
             </p>
             <h2 className="mt-2 font-serif text-2xl text-ink-900">
               {selectedSubQuestion.title}
@@ -120,49 +126,115 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
             <p className="mt-3 text-sm leading-7 text-ink-700">
               {selectedSubQuestion.description}
             </p>
-            <p className="mt-3 text-sm leading-7 text-ink-700">
-              {selectedSubQuestion.rationale}
-            </p>
+            {selectedSubQuestion.rationale ? (
+              <p className="mt-3 text-sm leading-7 text-ink-700">
+                {selectedSubQuestion.rationale}
+              </p>
+            ) : null}
             <p className="mt-4 text-xs uppercase tracking-[0.18em] text-ink-600">
               Best evidence forms:{" "}
-              {selectedSubQuestion.evaluationModes
-                .map((mode) => EVALUATION_MODE_LABELS[mode])
-                .join(", ")}
+              {selectedSubQuestion.evaluationModes.length > 0
+                ? selectedSubQuestion.evaluationModes
+                    .map((mode) => EVALUATION_MODE_LABELS[mode])
+                    .join(", ")
+                : "Not set yet"}
             </p>
           </div>
 
           <div className="mt-5 space-y-4">
-            {selectedSubQuestion.proofItems.map((proofItem) => (
-              <article
-                key={proofItem.id}
-                className="rounded-[1.35rem] border border-line/80 bg-paper-50/70 p-4"
-              >
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <p className="font-medium text-ink-900">{proofItem.title}</p>
-                    <p className="text-sm text-ink-700">{proofItem.source}</p>
+            {selectedSubQuestion.proofItems.length > 0 ? (
+              selectedSubQuestion.proofItems.map((proofItem) => (
+                <article
+                  key={proofItem.id}
+                  className="rounded-[1.35rem] border border-line/80 bg-paper-50/70 p-4"
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="space-y-1">
+                      <p className="font-medium text-ink-900">{proofItem.title}</p>
+                      <p className="text-sm text-ink-700">{proofItem.source}</p>
+                    </div>
+                    <ProofTypeBadge type={proofItem.type} />
                   </div>
-                  <ProofTypeBadge type={proofItem.type} />
-                </div>
-                <p className="mt-3 text-sm leading-7 text-ink-700">
-                  {proofItem.shortExplanation}
-                </p>
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-xs uppercase tracking-[0.16em] text-ink-600">
-                    {formatLongDate(proofItem.date)}
+                  <p className="mt-3 text-sm leading-7 text-ink-700">
+                    {proofItem.shortExplanation}
                   </p>
-                  <a
-                    href={proofItem.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-sm font-medium text-sky hover:text-ink-900"
-                  >
-                    Open source
-                  </a>
-                </div>
-              </article>
-            ))}
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                    <p className="text-xs uppercase tracking-[0.16em] text-ink-600">
+                      {formatLongDate(proofItem.date)}
+                    </p>
+                    <a
+                      href={proofItem.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm font-medium text-sky hover:text-ink-900"
+                    >
+                      Open source
+                    </a>
+                  </div>
+                </article>
+              ))
+            ) : (
+              <div className="rounded-[1.35rem] border border-dashed border-line/80 bg-paper-50/60 p-4">
+                <p className="text-sm leading-7 text-ink-700">
+                  No evidence entries are published yet for this capability. Fill them in on
+                  the workbook&apos;s Evidence Entries sheet.
+                </p>
+              </div>
+            )}
           </div>
+
+          {selectedSubQuestion.sourceRecommendations.length > 0 ? (
+            <div className="mt-6 space-y-4 border-t border-line/70 pt-5">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink-600">
+                  Recommended sources
+                </p>
+                <p className="mt-2 text-sm leading-7 text-ink-700">
+                  These benchmark and leaderboard sources are imported from the workbook.
+                  They are recommendations, not yet published evidence.
+                </p>
+              </div>
+              {selectedSubQuestion.sourceRecommendations.map((recommendation) => (
+                <article
+                  key={recommendation.id}
+                  className="rounded-[1.35rem] border border-line/80 bg-paper-50/70 p-4"
+                >
+                  <div className="space-y-1">
+                    <p className="font-medium text-ink-900">{recommendation.title}</p>
+                    <p className="text-sm text-ink-700">
+                      {recommendation.source || recommendation.benchmarkId}
+                    </p>
+                  </div>
+                  {recommendation.whyUseIt ? (
+                    <p className="mt-3 text-sm leading-7 text-ink-700">
+                      {recommendation.whyUseIt}
+                    </p>
+                  ) : null}
+                  {recommendation.caveat ? (
+                    <p className="mt-3 text-sm leading-7 text-ink-600">
+                      Caveat: {recommendation.caveat}
+                    </p>
+                  ) : null}
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs uppercase tracking-[0.16em] text-ink-600">
+                    <span>
+                      {recommendation.trackerStatus || "Status not set"} |{" "}
+                      {recommendation.ingestMethod || "Ingest path not set"}
+                    </span>
+                    {recommendation.url ? (
+                      <a
+                        href={recommendation.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-sm font-medium normal-case tracking-normal text-sky hover:text-ink-900"
+                      >
+                        Open benchmark
+                      </a>
+                    ) : null}
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : null}
         </aside>
       </div>
     </div>

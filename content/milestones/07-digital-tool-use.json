@@ -1,0 +1,178 @@
+{
+  "id": "digital-tool-use",
+  "title": "AI can use digital tools and external systems reliably",
+  "description": "An AI system can choose tools well, execute across systems, recover from failures, and use documentation to operate unfamiliar interfaces.",
+  "category": "Tool use",
+  "sortOrder": 7,
+  "updatedAt": "2026-03-12",
+  "subQuestions": [
+    {
+      "id": "digital-tool-use-selection",
+      "title": "Can it choose the right tool for the task?",
+      "description": "Measures whether the system selects appropriate tools instead of defaulting to text-only reasoning or the wrong interface.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Tool selection is now strong in many bounded environments where available tools and permissions are explicit.",
+      "evaluationModes": [
+        "benchmark",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "tool_use_reliability"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-digital-tool-use-1",
+          "type": "benchmark",
+          "title": "Benchmark suite: Tool selection in bounded agent environments",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/tool-selection-in-bounded-agent-environments",
+          "shortExplanation": "Tool-use benchmarks show high rates of correct tool choice when the task and available interfaces are clearly defined.",
+          "date": "2026-03-01"
+        }
+      ]
+    },
+    {
+      "id": "digital-tool-use-workflows",
+      "title": "Can it execute multi-tool workflows correctly?",
+      "description": "Tests whether the system can carry state and intent across multiple connected applications and services.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Cross-system execution is increasingly practical, but brittle handoffs and partial completion still limit reliability.",
+      "evaluationModes": [
+        "benchmark",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "tool_use_reliability",
+            "execution_control"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-digital-tool-use-2",
+          "type": "implementation",
+          "title": "Deployment audit: Cross-tool workflow execution",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/cross-tool-workflow-execution",
+          "shortExplanation": "Operational audits show good performance on bounded multi-app flows, but recurring failures when errors propagate across tools.",
+          "date": "2026-02-19"
+        }
+      ]
+    },
+    {
+      "id": "digital-tool-use-recovery",
+      "title": "Can it recover from tool or API failures?",
+      "description": "Measures whether the system retries, reroutes, or escalates sensibly after external failures rather than silently stalling.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Recovery patterns exist, but robust failure handling remains one of the main gaps between demos and production-grade autonomy.",
+      "evaluationModes": [
+        "deployment_audit",
+        "longitudinal_trial"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "tool_use_reliability"
+          ]
+        },
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "long_horizon_drift_resistance"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-digital-tool-use-3",
+          "type": "implementation",
+          "title": "Deployment audit: Tool and API failure recovery",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/tool-and-api-failure-recovery",
+          "shortExplanation": "Agent traces show partial recovery behavior, but still frequent stalls and incorrect retries after external system failures.",
+          "date": "2026-03-07"
+        }
+      ]
+    },
+    {
+      "id": "digital-tool-use-docs",
+      "title": "Can it learn new tools from documentation?",
+      "description": "Tests whether the system can read docs, infer usage patterns, and apply them correctly in a live task.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Documentation-grounded tool use is already one of the better developed areas of practical agent performance.",
+      "evaluationModes": [
+        "benchmark",
+        "leaderboard"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "tool_use_reliability"
+          ]
+        },
+        {
+          "dimensionId": "learning_generalization",
+          "capabilityIds": [
+            "transfer_generalization"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-digital-tool-use-4",
+          "type": "leaderboard",
+          "title": "Leaderboard: Documentation-grounded tool adoption",
+          "source": "Frontier Evaluation Arena",
+          "url": "https://capability-evals.example/leaderboards/documentation-grounded-tool-adoption",
+          "shortExplanation": "Leaderboard results show top systems learning unfamiliar APIs and tool flows directly from documentation with modest correction.",
+          "date": "2026-03-12"
+        }
+      ]
+    },
+    {
+      "id": "digital-tool-use-audit-trail",
+      "title": "Can it leave an auditable trail of actions taken?",
+      "description": "Measures whether external actions, intermediate states, and decisions can be reconstructed after the fact.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Action logging is increasingly feasible, but trace quality and completeness still vary a lot across agent setups.",
+      "evaluationModes": [
+        "deployment_audit",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "execution_control"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-digital-tool-use-5",
+          "type": "implementation",
+          "title": "Deployment audit: Auditable action traces for agent workflows",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/auditable-action-traces-for-agent-workflows",
+          "shortExplanation": "Trace audits show improving visibility into tool actions, though missing state transitions still limit full reconstruction.",
+          "date": "2026-02-24"
+        }
+      ]
+    }
+  ]
+}

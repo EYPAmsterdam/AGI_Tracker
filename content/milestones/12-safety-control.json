@@ -1,0 +1,169 @@
+{
+  "id": "safety-control",
+  "title": "AI can stay controllable, safe, and resistant to misuse",
+  "description": "An AI system can follow explicit constraints, refuse harmful behavior, resist adversarial prompting, and remain steerable after change.",
+  "category": "Safety & control",
+  "sortOrder": 12,
+  "updatedAt": "2026-03-13",
+  "subQuestions": [
+    {
+      "id": "safety-control-policies",
+      "title": "Can it follow explicit policies and constraints?",
+      "description": "Measures whether the system adheres to stated rules and operating boundaries during task execution.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Constraint following is now strong on many standard safety and workflow policy settings, though edge cases still remain.",
+      "evaluationModes": [
+        "benchmark",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "safety_controllability",
+          "capabilityIds": [
+            "steerability_constraint_adherence"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-safety-control-1",
+          "type": "benchmark",
+          "title": "Benchmark suite: Policy and constraint adherence",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/policy-and-constraint-adherence",
+          "shortExplanation": "Safety and workflow benchmark suites show strong adherence to explicit rule sets in most ordinary task conditions.",
+          "date": "2026-03-06"
+        }
+      ]
+    },
+    {
+      "id": "safety-control-refusal",
+      "title": "Can it refuse harmful requests consistently?",
+      "description": "Tests whether harmful instructions are declined robustly across paraphrases and repeated attempts.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Refusal quality is improved but still not stable enough under paraphrase pressure and determined probing.",
+      "evaluationModes": [
+        "benchmark",
+        "red_team"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "safety_controllability",
+          "capabilityIds": [
+            "harmfulness_prevention",
+            "refusal_quality"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-safety-control-2",
+          "type": "benchmark",
+          "title": "Red-team evaluation: Refusal stability under harmful request variation",
+          "source": "Model Red-Team Exchange",
+          "url": "https://capability-evals.example/red-team/refusal-stability-under-harmful-request-variation",
+          "shortExplanation": "Adversarial safety evaluations show solid ordinary refusal behavior, but still find inconsistency under paraphrase and persistence.",
+          "date": "2026-02-12"
+        }
+      ]
+    },
+    {
+      "id": "safety-control-alternatives",
+      "title": "Can it offer safe alternatives where appropriate?",
+      "description": "Measures whether the system gives constructive lower-risk pathways instead of only flat refusal when a legitimate safer route exists.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Constructive redirection exists in many domains, but quality varies substantially and is not yet consistently useful.",
+      "evaluationModes": [
+        "controlled_study",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "safety_controllability",
+          "capabilityIds": [
+            "harmfulness_prevention",
+            "refusal_quality"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-safety-control-3",
+          "type": "research_paper",
+          "title": "Controlled study: Safe alternative generation after refusal",
+          "source": "Center for Applied AI Evaluation",
+          "url": "https://capability-evals.example/studies/safe-alternative-generation-after-refusal",
+          "shortExplanation": "User studies show many better-than-baseline redirections, but still highlight inconsistency in how helpful those alternatives are.",
+          "date": "2026-01-25"
+        }
+      ]
+    },
+    {
+      "id": "safety-control-jailbreaks",
+      "title": "Can it resist jailbreaks and adversarial prompting?",
+      "description": "Tests whether safety behavior survives intentionally hostile prompting and prompt-wrapper attacks.",
+      "status": "not_met",
+      "confidence": "medium",
+      "rationale": "Adversarial prompting remains one of the clearest unresolved gaps between acceptable lab behavior and robust real deployment.",
+      "evaluationModes": [
+        "red_team",
+        "benchmark"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "safety_controllability",
+          "capabilityIds": [
+            "jailbreak_resistance",
+            "misuse_resistance"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-safety-control-4",
+          "type": "benchmark",
+          "title": "Red-team evaluation: Jailbreak resistance under adversarial prompting",
+          "source": "Model Red-Team Exchange",
+          "url": "https://capability-evals.example/red-team/jailbreak-resistance-under-adversarial-prompting",
+          "shortExplanation": "Red-team tracks continue to expose meaningful safety degradation under sophisticated adversarial prompt attacks.",
+          "date": "2026-03-13"
+        }
+      ]
+    },
+    {
+      "id": "safety-control-steerability",
+      "title": "Can it remain steerable after prompt or capability changes?",
+      "description": "Measures whether updates, wrappers, or changing task contexts preserve controllability instead of eroding it unpredictably.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Steerability persists in many ordinary settings, but regressions still appear after prompt changes, tool additions, and model updates.",
+      "evaluationModes": [
+        "deployment_audit",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "safety_controllability",
+          "capabilityIds": [
+            "steerability_constraint_adherence",
+            "misuse_resistance"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-safety-control-5",
+          "type": "implementation",
+          "title": "Deployment audit: Steerability retention after system changes",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/steerability-retention-after-system-changes",
+          "shortExplanation": "Release and deployment audits show that control quality can shift after prompt or capability changes, even when headline behavior looks stable.",
+          "date": "2026-02-27"
+        }
+      ]
+    }
+  ]
+}

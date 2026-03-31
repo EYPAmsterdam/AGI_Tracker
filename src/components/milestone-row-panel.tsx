@@ -34,7 +34,9 @@ export const MilestoneRowPanel = ({
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.22em]">
                 Deep dive
               </p>
-              <p className="mt-2 text-[13px] leading-6 text-ink-700 md:mt-3 md:text-sm md:leading-7">{milestone.description}</p>
+              <p className="mt-2 text-[13px] leading-6 text-ink-700 md:mt-3 md:text-sm md:leading-7">
+                {milestone.description}
+              </p>
             </div>
 
             <div className="rounded-[1.25rem] border border-line/80 bg-paper-50/62 p-4 md:rounded-[1.5rem] md:p-5">
@@ -64,6 +66,10 @@ export const MilestoneRowPanel = ({
           <div className="space-y-2.5 md:space-y-3">
             {milestone.subQuestions.map((subQuestion) => {
               const active = subQuestion.id === selectedSubQuestion.id;
+              const panelLabel =
+                subQuestion.proofItems.length > 0
+                  ? `${subQuestion.proofItems.length} evidence items`
+                  : `${subQuestion.sourceRecommendations.length} recommended sources`;
 
               return (
                 <button
@@ -79,7 +85,9 @@ export const MilestoneRowPanel = ({
                 >
                   <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                     <div>
-                      <p className="text-sm font-semibold text-ink-900 md:text-base">{subQuestion.title}</p>
+                      <p className="text-sm font-semibold text-ink-900 md:text-base">
+                        {subQuestion.title}
+                      </p>
                     </div>
                     <div className="flex shrink-0 flex-wrap gap-2">
                       <StatusBadge status={subQuestion.status} />
@@ -87,7 +95,7 @@ export const MilestoneRowPanel = ({
                     </div>
                   </div>
                   <p className="mt-2.5 text-[11px] uppercase tracking-[0.16em] text-ink-600 md:mt-3 md:text-xs md:tracking-[0.18em]">
-                    {subQuestion.proofItems.length} evidence items
+                    {panelLabel}
                   </p>
                 </button>
               );
@@ -103,7 +111,7 @@ export const MilestoneRowPanel = ({
             </div>
             <div className="space-y-2">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.22em]">
-                Evidence focus
+                Capability focus
               </p>
               <h4 className="font-serif text-xl tracking-tight text-ink-900 md:text-2xl">
                 {selectedSubQuestion.title}
@@ -111,53 +119,105 @@ export const MilestoneRowPanel = ({
               <p className="text-[13px] leading-6 text-ink-700 md:text-sm md:leading-7">
                 {selectedSubQuestion.description}
               </p>
-              <p className="text-[13px] leading-6 text-ink-700 md:text-sm md:leading-7">
-                {selectedSubQuestion.rationale}
-              </p>
+              {selectedSubQuestion.rationale ? (
+                <p className="text-[13px] leading-6 text-ink-700 md:text-sm md:leading-7">
+                  {selectedSubQuestion.rationale}
+                </p>
+              ) : null}
             </div>
 
             <ProgressMeter value={milestone.progressPercent} />
 
             <p className="text-[11px] uppercase tracking-[0.16em] text-ink-600 md:text-xs md:tracking-[0.18em]">
               Best evidence forms:{" "}
-              {selectedSubQuestion.evaluationModes
-                .map((mode) => EVALUATION_MODE_LABELS[mode])
-                .join(", ")}
+              {selectedSubQuestion.evaluationModes.length > 0
+                ? selectedSubQuestion.evaluationModes
+                    .map((mode) => EVALUATION_MODE_LABELS[mode])
+                    .join(", ")
+                : "Not set yet"}
             </p>
           </div>
 
           <div className="mt-4 space-y-3.5 md:mt-5 md:space-y-4">
-            {selectedSubQuestion.proofItems.map((proofItem) => (
-              <article
-                key={proofItem.id}
-                className="rounded-[1.1rem] border border-line/80 bg-paper-50/70 p-3.5 md:rounded-[1.25rem] md:p-4"
-              >
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium text-ink-900 md:text-base">{proofItem.title}</p>
-                    <p className="text-[13px] text-ink-700 md:text-sm">{proofItem.source}</p>
+            {selectedSubQuestion.proofItems.length > 0 ? (
+              selectedSubQuestion.proofItems.map((proofItem) => (
+                <article
+                  key={proofItem.id}
+                  className="rounded-[1.1rem] border border-line/80 bg-paper-50/70 p-3.5 md:rounded-[1.25rem] md:p-4"
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-ink-900 md:text-base">
+                        {proofItem.title}
+                      </p>
+                      <p className="text-[13px] text-ink-700 md:text-sm">{proofItem.source}</p>
+                    </div>
+                    <ProofTypeBadge type={proofItem.type} />
                   </div>
-                  <ProofTypeBadge type={proofItem.type} />
-                </div>
-                <p className="mt-2.5 text-[13px] leading-6 text-ink-700 md:mt-3 md:text-sm md:leading-7">
-                  {proofItem.shortExplanation}
-                </p>
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-[11px] uppercase tracking-[0.14em] text-ink-600 md:text-xs md:tracking-[0.16em]">
-                    {formatLongDate(proofItem.date)}
+                  <p className="mt-2.5 text-[13px] leading-6 text-ink-700 md:mt-3 md:text-sm md:leading-7">
+                    {proofItem.shortExplanation}
                   </p>
-                  <a
-                    href={proofItem.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-xs font-medium text-sky transition hover:text-ink-900 md:text-sm"
-                  >
-                    Open source
-                  </a>
-                </div>
-              </article>
-            ))}
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                    <p className="text-[11px] uppercase tracking-[0.14em] text-ink-600 md:text-xs md:tracking-[0.16em]">
+                      {formatLongDate(proofItem.date)}
+                    </p>
+                    <a
+                      href={proofItem.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs font-medium text-sky transition hover:text-ink-900 md:text-sm"
+                    >
+                      Open source
+                    </a>
+                  </div>
+                </article>
+              ))
+            ) : (
+              <div className="rounded-[1.1rem] border border-dashed border-line/80 bg-paper-50/60 p-3.5 md:rounded-[1.25rem] md:p-4">
+                <p className="text-[13px] leading-6 text-ink-700 md:text-sm md:leading-7">
+                  No evidence entries are published yet for this capability.
+                </p>
+              </div>
+            )}
           </div>
+
+          {selectedSubQuestion.sourceRecommendations.length > 0 ? (
+            <div className="mt-4 space-y-3.5 border-t border-line/70 pt-4 md:mt-5 md:space-y-4 md:pt-5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.22em]">
+                Recommended sources
+              </p>
+              {selectedSubQuestion.sourceRecommendations.map((recommendation) => (
+                <article
+                  key={recommendation.id}
+                  className="rounded-[1.1rem] border border-line/80 bg-paper-50/70 p-3.5 md:rounded-[1.25rem] md:p-4"
+                >
+                  <p className="text-sm font-medium text-ink-900 md:text-base">
+                    {recommendation.title}
+                  </p>
+                  {recommendation.whyUseIt ? (
+                    <p className="mt-2.5 text-[13px] leading-6 text-ink-700 md:text-sm md:leading-7">
+                      {recommendation.whyUseIt}
+                    </p>
+                  ) : null}
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                    <p className="text-[11px] uppercase tracking-[0.14em] text-ink-600 md:text-xs md:tracking-[0.16em]">
+                      {recommendation.trackerStatus || "Status not set"}
+                    </p>
+                    {recommendation.url ? (
+                      <a
+                        href={recommendation.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs font-medium text-sky transition hover:text-ink-900 md:text-sm"
+                      >
+                        Open benchmark
+                      </a>
+                    ) : null}
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : null}
 
           <Link
             href={`/milestones/${milestone.id}`}

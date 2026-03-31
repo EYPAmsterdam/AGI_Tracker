@@ -1,0 +1,184 @@
+{
+  "id": "hard-reasoning",
+  "title": "AI can reason through hard problems under real constraints",
+  "description": "An AI system can solve multi-step problems, preserve logic under pressure, and adapt when constraints change midstream.",
+  "category": "Reasoning",
+  "sortOrder": 2,
+  "updatedAt": "2026-03-11",
+  "subQuestions": [
+    {
+      "id": "hard-reasoning-hidden-answers",
+      "title": "Can it solve multi-step problems with hidden answers?",
+      "description": "Measures generalization on problems where the correct answer cannot be reverse-engineered from visible hints.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Reasoning performance is now strong on several hidden-answer suites, although difficulty spikes still expose brittle failures.",
+      "evaluationModes": [
+        "benchmark",
+        "leaderboard"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "multi_step_reasoning_under_constraints"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-hard-reasoning-1",
+          "type": "benchmark",
+          "title": "Benchmark suite: Hidden-answer multi-step reasoning",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/hidden-answer-multi-step-reasoning",
+          "shortExplanation": "Contamination-resistant reasoning sets show strong performance on problems that require actual stepwise solution rather than pattern recall.",
+          "date": "2026-03-08"
+        }
+      ]
+    },
+    {
+      "id": "hard-reasoning-consistency",
+      "title": "Can it maintain logical consistency across long chains?",
+      "description": "Tests whether intermediate claims stay mutually consistent in longer reasoning traces.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Long chains are better than before, but consistency still degrades as reasoning depth and branching increase.",
+      "evaluationModes": [
+        "benchmark",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "multi_step_reasoning_under_constraints"
+          ]
+        },
+        {
+          "dimensionId": "metacognition_ethics",
+          "capabilityIds": [
+            "self_evaluation"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-hard-reasoning-2",
+          "type": "research_paper",
+          "title": "Controlled study: Long-chain logical consistency",
+          "source": "Center for Applied AI Evaluation",
+          "url": "https://capability-evals.example/studies/long-chain-logical-consistency",
+          "shortExplanation": "Trace audits show meaningful gains, but still document contradiction rates rising on longer branching reasoning paths.",
+          "date": "2026-02-09"
+        }
+      ]
+    },
+    {
+      "id": "hard-reasoning-constraints",
+      "title": "Can it satisfy explicit constraints without dropping any?",
+      "description": "Checks whether the system respects all stated constraints rather than satisfying only the most salient ones.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Constraint tracking works well on simple settings, but omission errors remain common when tasks contain many simultaneous requirements.",
+      "evaluationModes": [
+        "benchmark",
+        "leaderboard"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "multi_step_reasoning_under_constraints",
+            "execution_control"
+          ]
+        },
+        {
+          "dimensionId": "safety_controllability",
+          "capabilityIds": [
+            "steerability_constraint_adherence"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-hard-reasoning-3",
+          "type": "leaderboard",
+          "title": "Leaderboard: Constraint-satisfaction under multi-rule prompts",
+          "source": "Frontier Evaluation Arena",
+          "url": "https://capability-evals.example/leaderboards/constraint-satisfaction-under-multi-rule-prompts",
+          "shortExplanation": "Leaderboard tracks show strong progress, but still clear performance loss once tasks exceed a moderate number of simultaneous hard constraints.",
+          "date": "2026-03-11"
+        }
+      ]
+    },
+    {
+      "id": "hard-reasoning-adaptation",
+      "title": "Can it adapt reasoning when constraints change?",
+      "description": "Tests whether the system updates its reasoning cleanly after new facts, constraints, or tradeoffs are introduced.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Dynamic adaptation is increasingly workable, but systems still anchor too strongly on earlier assumptions in harder cases.",
+      "evaluationModes": [
+        "benchmark",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "planning_quality_adaptability"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-hard-reasoning-4",
+          "type": "benchmark",
+          "title": "Benchmark suite: Reasoning under changing task constraints",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/reasoning-under-changing-task-constraints",
+          "shortExplanation": "Adaptive reasoning evaluations show models revising plans successfully in many cases, but not yet with robust consistency under repeated shifts.",
+          "date": "2026-01-31"
+        }
+      ]
+    },
+    {
+      "id": "hard-reasoning-justification",
+      "title": "Can it justify conclusions in a way that can be independently checked?",
+      "description": "Measures whether explanations expose enough structure, evidence, or intermediate logic for third parties to verify the result.",
+      "status": "met",
+      "confidence": "medium",
+      "rationale": "Systems often produce readable, checkable reasoning summaries, especially when asked to tie answers to explicit steps or evidence.",
+      "evaluationModes": [
+        "expert_blind_review",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "multi_step_reasoning_under_constraints"
+          ]
+        },
+        {
+          "dimensionId": "epistemic_reliability",
+          "capabilityIds": [
+            "factual_honesty"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-hard-reasoning-5",
+          "type": "research_paper",
+          "title": "Expert blind review: Checkable reasoning justifications",
+          "source": "Expert Review Panel on AI Performance",
+          "url": "https://capability-evals.example/expert-review/checkable-reasoning-justifications",
+          "shortExplanation": "Blinded reviewers found many model explanations sufficiently structured for independent verification, though some still overstated certainty.",
+          "date": "2026-02-22"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "id": "human-interaction",
+  "title": "AI can interact with people appropriately and work with them",
+  "description": "An AI system can model people well enough to communicate clearly, adapt to their context, and collaborate without creating avoidable confusion or friction.",
+  "category": "Human interaction",
+  "sortOrder": 10,
+  "updatedAt": "2026-03-09",
+  "subQuestions": [
+    {
+      "id": "human-interaction-user-modeling",
+      "title": "Can it model user goals and knowledge level?",
+      "description": "Measures whether the system infers what the user is trying to do and how much context or explanation they need.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "User modeling is already strong in many bounded assistant settings, especially where interaction history is short and goals are practical.",
+      "evaluationModes": [
+        "controlled_study",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "social_competence",
+          "capabilityIds": [
+            "user_modeling"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-human-interaction-1",
+          "type": "research_paper",
+          "title": "Controlled study: User-goal and knowledge-level inference",
+          "source": "Center for Applied AI Evaluation",
+          "url": "https://capability-evals.example/studies/user-goal-and-knowledge-level-inference",
+          "shortExplanation": "Controlled interaction studies show strong performance in identifying user intent and choosing an appropriate explanation depth.",
+          "date": "2026-02-20"
+        }
+      ]
+    },
+    {
+      "id": "human-interaction-tone",
+      "title": "Can it adapt tone and explanation to its audience?",
+      "description": "Tests whether the system can shift style, depth, and framing without losing task correctness.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Tone adaptation is one of the most mature and consistently high-rated aspects of current conversational models.",
+      "evaluationModes": [
+        "controlled_study",
+        "expert_blind_review"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "social_competence",
+          "capabilityIds": [
+            "interaction_quality"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-human-interaction-2",
+          "type": "research_paper",
+          "title": "Expert blind review: Audience-adapted tone and explanation",
+          "source": "Expert Review Panel on AI Performance",
+          "url": "https://capability-evals.example/expert-review/audience-adapted-tone-and-explanation",
+          "shortExplanation": "Blinded reviewers consistently rate top systems highly on style adaptation across novice, expert, and stressed-user scenarios.",
+          "date": "2026-03-05"
+        }
+      ]
+    },
+    {
+      "id": "human-interaction-recognition",
+      "title": "Can it recognize confusion, frustration, or disagreement?",
+      "description": "Measures whether the system can detect negative conversational states before the interaction breaks down.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Detection is increasingly useful on explicit cues, but quieter forms of frustration and disagreement remain easy to miss.",
+      "evaluationModes": [
+        "controlled_study",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "social_competence",
+          "capabilityIds": [
+            "emotion_affect_handling",
+            "interaction_quality"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-human-interaction-3",
+          "type": "implementation",
+          "title": "Deployment audit: Detection of confusion and frustration in live chats",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/detection-of-confusion-and-frustration-in-live-chats",
+          "shortExplanation": "Conversation audits show improving recognition of explicit frustration, but still document late recognition of subtle confusion and disagreement.",
+          "date": "2026-02-08"
+        }
+      ]
+    },
+    {
+      "id": "human-interaction-collaboration",
+      "title": "Can it handle collaboration and handoff well?",
+      "description": "Tests whether the system can maintain shared context, divide work, and hand off cleanly to people when needed.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Collaborative behavior is promising, but real-world handoffs still fail when context is implicit or the workflow spans multiple people and tools.",
+      "evaluationModes": [
+        "deployment_audit",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "social_competence",
+          "capabilityIds": [
+            "interaction_quality",
+            "perspective_taking"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-human-interaction-4",
+          "type": "implementation",
+          "title": "Deployment audit: Collaboration and handoff quality",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/collaboration-and-handoff-quality",
+          "shortExplanation": "Operational evaluations show better collaboration structure and note quality, but still expose weak handoffs across larger multi-person workflows.",
+          "date": "2026-03-09"
+        }
+      ]
+    },
+    {
+      "id": "human-interaction-nuance",
+      "title": "Can it interpret nuance, implied meaning, and differing perspectives?",
+      "description": "Measures pragmatic understanding beyond literal surface meaning in social and cooperative settings.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Nuance handling is clearly better than before, but still inconsistent in culturally loaded, indirect, or high-context exchanges.",
+      "evaluationModes": [
+        "expert_blind_review",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "social_competence",
+          "capabilityIds": [
+            "perspective_taking",
+            "emotion_affect_handling"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-human-interaction-5",
+          "type": "research_paper",
+          "title": "Expert blind review: Nuance and perspective interpretation",
+          "source": "Expert Review Panel on AI Performance",
+          "url": "https://capability-evals.example/expert-review/nuance-and-perspective-interpretation",
+          "shortExplanation": "Expert interaction panels found many strong responses, but still documented noticeable gaps on indirect meaning and subtle perspective shifts.",
+          "date": "2026-01-28"
+        }
+      ]
+    }
+  ]
+}

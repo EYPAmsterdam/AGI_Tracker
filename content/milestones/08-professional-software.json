@@ -1,0 +1,167 @@
+{
+  "id": "professional-software",
+  "title": "AI can build and maintain software at a professional level",
+  "description": "An AI system can implement, debug, refactor, architect, and sustain software work at a level useful to experienced engineers.",
+  "category": "Software",
+  "sortOrder": 8,
+  "updatedAt": "2026-03-15",
+  "subQuestions": [
+    {
+      "id": "professional-software-hidden-tests",
+      "title": "Can it write code that passes hidden tests?",
+      "description": "Measures whether generated code generalizes beyond visible examples and public benchmark contamination.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Strong code models now solve a large share of hidden-test implementation tasks across common software domains.",
+      "evaluationModes": [
+        "benchmark",
+        "leaderboard"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "code_task_execution"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-professional-software-1",
+          "type": "benchmark",
+          "title": "Benchmark suite: Hidden-test software implementation",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/hidden-test-software-implementation",
+          "shortExplanation": "Contamination-resistant coding suites show strong hidden-test pass rates on many focused implementation tasks.",
+          "date": "2026-03-05"
+        }
+      ]
+    },
+    {
+      "id": "professional-software-debug",
+      "title": "Can it debug unfamiliar repositories?",
+      "description": "Tests whether the system can localize faults and patch them in codebases it has not seen before.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Repository debugging is improving quickly, but still struggles on architecture-heavy bugs and subtle multi-file regressions.",
+      "evaluationModes": [
+        "benchmark",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "code_task_execution"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-professional-software-2",
+          "type": "benchmark",
+          "title": "Benchmark suite: Debugging unfamiliar repositories",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/debugging-unfamiliar-repositories",
+          "shortExplanation": "Repository debugging benchmarks show strong progress, but still leave meaningful gaps on dependency and state-management failures.",
+          "date": "2026-02-16"
+        }
+      ]
+    },
+    {
+      "id": "professional-software-refactor",
+      "title": "Can it refactor without breaking behavior?",
+      "description": "Measures whether code changes preserve external behavior instead of only improving local style or structure.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Refactoring quality is often good when tests are strong, but behavior-preserving change remains unreliable on messier codebases.",
+      "evaluationModes": [
+        "benchmark",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "code_task_execution"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-professional-software-3",
+          "type": "implementation",
+          "title": "Deployment audit: Behavior-preserving refactor safety",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/behavior-preserving-refactor-safety",
+          "shortExplanation": "Code audits show useful cleanup and modularization, but still document regression risk on poorly covered systems.",
+          "date": "2026-03-09"
+        }
+      ]
+    },
+    {
+      "id": "professional-software-architecture",
+      "title": "Can it design reasonable architectures for real requirements?",
+      "description": "Tests whether the system proposes structures that reflect real tradeoffs, not only textbook decompositions.",
+      "status": "met",
+      "confidence": "medium",
+      "rationale": "Architecture proposals are often credible for small and mid-sized systems, though still need human judgment for long-term fit.",
+      "evaluationModes": [
+        "expert_blind_review",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "planning_quality_adaptability",
+            "code_task_execution"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-professional-software-4",
+          "type": "research_paper",
+          "title": "Expert blind review: Architecture quality under real product constraints",
+          "source": "Expert Review Panel on AI Performance",
+          "url": "https://capability-evals.example/expert-review/architecture-quality-under-real-product-constraints",
+          "shortExplanation": "Senior engineer review panels judged many generated architectures workable, but not yet consistently strong on deeper platform tradeoffs.",
+          "date": "2026-01-20"
+        }
+      ]
+    },
+    {
+      "id": "professional-software-shipping",
+      "title": "Can it ship and maintain a working small application?",
+      "description": "Measures whether the system can carry a real app through build, release, and follow-up maintenance loops.",
+      "status": "not_met",
+      "confidence": "low",
+      "rationale": "Shipping small apps is feasible in demos, but dependable release hardening and maintenance still require heavy human ownership.",
+      "evaluationModes": [
+        "deployment_audit",
+        "longitudinal_trial"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "code_task_execution",
+            "execution_control"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-professional-software-5",
+          "type": "implementation",
+          "title": "Deployment audit: Small-app shipping and maintenance",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/small-app-shipping-and-maintenance",
+          "shortExplanation": "Real project audits show promising build completion, but still document repeated human intervention at deployment and maintenance stages.",
+          "date": "2026-03-15"
+        }
+      ]
+    }
+  ]
+}

@@ -4,14 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run validate-content && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup-workbook": "node scripts/setup-workbook.mjs",
+    "validate-content": "node scripts/validate-content.mjs",
+    "test:content": "node scripts/test-content-validator.mjs"
   },
   "dependencies": {
     "next": "14.2.25",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/node": "20.17.24",

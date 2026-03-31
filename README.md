@@ -113,3 +113,19 @@ This repository is a `mock MVP`.
 - Evidence items are sample evidence only.
 - Source links are illustrative and structured to look realistic.
 - The app is designed to feel demo-ready while remaining fully local and easy to extend.
+
+## Git-Backed Content Backend
+
+Milestones and evidence now live in repo-managed JSON files under `content/milestones/`.
+
+- one file per milestone
+- explicit `sortOrder` and `updatedAt`
+- build-time validation with `npm run validate-content`
+- GitHub Pages remains the production host; content changes publish on merge to `main`
+
+For local validation:
+
+```bash
+npm run validate-content
+npm run test:content
+```

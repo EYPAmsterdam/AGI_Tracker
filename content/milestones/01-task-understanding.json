@@ -1,0 +1,185 @@
+{
+  "id": "task-understanding",
+  "title": "AI can understand what a task is really asking",
+  "description": "An AI system can recover intent from messy instructions, isolate the real job to be done, and frame the task correctly before acting.",
+  "category": "Task understanding",
+  "sortOrder": 1,
+  "updatedAt": "2026-03-10",
+  "subQuestions": [
+    {
+      "id": "task-understanding-goal-inference",
+      "title": "Can it infer the real goal from messy instructions?",
+      "description": "Tests whether the system can recover underlying intent when requests are informal, cluttered, or only partially specified.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Current frontier systems are already strong at reconstructing user intent in ordinary text workflows, even when prompts are noisy or indirect.",
+      "evaluationModes": [
+        "benchmark",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "problem_understanding"
+          ]
+        },
+        {
+          "dimensionId": "social_competence",
+          "capabilityIds": [
+            "user_modeling"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-task-understanding-1",
+          "type": "benchmark",
+          "title": "Benchmark suite: Task-goal inference from messy instructions",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/task-goal-inference-from-messy-instructions",
+          "shortExplanation": "Hidden-answer prompt suites show strong recovery of user intent from indirect, noisy, and incomplete requests.",
+          "date": "2026-03-06"
+        }
+      ]
+    },
+    {
+      "id": "task-understanding-clarification",
+      "title": "Can it identify missing constraints and ask clarifying questions?",
+      "description": "Checks whether the system notices when a request is underspecified and asks the right follow-up before executing.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Ambiguity handling is now solid in many assistant workflows when the model is allowed to pause and clarify before acting.",
+      "evaluationModes": [
+        "benchmark",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "problem_understanding",
+            "execution_control"
+          ]
+        },
+        {
+          "dimensionId": "social_competence",
+          "capabilityIds": [
+            "user_modeling"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-task-understanding-2",
+          "type": "research_paper",
+          "title": "Controlled study: Clarification behavior on underspecified requests",
+          "source": "Center for Applied AI Evaluation",
+          "url": "https://capability-evals.example/studies/clarification-behavior-on-underspecified-requests",
+          "shortExplanation": "Controlled user studies show high rates of useful follow-up questions before action on incomplete enterprise tasks.",
+          "date": "2026-02-18"
+        }
+      ]
+    },
+    {
+      "id": "task-understanding-relevance",
+      "title": "Can it separate relevant from irrelevant information?",
+      "description": "Measures whether the system can ignore distracting context and extract the task-critical variables.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Relevance filtering is competitive on many structured and semi-structured tasks, though high-noise adversarial settings still reduce accuracy.",
+      "evaluationModes": [
+        "benchmark",
+        "leaderboard"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "problem_understanding"
+          ]
+        },
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "misleading_context_robustness"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-task-understanding-3",
+          "type": "leaderboard",
+          "title": "Leaderboard: Relevant-variable extraction under distracting context",
+          "source": "Frontier Evaluation Arena",
+          "url": "https://capability-evals.example/leaderboards/relevant-variable-extraction-under-distracting-context",
+          "shortExplanation": "Leaderboard evaluations show top systems retaining the right task variables even when prompts include decoys and irrelevant detail.",
+          "date": "2026-03-10"
+        }
+      ]
+    },
+    {
+      "id": "task-understanding-task-frame",
+      "title": "Can it map ambiguous requests to the right task structure?",
+      "description": "Tests whether the system chooses the correct frame for planning, retrieval, analysis, generation, or execution.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Models often choose the right frame, but still misclassify edge cases where requests could plausibly be handled in more than one way.",
+      "evaluationModes": [
+        "benchmark",
+        "expert_blind_review"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "problem_understanding",
+            "planning_quality_adaptability"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-task-understanding-4",
+          "type": "research_paper",
+          "title": "Expert blind review: Task-frame selection for ambiguous user requests",
+          "source": "Expert Review Panel on AI Performance",
+          "url": "https://capability-evals.example/expert-review/task-frame-selection-for-ambiguous-user-requests",
+          "shortExplanation": "Expert raters judged many outputs well-framed, but noted persistent failures on ambiguous planning-versus-retrieval boundaries.",
+          "date": "2026-01-27"
+        }
+      ]
+    },
+    {
+      "id": "task-understanding-paraphrase",
+      "title": "Can it keep the same interpretation across paraphrases?",
+      "description": "Looks for stable task understanding when the same request is reworded in different ways.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Paraphrase stability has improved materially on broad assistant tasks, especially where the intent is ordinary and the context is clean.",
+      "evaluationModes": [
+        "benchmark",
+        "leaderboard"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "problem_understanding"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-task-understanding-5",
+          "type": "benchmark",
+          "title": "Benchmark suite: Paraphrase-stable task interpretation",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/paraphrase-stable-task-interpretation",
+          "shortExplanation": "Repeated-query evaluation sets show stable intent interpretation across alternate phrasings of the same user goal.",
+          "date": "2026-02-12"
+        }
+      ]
+    }
+  ]
+}

@@ -26,7 +26,13 @@ export const proof = (
   date
 });
 
-export const question = (item: SubQuestion): SubQuestion => item;
+type LegacySubQuestionInput = Omit<SubQuestion, "sourceRecommendations"> &
+  Partial<Pick<SubQuestion, "sourceRecommendations">>;
+
+export const question = (item: LegacySubQuestionInput): SubQuestion => ({
+  ...item,
+  sourceRecommendations: item.sourceRecommendations ?? []
+});
 
 export const coverage = (
   dimensionId: DimensionId,

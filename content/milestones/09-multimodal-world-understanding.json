@@ -1,0 +1,165 @@
+{
+  "id": "multimodal-world-understanding",
+  "title": "AI can understand the world across text, images, audio, video, documents, and space",
+  "description": "An AI system can combine language with visual, document, temporal, and spatial evidence into one coherent understanding of the task and world state.",
+  "category": "Multimodal understanding",
+  "sortOrder": 9,
+  "updatedAt": "2026-03-13",
+  "subQuestions": [
+    {
+      "id": "multimodal-world-understanding-grounding",
+      "title": "Can it ground language to visual or audio evidence?",
+      "description": "Measures whether the system can connect verbal claims or instructions to the correct parts of an image, screen, or audio trace.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Grounding performance is already strong enough to support many document, inspection, and interface-centered workflows.",
+      "evaluationModes": [
+        "benchmark",
+        "leaderboard"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "multimodal_understanding",
+          "capabilityIds": [
+            "cross_modal_grounding"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-multimodal-world-understanding-1",
+          "type": "benchmark",
+          "title": "Benchmark suite: Cross-modal grounding to image and audio evidence",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/cross-modal-grounding-to-image-and-audio-evidence",
+          "shortExplanation": "Grounding benchmarks show strong performance on tying language to the right regions, events, and perceptual cues.",
+          "date": "2026-03-02"
+        }
+      ]
+    },
+    {
+      "id": "multimodal-world-understanding-documents",
+      "title": "Can it reason over screenshots, documents, and forms?",
+      "description": "Tests whether the system can extract and use meaning from dense visual documents and real interface artifacts.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Document and screen understanding is one of the more deployment-ready multimodal capabilities already visible in practice.",
+      "evaluationModes": [
+        "benchmark",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "multimodal_understanding",
+          "capabilityIds": [
+            "multimodal_information_extraction"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-multimodal-world-understanding-2",
+          "type": "implementation",
+          "title": "Deployment audit: Reasoning over screenshots and forms",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/reasoning-over-screenshots-and-forms",
+          "shortExplanation": "Operational audits show strong extraction and reasoning performance on dashboards, forms, and scanned document workflows.",
+          "date": "2026-02-21"
+        }
+      ]
+    },
+    {
+      "id": "multimodal-world-understanding-synthesis",
+      "title": "Can it combine multiple modalities into one coherent conclusion?",
+      "description": "Measures whether text, images, charts, and other signals are integrated rather than treated as unrelated fragments.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Cross-modal evidence synthesis is already strong in many analysis tasks when the sources are legible and the objective is clear.",
+      "evaluationModes": [
+        "benchmark",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "multimodal_understanding",
+          "capabilityIds": [
+            "multimodal_reasoning"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-multimodal-world-understanding-3",
+          "type": "benchmark",
+          "title": "Benchmark suite: Multimodal evidence synthesis",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/multimodal-evidence-synthesis",
+          "shortExplanation": "Case-based multimodal benchmarks show strong integration of text, image, and chart evidence into unified conclusions.",
+          "date": "2026-03-08"
+        }
+      ]
+    },
+    {
+      "id": "multimodal-world-understanding-video",
+      "title": "Can it track state across temporal sequences?",
+      "description": "Tests whether the system can reason about events and changes that unfold over time rather than in a single frame.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Temporal reasoning is clearly improving, but still lags behind static-image and document understanding.",
+      "evaluationModes": [
+        "benchmark",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "multimodal_understanding",
+          "capabilityIds": [
+            "multimodal_reasoning"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-multimodal-world-understanding-4",
+          "type": "benchmark",
+          "title": "Benchmark suite: Temporal state tracking over video-like sequences",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/temporal-state-tracking-over-video-like-sequences",
+          "shortExplanation": "Temporal sequence benchmarks show useful progress, but still material misses when key changes are subtle or long-range.",
+          "date": "2026-02-13"
+        }
+      ]
+    },
+    {
+      "id": "multimodal-world-understanding-spatial",
+      "title": "Can it solve spatial and diagrammatic reasoning tasks?",
+      "description": "Measures reasoning over geometry, layout, diagrams, and visually structured state.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Spatial and diagram reasoning is now strong on many benchmarked tasks, especially when the representation is explicit.",
+      "evaluationModes": [
+        "benchmark",
+        "leaderboard"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "multimodal_understanding",
+          "capabilityIds": [
+            "spatial_reasoning"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-multimodal-world-understanding-5",
+          "type": "leaderboard",
+          "title": "Leaderboard: Spatial and diagrammatic reasoning",
+          "source": "Frontier Evaluation Arena",
+          "url": "https://capability-evals.example/leaderboards/spatial-and-diagrammatic-reasoning",
+          "shortExplanation": "Leaderboard evaluations show top multimodal systems solving a large share of diagram, chart, and spatial-relation tasks.",
+          "date": "2026-03-13"
+        }
+      ]
+    }
+  ]
+}

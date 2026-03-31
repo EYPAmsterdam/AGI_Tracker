@@ -1,0 +1,172 @@
+{
+  "id": "learning-generalization",
+  "title": "AI can learn new tasks quickly and generalize beyond examples",
+  "description": "An AI system can adapt from limited demonstrations and preserve competence when the task, domain, language, or input distribution changes.",
+  "category": "Learning",
+  "sortOrder": 3,
+  "updatedAt": "2026-03-03",
+  "subQuestions": [
+    {
+      "id": "learning-generalization-few-shot",
+      "title": "Can it learn from a few examples?",
+      "description": "Measures whether the system can acquire a new task format from only a small number of demonstrations.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Few-shot task acquisition is already strong across many structured transformation, extraction, and drafting tasks.",
+      "evaluationModes": [
+        "benchmark",
+        "leaderboard"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "learning_generalization",
+          "capabilityIds": [
+            "in_context_learning_adaptation"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-learning-generalization-1",
+          "type": "benchmark",
+          "title": "Benchmark suite: Few-shot task acquisition",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/few-shot-task-acquisition",
+          "shortExplanation": "Benchmark batteries show top systems learning new task formats from just a handful of examples across varied domains.",
+          "date": "2026-02-25"
+        }
+      ]
+    },
+    {
+      "id": "learning-generalization-transfer",
+      "title": "Can it transfer to new domains, tasks, and languages?",
+      "description": "Tests whether competence carries across context shifts without task-specific retraining.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Transfer is increasingly real, but performance still varies sharply with domain novelty and local jargon.",
+      "evaluationModes": [
+        "benchmark",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "learning_generalization",
+          "capabilityIds": [
+            "transfer_generalization"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-learning-generalization-2",
+          "type": "research_paper",
+          "title": "Controlled study: Cross-domain and cross-language transfer",
+          "source": "Center for Applied AI Evaluation",
+          "url": "https://capability-evals.example/studies/cross-domain-and-cross-language-transfer",
+          "shortExplanation": "Cross-domain evaluations show meaningful transfer, but still large drops when specialized terminology or unfamiliar workflows appear.",
+          "date": "2026-01-21"
+        }
+      ]
+    },
+    {
+      "id": "learning-generalization-ood",
+      "title": "Can it hold up under out-of-distribution inputs?",
+      "description": "Measures whether competence survives when the deployment distribution differs from the examples used to set the task up.",
+      "status": "not_met",
+      "confidence": "medium",
+      "rationale": "Distribution shift remains one of the clearest persistent weaknesses for otherwise capable models.",
+      "evaluationModes": [
+        "benchmark",
+        "longitudinal_trial"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "learning_generalization",
+          "capabilityIds": [
+            "ood_generalization"
+          ]
+        },
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "distribution_shift_robustness"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-learning-generalization-3",
+          "type": "benchmark",
+          "title": "Benchmark suite: Out-of-distribution task retention",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/out-of-distribution-task-retention",
+          "shortExplanation": "Generalization stress tests continue to show steep degradation when task inputs depart from the setup examples used to establish the pattern.",
+          "date": "2026-03-03"
+        }
+      ]
+    },
+    {
+      "id": "learning-generalization-latent-rules",
+      "title": "Can it infer latent rules from demonstrations?",
+      "description": "Looks for recovery of hidden structure rather than superficial mimicry of the examples.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Rule induction is promising on moderate complexity problems, but still degrades on compositional or partially ambiguous hidden rules.",
+      "evaluationModes": [
+        "benchmark",
+        "expert_blind_review"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "learning_generalization",
+          "capabilityIds": [
+            "in_context_learning_adaptation"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-learning-generalization-4",
+          "type": "benchmark",
+          "title": "Benchmark suite: Latent rule inference from sparse demonstrations",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/latent-rule-inference-from-sparse-demonstrations",
+          "shortExplanation": "Rule-discovery benchmarks show real abstraction ability, but with large failure rates once hidden rules become deeply compositional.",
+          "date": "2026-02-04"
+        }
+      ]
+    },
+    {
+      "id": "learning-generalization-abstractions",
+      "title": "Can it form reusable abstractions instead of copying surface patterns?",
+      "description": "Tests whether the system builds task-level structure that can be reused later in a changed setting.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "There is evidence of abstraction formation, but reuse remains inconsistent once the surface form and task wrapper both change.",
+      "evaluationModes": [
+        "controlled_study",
+        "expert_blind_review"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "learning_generalization",
+          "capabilityIds": [
+            "long_context_memory_generalization",
+            "transfer_generalization"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-learning-generalization-5",
+          "type": "research_paper",
+          "title": "Expert blind review: Reusable abstraction formation",
+          "source": "Expert Review Panel on AI Performance",
+          "url": "https://capability-evals.example/expert-review/reusable-abstraction-formation",
+          "shortExplanation": "Expert review of transfer tasks found many models building partial abstractions, but not applying them robustly under larger task shifts.",
+          "date": "2026-01-29"
+        }
+      ]
+    }
+  ]
+}

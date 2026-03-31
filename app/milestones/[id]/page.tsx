@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 import { MethodologyNote } from "@/components/methodology-note";
 import { MilestoneDetailView } from "@/components/milestone-detail-view";
-import { milestones } from "@/data/milestones";
+import { getMilestones } from "@/data/milestones";
 import { getMilestoneById } from "@/lib/data-queries";
 
 export function generateStaticParams() {
-  return milestones.map((milestone) => ({ id: milestone.id }));
+  return getMilestones().map((milestone) => ({ id: milestone.id }));
 }
 
 export default function MilestoneDetailPage({

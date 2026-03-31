@@ -1,0 +1,177 @@
+{
+  "id": "messy-world-reliability",
+  "title": "AI stays reliable in messy real-world conditions",
+  "description": "An AI system can remain competent when inputs are noisy, contexts are misleading, distributions shift, and long sessions create drift.",
+  "category": "Robustness",
+  "sortOrder": 14,
+  "updatedAt": "2026-03-13",
+  "subQuestions": [
+    {
+      "id": "messy-world-reliability-noise",
+      "title": "Can it maintain performance under noisy or incomplete inputs?",
+      "description": "Measures resilience to missing fields, ambiguous formatting, transcription errors, and partial information.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Systems are more forgiving than before, but still lose meaningful performance as noise and incompleteness accumulate.",
+      "evaluationModes": [
+        "benchmark",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "noisy_input_robustness"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-messy-world-reliability-1",
+          "type": "benchmark",
+          "title": "Benchmark suite: Noisy and incomplete input robustness",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/noisy-and-incomplete-input-robustness",
+          "shortExplanation": "Robustness benchmarks show useful tolerance to moderate corruption, but still clear degradation once inputs become meaningfully incomplete or messy.",
+          "date": "2026-03-07"
+        }
+      ]
+    },
+    {
+      "id": "messy-world-reliability-shift",
+      "title": "Can it withstand distribution shift and novel task formats?",
+      "description": "Tests whether competence survives when real deployment differs from known examples and familiar interfaces.",
+      "status": "not_met",
+      "confidence": "medium",
+      "rationale": "Distribution shift and interface novelty remain recurring failure modes even for otherwise strong systems.",
+      "evaluationModes": [
+        "benchmark",
+        "longitudinal_trial"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "learning_generalization",
+          "capabilityIds": [
+            "ood_generalization"
+          ]
+        },
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "distribution_shift_robustness"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-messy-world-reliability-2",
+          "type": "benchmark",
+          "title": "Benchmark suite: Distribution shift and novel-format robustness",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/distribution-shift-and-novel-format-robustness",
+          "shortExplanation": "Generalization evaluations continue to show substantial drops when task distributions or wrappers depart from familiar benchmark-style conditions.",
+          "date": "2026-02-17"
+        }
+      ]
+    },
+    {
+      "id": "messy-world-reliability-long-sessions",
+      "title": "Can it remain stable over long sessions or repeated use?",
+      "description": "Measures whether quality degrades over time as context, fatigue-like drift, or repeated interactions accumulate.",
+      "status": "not_met",
+      "confidence": "low",
+      "rationale": "Long-run stability is still a clear weakness, especially in agentic and multi-turn operational settings.",
+      "evaluationModes": [
+        "longitudinal_trial",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "long_horizon_drift_resistance"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-messy-world-reliability-3",
+          "type": "research_paper",
+          "title": "Longitudinal trial: Long-session stability and drift resistance",
+          "source": "Long-Run Systems Study Group",
+          "url": "https://capability-evals.example/trials/long-session-stability-and-drift-resistance",
+          "shortExplanation": "Long-duration trials continue to document noticeable drift, forgotten constraints, and rising oversight needs over repeated use.",
+          "date": "2026-03-13"
+        }
+      ]
+    },
+    {
+      "id": "messy-world-reliability-cascading-errors",
+      "title": "Can it avoid cascading errors after early mistakes?",
+      "description": "Tests whether the system contains damage after a bad early assumption instead of amplifying it through later steps.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Error containment is better than before, but bad early assumptions still propagate too often through multi-step workflows.",
+      "evaluationModes": [
+        "deployment_audit",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "execution_control"
+          ]
+        },
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "long_horizon_drift_resistance"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-messy-world-reliability-4",
+          "type": "implementation",
+          "title": "Deployment audit: Cascading-error containment after early mistakes",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/cascading-error-containment-after-early-mistakes",
+          "shortExplanation": "Workflow audits show some self-recovery, but still frequent downstream compounding once an early assumption is wrong.",
+          "date": "2026-02-28"
+        }
+      ]
+    },
+    {
+      "id": "messy-world-reliability-misleading-context",
+      "title": "Can it preserve competence under misleading or adversarial context?",
+      "description": "Measures whether performance survives misleading framing, poisoned context, and adversarially structured inputs.",
+      "status": "not_met",
+      "confidence": "medium",
+      "rationale": "Adversarially misleading context continues to degrade behavior across reasoning, retrieval, and safety tasks.",
+      "evaluationModes": [
+        "red_team",
+        "benchmark"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "misleading_context_robustness"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-messy-world-reliability-5",
+          "type": "benchmark",
+          "title": "Red-team evaluation: Robustness under misleading or adversarial context",
+          "source": "Model Red-Team Exchange",
+          "url": "https://capability-evals.example/red-team/robustness-under-misleading-or-adversarial-context",
+          "shortExplanation": "Adversarial evaluations show systems still being materially misled by poisoned framing, false premises, and manipulative context setup.",
+          "date": "2026-03-12"
+        }
+      ]
+    }
+  ]
+}

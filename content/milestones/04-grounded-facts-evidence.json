@@ -1,0 +1,180 @@
+{
+  "id": "grounded-facts-evidence",
+  "title": "AI can stay grounded in facts and evidence",
+  "description": "An AI system can retrieve the right evidence, cite it correctly, avoid unsupported claims, and stay stable when context is misleading.",
+  "category": "Evidence & truth",
+  "sortOrder": 4,
+  "updatedAt": "2026-03-09",
+  "subQuestions": [
+    {
+      "id": "grounded-facts-retrieval",
+      "title": "Can it retrieve the right supporting sources?",
+      "description": "Measures whether the system selects evidence that is actually relevant to the claim or task at hand.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Grounded retrieval performance is now strong in many constrained workflows where evidence access is explicit and searchable.",
+      "evaluationModes": [
+        "benchmark",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "epistemic_reliability",
+          "capabilityIds": [
+            "factual_accuracy",
+            "citation_evidence_correctness"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-grounded-facts-1",
+          "type": "benchmark",
+          "title": "Benchmark suite: Evidence retrieval relevance",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/evidence-retrieval-relevance",
+          "shortExplanation": "Retrieval-grounding benchmarks show strong source selection performance for claims that have clear supporting passages or documents.",
+          "date": "2026-02-28"
+        }
+      ]
+    },
+    {
+      "id": "grounded-facts-citations",
+      "title": "Can it cite evidence correctly?",
+      "description": "Checks whether cited passages actually support the generated conclusion and are attributed correctly.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Citation fidelity is increasingly dependable in constrained answer settings and evidence-centered writing tasks.",
+      "evaluationModes": [
+        "benchmark",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "epistemic_reliability",
+          "capabilityIds": [
+            "citation_evidence_correctness"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-grounded-facts-2",
+          "type": "benchmark",
+          "title": "Benchmark suite: Citation fidelity under constrained evidence use",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/citation-fidelity-under-constrained-evidence-use",
+          "shortExplanation": "Benchmark suites show high performance on tying claims to the correct supporting text rather than merely nearby passages.",
+          "date": "2026-03-01"
+        }
+      ]
+    },
+    {
+      "id": "grounded-facts-unsupported-claims",
+      "title": "Can it avoid unsupported claims when evidence is missing?",
+      "description": "Tests whether the system refrains from confident fabrication when the evidence base is sparse or absent.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Models are better at saying less when evidence is sparse, but unsupported claims still appear too often in open-ended settings.",
+      "evaluationModes": [
+        "controlled_study",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "epistemic_reliability",
+          "capabilityIds": [
+            "hallucination_resistance",
+            "factual_honesty"
+          ]
+        },
+        {
+          "dimensionId": "metacognition_ethics",
+          "capabilityIds": [
+            "abstention"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-grounded-facts-3",
+          "type": "research_paper",
+          "title": "Controlled study: Unsupported-claim suppression with missing evidence",
+          "source": "Center for Applied AI Evaluation",
+          "url": "https://capability-evals.example/studies/unsupported-claim-suppression-with-missing-evidence",
+          "shortExplanation": "Study results show better abstention and fewer fabricated details, but still meaningful unsupported-claim rates in open-domain tasks.",
+          "date": "2026-02-15"
+        }
+      ]
+    },
+    {
+      "id": "grounded-facts-consistency",
+      "title": "Can it stay consistent across repeated factual queries?",
+      "description": "Measures whether the same factual question receives stable answers across paraphrases, sessions, and minor context changes.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Factual consistency has improved, but drift across repeated queries and lightly altered context remains visible.",
+      "evaluationModes": [
+        "benchmark",
+        "longitudinal_trial"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "epistemic_reliability",
+          "capabilityIds": [
+            "knowledge_consistency"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-grounded-facts-4",
+          "type": "benchmark",
+          "title": "Benchmark suite: Repeated-query factual consistency",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/repeated-query-factual-consistency",
+          "shortExplanation": "Repeated-answer benchmarks show better stability than earlier systems, but still detect answer drift under paraphrase and context shuffling.",
+          "date": "2026-01-26"
+        }
+      ]
+    },
+    {
+      "id": "grounded-facts-misinformation",
+      "title": "Can it resist misleading or fabricated context?",
+      "description": "Looks for robustness against false premises, poisoned retrieval, and manipulative evidence framing.",
+      "status": "not_met",
+      "confidence": "medium",
+      "rationale": "Misleading context is still a major failure mode, especially when false claims are presented with the appearance of authority.",
+      "evaluationModes": [
+        "benchmark",
+        "red_team"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "epistemic_reliability",
+          "capabilityIds": [
+            "misinformation_robustness",
+            "hallucination_resistance"
+          ]
+        },
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "misleading_context_robustness"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-grounded-facts-5",
+          "type": "benchmark",
+          "title": "Red-team evaluation: Resistance to fabricated or poisoned evidence context",
+          "source": "Model Red-Team Exchange",
+          "url": "https://capability-evals.example/red-team/resistance-to-fabricated-or-poisoned-evidence-context",
+          "shortExplanation": "Adversarial evaluations continue to show models being pulled off course by false but authoritative-looking contextual scaffolds.",
+          "date": "2026-03-09"
+        }
+      ]
+    }
+  ]
+}

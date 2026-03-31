@@ -1,5 +1,5 @@
-export type Status = "not_met" | "in_progress" | "met";
-export type Confidence = "low" | "medium" | "high";
+export type Status = "unassessed" | "not_met" | "in_progress" | "met";
+export type Confidence = "unassessed" | "low" | "medium" | "high";
 export type ProofType =
   | "benchmark"
   | "leaderboard"
@@ -39,6 +39,24 @@ export interface ProofItem {
   date: string;
 }
 
+export interface SourceRecommendation {
+  id: string;
+  benchmarkId: string;
+  title: string;
+  source: string;
+  sourceTier: string;
+  sourceType: string;
+  trackerStatus: string;
+  ingestMethod: string;
+  updateCadence: string;
+  whyUseIt: string;
+  caveat: string;
+  url: string;
+  secondaryUrl: string;
+  recommendedForV1: boolean;
+  priorityRank: number | null;
+}
+
 export interface SubQuestion {
   id: string;
   title: string;
@@ -49,6 +67,7 @@ export interface SubQuestion {
   evaluationModes: EvaluationMode[];
   coverage: CoverageReference[];
   proofItems: ProofItem[];
+  sourceRecommendations: SourceRecommendation[];
 }
 
 export interface Milestone {
@@ -80,13 +99,4 @@ export interface EvidenceRecord {
   subQuestionTitle: string;
   subQuestionStatus: Status;
   proofItem: ProofItem;
-}
-
-export interface CommunitySuggestion {
-  id: string;
-  author: string;
-  suggestedMilestone: string;
-  note: string;
-  status: "queued" | "reviewing" | "merged";
-  createdAt: string;
 }

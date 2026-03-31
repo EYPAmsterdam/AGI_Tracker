@@ -1,0 +1,182 @@
+{
+  "id": "creative-solutions",
+  "title": "AI can generate new, useful ideas and solutions",
+  "description": "An AI system can produce novel hypotheses, designs, and solution paths that are genuinely useful rather than generic rearrangements of familiar patterns.",
+  "category": "Novelty",
+  "sortOrder": 11,
+  "updatedAt": "2026-03-11",
+  "subQuestions": [
+    {
+      "id": "creative-solutions-proposals",
+      "title": "Can it propose novel hypotheses, designs, or solution paths?",
+      "description": "Measures whether the system generates options that move beyond obvious summaries or recombinations.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Systems can generate many plausible new directions, but the ratio of truly valuable ideas to generic ones is still uneven.",
+      "evaluationModes": [
+        "expert_blind_review",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "planning_quality_adaptability"
+          ]
+        },
+        {
+          "dimensionId": "multimodal_understanding",
+          "capabilityIds": [
+            "multimodal_generation"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-creative-solutions-1",
+          "type": "research_paper",
+          "title": "Expert blind review: Novel hypothesis and solution proposal quality",
+          "source": "Expert Review Panel on AI Performance",
+          "url": "https://capability-evals.example/expert-review/novel-hypothesis-and-solution-proposal-quality",
+          "shortExplanation": "Expert blind review found that models generate many plausible ideas, but only a minority are judged meaningfully non-obvious and worth pursuing.",
+          "date": "2026-02-14"
+        }
+      ]
+    },
+    {
+      "id": "creative-solutions-nontrivial",
+      "title": "Can experts judge its outputs as non-trivial?",
+      "description": "Tests whether expert raters distinguish the output as meaningfully valuable rather than boilerplate.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Experts do sometimes rate outputs as non-trivial, but not consistently enough to call this solved.",
+      "evaluationModes": [
+        "expert_blind_review"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "multimodal_understanding",
+          "capabilityIds": [
+            "multimodal_generation"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-creative-solutions-2",
+          "type": "research_paper",
+          "title": "Expert blind review: Expert judgment of non-trivial output quality",
+          "source": "Expert Review Panel on AI Performance",
+          "url": "https://capability-evals.example/expert-review/expert-judgment-of-non-trivial-output-quality",
+          "shortExplanation": "Panel reviews show some outputs standing out as genuinely useful, but many still read as polished synthesis rather than strong original contribution.",
+          "date": "2026-03-01"
+        }
+      ]
+    },
+    {
+      "id": "creative-solutions-baselines",
+      "title": "Can it outperform baseline ideation workflows?",
+      "description": "Measures whether using the system creates better or broader idea portfolios than ordinary baseline workflows.",
+      "status": "met",
+      "confidence": "medium",
+      "rationale": "In many ideation settings, models already improve breadth and speed relative to ordinary first-pass brainstorming workflows.",
+      "evaluationModes": [
+        "controlled_study",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "planning_quality_adaptability"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-creative-solutions-3",
+          "type": "research_paper",
+          "title": "Controlled study: AI-assisted ideation versus baseline workflows",
+          "source": "Center for Applied AI Evaluation",
+          "url": "https://capability-evals.example/studies/ai-assisted-ideation-versus-baseline-workflows",
+          "shortExplanation": "Controlled comparisons show AI-assisted teams producing broader option sets faster than baseline ideation processes.",
+          "date": "2026-02-24"
+        }
+      ]
+    },
+    {
+      "id": "creative-solutions-constraints",
+      "title": "Can it adapt novelty to concrete constraints and goals?",
+      "description": "Tests whether creative output remains useful when cost, timing, audience, or technical constraints are explicit.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Constraint-aware creativity is improving, but models still swing between generic novelty and impractical overreach.",
+      "evaluationModes": [
+        "controlled_study",
+        "expert_blind_review"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "planning_quality_adaptability"
+          ]
+        },
+        {
+          "dimensionId": "multimodal_understanding",
+          "capabilityIds": [
+            "multimodal_generation"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-creative-solutions-4",
+          "type": "research_paper",
+          "title": "Controlled study: Constraint-aware creative generation",
+          "source": "Center for Applied AI Evaluation",
+          "url": "https://capability-evals.example/studies/constraint-aware-creative-generation",
+          "shortExplanation": "Evaluation studies show useful creativity under moderate constraints, but weaker performance when constraints become numerous or tightly coupled.",
+          "date": "2026-01-18"
+        }
+      ]
+    },
+    {
+      "id": "creative-solutions-boilerplate",
+      "title": "Can it distinguish useful synthesis from generic boilerplate?",
+      "description": "Measures whether the system can identify and avoid outputs that only sound polished without adding real value.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Systems can sometimes critique generic output well, but still frequently produce or accept it in practice.",
+      "evaluationModes": [
+        "expert_blind_review",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "metacognition_ethics",
+          "capabilityIds": [
+            "self_evaluation"
+          ]
+        },
+        {
+          "dimensionId": "epistemic_reliability",
+          "capabilityIds": [
+            "factual_honesty"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-creative-solutions-5",
+          "type": "research_paper",
+          "title": "Expert blind review: Detection of generic versus genuinely useful synthesis",
+          "source": "Expert Review Panel on AI Performance",
+          "url": "https://capability-evals.example/expert-review/detection-of-generic-versus-genuinely-useful-synthesis",
+          "shortExplanation": "Reviewer studies show partial success in distinguishing empty polish from useful synthesis, but still document over-acceptance of generic output.",
+          "date": "2026-03-11"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "id": "high-stakes-responsibility",
+  "title": "AI can handle sensitive and high-stakes contexts responsibly",
+  "description": "An AI system can protect private information, operate inside regulated constraints, remain accurate where harm is costly, and improve outcomes without raising risk.",
+  "category": "High-stakes use",
+  "sortOrder": 13,
+  "updatedAt": "2026-03-15",
+  "subQuestions": [
+    {
+      "id": "high-stakes-responsibility-privacy",
+      "title": "Can it protect private or confidential information?",
+      "description": "Measures whether the system avoids inappropriate exposure, retention, or mishandling of sensitive information.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "There is meaningful progress on privacy-aware behavior, but sensitive-data handling is still not strong enough for broad unsupervised trust.",
+      "evaluationModes": [
+        "deployment_audit",
+        "red_team"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "safety_controllability",
+          "capabilityIds": [
+            "privacy_data_handling"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-high-stakes-responsibility-1",
+          "type": "implementation",
+          "title": "Deployment audit: Privacy-preserving behavior in sensitive workflows",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/privacy-preserving-behavior-in-sensitive-workflows",
+          "shortExplanation": "Operational audits show improving private-data handling, but still document avoidable leakage and over-retention in some workflow designs.",
+          "date": "2026-03-02"
+        }
+      ]
+    },
+    {
+      "id": "high-stakes-responsibility-compliance",
+      "title": "Can it comply with regulated-domain rules?",
+      "description": "Tests whether the system respects domain-specific legal, procedural, or regulatory constraints in practice.",
+      "status": "not_met",
+      "confidence": "medium",
+      "rationale": "Constraint handling exists in narrow sandboxes, but broad regulated-domain compliance remains too fragile and context-dependent.",
+      "evaluationModes": [
+        "deployment_audit",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "safety_controllability",
+          "capabilityIds": [
+            "steerability_constraint_adherence"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-high-stakes-responsibility-2",
+          "type": "implementation",
+          "title": "Deployment audit: Regulated-domain compliance reliability",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/regulated-domain-compliance-reliability",
+          "shortExplanation": "Domain audits continue to show that models can follow many explicit rules, but still miss edge-case and jurisdiction-specific constraints.",
+          "date": "2026-02-06"
+        }
+      ]
+    },
+    {
+      "id": "high-stakes-responsibility-accuracy",
+      "title": "Can it maintain factual accuracy in high-stakes tasks?",
+      "description": "Measures whether accuracy remains reliable in settings where mistakes create real harm rather than mere inconvenience.",
+      "status": "not_met",
+      "confidence": "medium",
+      "rationale": "Accuracy improves with retrieval and structure, but not enough to justify broad unsupervised reliance in high-stakes domains.",
+      "evaluationModes": [
+        "controlled_study",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "epistemic_reliability",
+          "capabilityIds": [
+            "factual_accuracy"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-high-stakes-responsibility-3",
+          "type": "research_paper",
+          "title": "Controlled study: High-stakes factual accuracy under real task framing",
+          "source": "Center for Applied AI Evaluation",
+          "url": "https://capability-evals.example/studies/high-stakes-factual-accuracy-under-real-task-framing",
+          "shortExplanation": "Controlled high-stakes evaluations continue to show accuracy gaps large enough to require strong human oversight.",
+          "date": "2026-01-30"
+        }
+      ]
+    },
+    {
+      "id": "high-stakes-responsibility-auditability",
+      "title": "Can it provide auditable evidence trails for decisions?",
+      "description": "Tests whether a reviewer can reconstruct what the system saw, did, and relied on after the fact.",
+      "status": "not_met",
+      "confidence": "medium",
+      "rationale": "Audit tooling is improving, but action trace completeness and explanation fidelity still fall short in many higher-stakes settings.",
+      "evaluationModes": [
+        "deployment_audit",
+        "expert_blind_review"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "execution_control"
+          ]
+        },
+        {
+          "dimensionId": "epistemic_reliability",
+          "capabilityIds": [
+            "citation_evidence_correctness"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-high-stakes-responsibility-4",
+          "type": "implementation",
+          "title": "Deployment audit: Auditable evidence trails in regulated workflows",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/auditable-evidence-trails-in-regulated-workflows",
+          "shortExplanation": "Case audits show partial action trace coverage, but still incomplete reconstruction of hidden state, retrieval paths, and tool decisions.",
+          "date": "2026-03-10"
+        }
+      ]
+    },
+    {
+      "id": "high-stakes-responsibility-outcomes",
+      "title": "Can it improve outcomes without increasing harm?",
+      "description": "Measures whether the system produces better real-world results rather than merely improving speed or user satisfaction.",
+      "status": "not_met",
+      "confidence": "low",
+      "rationale": "Outcome evidence in high-stakes deployments is still too sparse and too mixed to justify strong claims of safe improvement.",
+      "evaluationModes": [
+        "longitudinal_trial",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "safety_controllability",
+          "capabilityIds": [
+            "harmfulness_prevention"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-high-stakes-responsibility-5",
+          "type": "research_paper",
+          "title": "Longitudinal trial: Outcome improvement without added harm",
+          "source": "Long-Run Systems Study Group",
+          "url": "https://capability-evals.example/trials/outcome-improvement-without-added-harm",
+          "shortExplanation": "Longitudinal deployment studies remain too sparse and mixed to support broad claims that AI assistance improves high-stakes outcomes without offsetting risk.",
+          "date": "2026-03-15"
+        }
+      ]
+    }
+  ]
+}

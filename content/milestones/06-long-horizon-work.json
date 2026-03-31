@@ -1,0 +1,178 @@
+{
+  "id": "long-horizon-work",
+  "title": "AI can plan and complete long, multi-step work",
+  "description": "An AI system can break down complex goals, track dependencies over time, and carry work through changing conditions with limited supervision.",
+  "category": "Long-horizon agency",
+  "sortOrder": 6,
+  "updatedAt": "2026-03-14",
+  "subQuestions": [
+    {
+      "id": "long-horizon-work-decompose",
+      "title": "Can it decompose goals into workable phases?",
+      "description": "Measures whether long projects are broken into realistic phases with meaningful checkpoints and outputs.",
+      "status": "met",
+      "confidence": "high",
+      "rationale": "Task decomposition is already one of the clearest strengths of modern agentic systems when goals are concrete and scoped.",
+      "evaluationModes": [
+        "benchmark",
+        "leaderboard"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "planning_quality_adaptability"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-long-horizon-work-1",
+          "type": "benchmark",
+          "title": "Benchmark suite: Long-project decomposition quality",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/long-project-decomposition-quality",
+          "shortExplanation": "Planning benchmarks show strong phase decomposition and milestone sequencing on well-specified multi-step goals.",
+          "date": "2026-02-26"
+        }
+      ]
+    },
+    {
+      "id": "long-horizon-work-state",
+      "title": "Can it maintain task state over long horizons?",
+      "description": "Tests whether the system preserves requirements, prior decisions, and unfinished work across extended workflows.",
+      "status": "not_met",
+      "confidence": "medium",
+      "rationale": "Long-horizon state retention is still brittle, especially once context becomes large and tasks branch.",
+      "evaluationModes": [
+        "longitudinal_trial",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "learning_generalization",
+          "capabilityIds": [
+            "long_context_memory_generalization"
+          ]
+        },
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "long_horizon_drift_resistance"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-long-horizon-work-2",
+          "type": "research_paper",
+          "title": "Longitudinal trial: State retention across extended workflows",
+          "source": "Long-Run Systems Study Group",
+          "url": "https://capability-evals.example/trials/state-retention-across-extended-workflows",
+          "shortExplanation": "Long-run trials continue to show requirement drift and forgotten commitments over extended task horizons.",
+          "date": "2026-03-03"
+        }
+      ]
+    },
+    {
+      "id": "long-horizon-work-dependencies",
+      "title": "Can it track dependencies and intermediate outputs?",
+      "description": "Measures whether prerequisite work is respected and intermediate deliverables are handled in the right order.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Dependency tracking works on cleaner plans, but still misses hidden coupling and delayed prerequisites in larger workflows.",
+      "evaluationModes": [
+        "benchmark",
+        "deployment_audit"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "planning_quality_adaptability",
+            "execution_control"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-long-horizon-work-3",
+          "type": "implementation",
+          "title": "Deployment audit: Dependency tracking in multi-step operations",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/dependency-tracking-in-multi-step-operations",
+          "shortExplanation": "Operational audits show better dependency handling than earlier systems, but still document frequent misses on cross-workstream prerequisites.",
+          "date": "2026-02-11"
+        }
+      ]
+    },
+    {
+      "id": "long-horizon-work-replan",
+      "title": "Can it re-plan after failure or changing conditions?",
+      "description": "Tests whether the system updates its plan sensibly after delays, failed steps, or changing requirements.",
+      "status": "in_progress",
+      "confidence": "medium",
+      "rationale": "Re-planning is often useful, but models still over-anchor on earlier structure when the task needs a deeper reset.",
+      "evaluationModes": [
+        "benchmark",
+        "controlled_study"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "planning_quality_adaptability"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-long-horizon-work-4",
+          "type": "benchmark",
+          "title": "Benchmark suite: Adaptive re-planning after workflow failure",
+          "source": "Open Capability Benchmark Consortium",
+          "url": "https://capability-evals.example/benchmarks/adaptive-re-planning-after-workflow-failure",
+          "shortExplanation": "Dynamic planning evaluations show strong recovery in moderate cases, but weaker restructuring once multiple assumptions break at once.",
+          "date": "2026-01-30"
+        }
+      ]
+    },
+    {
+      "id": "long-horizon-work-delivery",
+      "title": "Can it deliver end results with limited supervision?",
+      "description": "Measures whether the system can finish extended work with milestone-level oversight instead of dense step-by-step rescue.",
+      "status": "not_met",
+      "confidence": "low",
+      "rationale": "Autonomous completion still drops sharply on real long-horizon work once priorities shift or errors compound.",
+      "evaluationModes": [
+        "deployment_audit",
+        "longitudinal_trial"
+      ],
+      "coverage": [
+        {
+          "dimensionId": "reasoning_execution",
+          "capabilityIds": [
+            "execution_control"
+          ]
+        },
+        {
+          "dimensionId": "robustness",
+          "capabilityIds": [
+            "long_horizon_drift_resistance"
+          ]
+        }
+      ],
+      "proofItems": [
+        {
+          "id": "p-long-horizon-work-5",
+          "type": "implementation",
+          "title": "Deployment audit: Minimal-supervision project delivery",
+          "source": "Operational AI Audit Lab",
+          "url": "https://capability-evals.example/audits/minimal-supervision-project-delivery",
+          "shortExplanation": "Field audits show some partial autonomy, but still document frequent human rescue on longer projects with moving requirements.",
+          "date": "2026-03-14"
+        }
+      ]
+    }
+  ]
+}

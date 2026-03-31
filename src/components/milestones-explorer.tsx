@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import { ConfidenceBadge, StatusBadge } from "@/components/badges";
 import { ProgressMeter } from "@/components/progress-meter";
 import { cn } from "@/lib/cn";
-import { milestoneCategories } from "@/data/milestones";
 import { Milestone } from "@/types/agi";
 
 type SortKey = "updated" | "progress" | "title";
@@ -13,7 +12,13 @@ type SortKey = "updated" | "progress" | "title";
 const fieldClass =
   "h-11 rounded-2xl border border-line/80 bg-white px-4 text-sm text-ink-900 outline-none transition placeholder:text-ink-600 focus:border-ink-700";
 
-export const MilestonesExplorer = ({ milestones }: { milestones: Milestone[] }) => {
+export const MilestonesExplorer = ({
+  milestones,
+  categories
+}: {
+  milestones: Milestone[];
+  categories: string[];
+}) => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [confidence, setConfidence] = useState("all");
@@ -69,6 +74,7 @@ export const MilestonesExplorer = ({ milestones }: { milestones: Milestone[] }) 
           className={fieldClass}
         >
           <option value="all">All statuses</option>
+          <option value="unassessed">Unassessed</option>
           <option value="met">Met</option>
           <option value="in_progress">In progress</option>
           <option value="not_met">Not met</option>
@@ -79,6 +85,7 @@ export const MilestonesExplorer = ({ milestones }: { milestones: Milestone[] }) 
           className={fieldClass}
         >
           <option value="all">All confidence</option>
+          <option value="unassessed">Unassessed</option>
           <option value="high">High confidence</option>
           <option value="medium">Medium confidence</option>
           <option value="low">Low confidence</option>
@@ -89,7 +96,7 @@ export const MilestonesExplorer = ({ milestones }: { milestones: Milestone[] }) 
           className={fieldClass}
         >
           <option value="all">All categories</option>
-          {milestoneCategories.map((item) => (
+          {categories.map((item) => (
             <option key={item} value={item}>
               {item}
             </option>
