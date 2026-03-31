@@ -37,11 +37,11 @@ export const TrackerOverviewPanel = ({
               Tracker overview
             </p>
             <h2 className="font-serif text-3xl tracking-tight text-ink-900 md:text-[2.4rem]">
-              One clean snapshot of where the milestone field stands.
+              One clean snapshot of the milestone progression.
             </h2>
             <p className="max-w-2xl text-sm leading-7 text-ink-700">
               The board summarizes high-level milestone status, evidence volume, and
-              overall progress without collapsing the tracker into a single score.
+              overall progress.
             </p>
           </div>
 
@@ -123,30 +123,6 @@ export const TrackerOverviewPanel = ({
               <p className="mt-3 text-4xl font-semibold text-ink-900">
                 {stats.progressAverage}%
               </p>
-            </div>
-          </div>
-
-          <div className="rounded-[1.6rem] border border-line/80 bg-white/78 p-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink-600">
-              Methodology ledger
-            </p>
-            <div className="mt-4 space-y-3 text-sm text-ink-700">
-              <div className="flex items-center justify-between gap-4 border-b border-line/70 pb-3">
-                <span>Last updated</span>
-                <span className="font-medium text-ink-900">
-                  {formatLongDate(latestUpdatedAt)}
-                </span>
-              </div>
-              <div className="flex items-center justify-between gap-4 border-b border-line/70 pb-3">
-                <span>Assessment frame</span>
-                <span className="font-medium text-ink-900">Milestones and evidence</span>
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <span>Evidence mix</span>
-                <span className="font-medium text-ink-900">
-                  Benchmarks, papers, audits, demos
-                </span>
-              </div>
             </div>
           </div>
         </div>

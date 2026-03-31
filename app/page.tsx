@@ -22,10 +22,10 @@ export default function HomePage() {
                 Overview
               </p>
               <h1 className="max-w-4xl font-serif text-5xl tracking-tight text-ink-900 md:text-6xl">
-                AGI tracked as milestone claims, not just benchmark scores.
+                AGI tracked as milestone claims.
               </h1>
               <p className="max-w-3xl text-lg leading-8 text-ink-700">
-                This mock MVP asks what needs to be true for AI to count as AGI, then breaks each milestone into lower-level conditions backed by sample evidence and confidence judgments.
+                This tracker asks what needs to be true for AI to count as AGI, then breaks each milestone into lower-level conditions backed by sample evidence and confidence judgments.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

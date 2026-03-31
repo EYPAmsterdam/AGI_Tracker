@@ -20,7 +20,7 @@ const countMet = (milestone: Milestone) =>
   milestone.subQuestions.filter((subQuestion) => subQuestion.status === "met").length;
 
 const getColumnCount = (width: number) => {
-  if (width >= 1280) {
+  if (width >= 1024) {
     return 3;
   }
 
