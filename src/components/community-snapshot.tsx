@@ -43,7 +43,7 @@ export const CommunitySnapshot = () => (
             </span>
           </div>
           <p className="mt-3 text-xs uppercase tracking-[0.16em] text-ink-600">
-            {suggestion.author} · {formatLongDate(suggestion.createdAt)}
+            {suggestion.author} | {formatLongDate(suggestion.createdAt)}
           </p>
         </div>
       ))}

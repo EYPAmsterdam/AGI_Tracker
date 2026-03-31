@@ -1,6 +1,6 @@
 # AGI Milestone Tracker
 
-A mock MVP web app for tracking AGI through milestone statements, lower-level sub-questions, and sample evidence.
+A mock MVP web app for tracking AGI through plain-language milestone statements, lower-level sub-questions, and sample evidence.
 
 This is not a benchmark leaderboard. The app is built around a methodology question:
 
@@ -21,7 +21,7 @@ The current version is intentionally frontend-only:
 - no auth
 - no backend
 
-## What’s Included
+## What's Included
 
 - Homepage milestone board with click-to-expand detail panel
 - Filterable milestones page
@@ -29,7 +29,9 @@ The current version is intentionally frontend-only:
 - Evidence explorer with filters for proof type, milestone, and sub-question
 - Community suggestion form mockup
 - Utility functions for milestone status, progress, and confidence derivation
-- Realistic mock data for all 15 required AGI milestone statements
+- Realistic mock data for 15 capability pillars
+- Internal dimension/capability coverage metadata
+- Scientific-backing metadata for each granular sub-question
 
 ## Getting Started
 
@@ -55,6 +57,28 @@ npm run build
 npm run start
 npm run lint
 ```
+
+## Deploying to GitHub Pages
+
+This repository is configured to deploy for free on GitHub Pages using GitHub Actions.
+
+1. Push the repository to GitHub.
+2. In GitHub, open `Settings > Pages`.
+3. Set `Source` to `GitHub Actions`.
+4. Push to the `main` branch.
+5. Wait for the `Deploy to GitHub Pages` workflow to finish.
+
+Your site will be published at:
+
+```text
+https://<your-github-user-or-org>.github.io/AGI_Tracker/
+```
+
+Notes:
+
+- The Next.js app is exported as a static site, so GitHub Pages can host it for free.
+- The build automatically uses the repository name as the subpath for project pages.
+- If you later move the repo to `<account>.github.io`, the app will build at the root path automatically.
 
 ## Project Structure
 
@@ -89,7 +113,3 @@ This repository is a `mock MVP`.
 - Evidence items are sample evidence only.
 - Source links are illustrative and structured to look realistic.
 - The app is designed to feel demo-ready while remaining fully local and easy to extend.
-
-## Validation Note
-
-I could not run `npm`, `next`, or TypeScript validation commands in the current environment because `node` and `npm` were not available in the shell during implementation. The codebase is organized to be runnable in a standard Node-enabled Next.js environment.

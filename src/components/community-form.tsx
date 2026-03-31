@@ -32,7 +32,8 @@ export const CommunityForm = () => {
           </p>
           <h2 className="mt-2 font-serif text-3xl text-ink-900">Public input mockup</h2>
           <p className="mt-3 max-w-2xl text-sm leading-7 text-ink-700">
-            This form is UI-only for the MVP. It does not submit anywhere, but it shows how future community evidence and milestone proposals could enter review.
+            This form is UI-only for the MVP. It does not submit anywhere, but it shows
+            how future community evidence and milestone proposals could enter review.
           </p>
         </div>
 
@@ -41,13 +42,19 @@ export const CommunityForm = () => {
             <label className="mb-2 block text-sm font-medium text-ink-900">
               Suggested milestone
             </label>
-            <input className={fieldClass} placeholder="Example: AI can independently run a small procurement process" />
+            <input
+              className={fieldClass}
+              placeholder="Example: AI can independently run a small procurement process"
+            />
           </div>
           <div>
             <label className="mb-2 block text-sm font-medium text-ink-900">
               Suggested sub-question
             </label>
-            <input className={fieldClass} placeholder="Example: Can it collect bids, compare them, and document tradeoffs?" />
+            <input
+              className={fieldClass}
+              placeholder="Example: Can it collect bids, compare them, and document tradeoffs?"
+            />
           </div>
           <div>
             <label className="mb-2 block text-sm font-medium text-ink-900">
@@ -79,7 +86,8 @@ export const CommunityForm = () => {
             </p>
           ) : (
             <p className="text-sm text-ink-700">
-              Expected next step in a real product: route to reviewer triage and evidence validation.
+              Expected next step in a real product: route to reviewer triage and evidence
+              validation.
             </p>
           )}
         </div>
@@ -113,7 +121,7 @@ export const CommunityForm = () => {
                 </span>
               </div>
               <p className="mt-3 text-xs uppercase tracking-[0.16em] text-ink-600">
-                {suggestion.author} · {formatLongDate(suggestion.createdAt)}
+                {suggestion.author} | {formatLongDate(suggestion.createdAt)}
               </p>
             </article>
           ))}
