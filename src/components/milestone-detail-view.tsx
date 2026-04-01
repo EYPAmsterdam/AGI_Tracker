@@ -64,7 +64,7 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
               </span>
             </p>
             <p>
-              Capabilities{" "}
+              Sub-questions{" "}
               <span className="font-medium text-ink-900">
                 {milestone.subQuestions.length}
               </span>
@@ -80,7 +80,9 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
             const panelLabel =
               subQuestion.proofItems.length > 0
                 ? `${subQuestion.proofItems.length} evidence items`
-                : `${subQuestion.sourceRecommendations.length} recommended sources`;
+                : subQuestion.sourceRecommendations.length > 0
+                  ? `${subQuestion.sourceRecommendations.length} recommended sources`
+                  : "No evidence yet";
 
             return (
               <button
@@ -118,7 +120,7 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
         <aside className="rounded-[1.75rem] border border-line/80 bg-white/85 p-6 shadow-panel">
           <div className="border-b border-line/70 pb-5">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink-600">
-              Capability panel
+              Question panel
             </p>
             <h2 className="mt-2 font-serif text-2xl text-ink-900">
               {selectedSubQuestion.title}
@@ -176,8 +178,8 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
             ) : (
               <div className="rounded-[1.35rem] border border-dashed border-line/80 bg-paper-50/60 p-4">
                 <p className="text-sm leading-7 text-ink-700">
-                  No evidence entries are published yet for this capability. Fill them in on
-                  the workbook&apos;s Evidence Entries sheet.
+                  No evidence entries are published yet for this question. Fill them in on
+                  the workbook&apos;s Evidence sheet.
                 </p>
               </div>
             )}
@@ -190,7 +192,7 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
                   Recommended sources
                 </p>
                 <p className="mt-2 text-sm leading-7 text-ink-700">
-                  These benchmark and leaderboard sources are imported from the workbook.
+                  These optional sources are imported from the workbook.
                   They are recommendations, not yet published evidence.
                 </p>
               </div>

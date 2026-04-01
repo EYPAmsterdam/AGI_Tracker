@@ -143,7 +143,7 @@ export const EvidenceExplorer = ({
           <div className="rounded-[1.5rem] border border-dashed border-line/80 bg-white/75 p-5 shadow-panel">
             <p className="text-sm leading-7 text-ink-700">
               No published evidence entries match the current filters. Fill the workbook&apos;s
-              Evidence Entries sheet to populate this page.
+              Evidence sheet to populate this page.
             </p>
           </div>
         )}

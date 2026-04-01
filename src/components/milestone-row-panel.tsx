@@ -69,7 +69,9 @@ export const MilestoneRowPanel = ({
               const panelLabel =
                 subQuestion.proofItems.length > 0
                   ? `${subQuestion.proofItems.length} evidence items`
-                  : `${subQuestion.sourceRecommendations.length} recommended sources`;
+                  : subQuestion.sourceRecommendations.length > 0
+                    ? `${subQuestion.sourceRecommendations.length} recommended sources`
+                    : "No evidence yet";
 
               return (
                 <button
@@ -111,7 +113,7 @@ export const MilestoneRowPanel = ({
             </div>
             <div className="space-y-2">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.22em]">
-                Capability focus
+                Question focus
               </p>
               <h4 className="font-serif text-xl tracking-tight text-ink-900 md:text-2xl">
                 {selectedSubQuestion.title}
@@ -175,7 +177,7 @@ export const MilestoneRowPanel = ({
             ) : (
               <div className="rounded-[1.1rem] border border-dashed border-line/80 bg-paper-50/60 p-3.5 md:rounded-[1.25rem] md:p-4">
                 <p className="text-[13px] leading-6 text-ink-700 md:text-sm md:leading-7">
-                  No evidence entries are published yet for this capability.
+                  No evidence entries are published yet for this question.
                 </p>
               </div>
             )}

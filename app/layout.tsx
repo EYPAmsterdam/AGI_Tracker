@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 export const metadata: Metadata = {
   title: "AGI Milestone Tracker",
   description:
-    "A workbook-backed MVP that tracks AGI-relevant capability dimensions, source recommendations, and curated evidence."
+    "A workbook-backed MVP that tracks AGI through milestone statements, sub-questions, optional source recommendations, and curated evidence."
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
               {children}
             </main>
             <footer className="mx-auto max-w-7xl border-t border-line/70 px-4 py-6 text-xs leading-6 text-ink-600 md:px-6 md:py-8 md:text-sm md:leading-normal lg:px-8">
-              Workbook-backed MVP for capability tracking. Published evidence appears only when added to the workbook&apos;s Evidence Entries sheet.
+              Workbook-backed MVP for milestone tracking. Published evidence appears only when added to the workbook&apos;s Evidence sheet.
             </footer>
           </div>
         </div>

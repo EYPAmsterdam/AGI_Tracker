@@ -14,7 +14,7 @@ export const RecentUpdatesPanel = ({
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-600 md:text-xs md:tracking-[0.24em]">
           Recent updates
         </p>
-        <h3 className="mt-2 font-serif text-xl text-ink-900 md:text-2xl">Latest dimension changes</h3>
+        <h3 className="mt-2 font-serif text-xl text-ink-900 md:text-2xl">Latest milestone changes</h3>
       </div>
       <Link href="/milestones" className="text-xs font-medium text-sky hover:text-ink-900 md:text-sm">
         View all

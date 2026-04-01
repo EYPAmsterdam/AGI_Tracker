@@ -23,66 +23,49 @@ const workbookPath = path.join(
 );
 
 const SHEET_NAMES = {
-  capabilityTracker: "Capability Tracker",
-  benchmarkRegistry: "Benchmark Registry",
-  ingestionPriority: "(Ingestion Priority)",
-  evidenceEntries: "Evidence Entries"
+  questions: "Questions",
+  evidence: "Evidence"
 } as const;
 
-const REQUIRED_CAPABILITY_HEADERS = [
-  "Capability ID",
-  "Dimension",
-  "Capability",
-  "Definition / what we want to track",
-  "Priority",
-  "Coverage status",
-  "Recommended primary benchmark",
-  "Recommended secondary benchmarks",
-  "Primary benchmark source tier",
-  "Primary benchmark source type",
-  "Public leaderboard / source",
-  "Ingest method",
-  "Recommended for v1?",
-  "Notes / caveats"
-];
-
-const REQUIRED_BENCHMARK_HEADERS = [
-  "Benchmark ID",
-  "Benchmark",
-  "Primary dimension",
-  "Primary capabilities covered",
-  "What the benchmark actually measures",
-  "Leaderboard / source",
-  "Source owner",
-  "Source tier",
-  "Tracker status",
-  "Public leaderboard?",
-  "API / ingest path",
-  "Update cadence",
-  "Why use it",
-  "Main caveat",
-  "Primary URL",
-  "Secondary URL"
-];
+const QUESTIONS_HEADERS = [
+  "milestone_id",
+  "milestone_title",
+  "milestone_description",
+  "milestone_category",
+  "milestone_sort_order",
+  "question_id",
+  "question_sort_order",
+  "question_title",
+  "question_description",
+  "status",
+  "confidence",
+  "rationale",
+  "evaluation_modes",
+  "assessment_updated_at",
+  "recommended_source_1_title",
+  "recommended_source_1_url",
+  "recommended_source_1_note",
+  "recommended_source_2_title",
+  "recommended_source_2_url",
+  "recommended_source_2_note"
+] as const;
 
 const EVIDENCE_HEADERS = [
-  "Evidence ID",
-  "Capability ID",
-  "Evidence Title",
-  "Source Type",
-  "Source Name",
-  "URL",
-  "Published Date",
-  "Short Explanation",
-  "Benchmark ID",
-  "Benchmark Name",
-  "Metric Name",
-  "Metric Value",
-  "Metric Unit",
-  "Model",
-  "Notes",
-  "Active?"
-];
+  "evidence_id",
+  "question_id",
+  "evidence_title",
+  "source_type",
+  "source_name",
+  "url",
+  "published_date",
+  "short_explanation",
+  "metric_name",
+  "metric_value",
+  "metric_unit",
+  "model",
+  "notes",
+  "active"
+] as const;
 
 type WorkbookValidationResult = {
   milestoneContents: MilestoneContent[];
@@ -91,63 +74,38 @@ type WorkbookValidationResult = {
   workbookUpdatedAt: string;
 };
 
-type CapabilityTrackerRow = {
-  capabilityId: string;
-  dimension: string;
-  capability: string;
-  definition: string;
-  priority: string;
-  coverageStatus: string;
-  primaryBenchmark: string;
-  secondaryBenchmarks: string[];
-  sourceTier: string;
-  sourceType: string;
-  sourceName: string;
-  ingestMethod: string;
-  recommendedForV1: boolean;
-  notes: string;
-  assessmentStatus: Status;
-  assessmentConfidence: Confidence;
+type QuestionRow = {
+  milestoneId: string;
+  milestoneTitle: string;
+  milestoneDescription: string;
+  milestoneCategory: string;
+  milestoneSortOrder: number;
+  questionId: string;
+  questionSortOrder: number;
+  questionTitle: string;
+  questionDescription: string;
+  status: Status;
+  confidence: Confidence;
+  rationale: string;
   evaluationModes: EvaluationMode[];
-  assessmentRationale: string;
   assessmentUpdatedAt: string;
+  recommendedSource1Title: string;
+  recommendedSource1Url: string;
+  recommendedSource1Note: string;
+  recommendedSource2Title: string;
+  recommendedSource2Url: string;
+  recommendedSource2Note: string;
 };
 
-type BenchmarkRegistryRow = {
-  benchmarkId: string;
-  benchmark: string;
-  primaryDimension: string;
-  primaryCapabilitiesCovered: string;
-  measures: string;
-  leaderboardSource: string;
-  sourceOwner: string;
-  sourceTier: string;
-  trackerStatus: string;
-  publicLeaderboard: string;
-  ingestPath: string;
-  updateCadence: string;
-  whyUseIt: string;
-  mainCaveat: string;
-  primaryUrl: string;
-  secondaryUrl: string;
-};
-
-type IngestionPriorityRow = {
-  priority: number | null;
-  benchmark: string;
-};
-
-type EvidenceEntryRow = {
+type EvidenceRow = {
   evidenceId: string;
-  capabilityId: string;
-  title: string;
+  questionId: string;
+  evidenceTitle: string;
   sourceType: string;
   sourceName: string;
   url: string;
   publishedDate: string;
   shortExplanation: string;
-  benchmarkId: string;
-  benchmarkName: string;
   metricName: string;
   metricValue: string;
   metricUnit: string;
@@ -170,6 +128,13 @@ const slugify = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
+const splitList = (value: string) =>
+  value
+    .split(/\r?\n|;/)
+    .flatMap((item) => item.split(","))
+    .map((item) => item.trim())
+    .filter(Boolean);
+
 const toIsoDateString = (value: string) => {
   const trimmed = value.trim();
 
@@ -190,18 +155,15 @@ const toIsoDateString = (value: string) => {
   return parsed.toISOString().slice(0, 10);
 };
 
-const toYesNoBoolean = (value: string) => {
-  const normalized = normalizeKey(value);
-
-  return normalized === "yes" || normalized === "true" || normalized === "1";
+const toPositiveInteger = (value: string) => {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : 0;
 };
 
-const splitList = (value: string) =>
-  value
-    .split(/\r?\n|;/)
-    .flatMap((item) => item.split(","))
-    .map((item) => item.trim())
-    .filter(Boolean);
+const toYesNoBoolean = (value: string) => {
+  const normalized = normalizeKey(value);
+  return normalized === "" || normalized === "yes" || normalized === "true" || normalized === "1";
+};
 
 const parseStatus = (value: string): Status => {
   const normalized = normalizeKey(value);
@@ -300,6 +262,18 @@ const parseProofType = (value: string): ProofType => {
   return "benchmark";
 };
 
+const tryGetHostname = (value: string) => {
+  if (!value) {
+    return "";
+  }
+
+  try {
+    return new URL(value).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+};
+
 const getWorkbook = () => {
   if (!fs.existsSync(workbookPath)) {
     throw new Error(`Workbook not found: ${workbookPath}`);
@@ -333,7 +307,7 @@ const getSheetHeaders = (sheet: xlsx.WorkSheet) => {
 const assertRequiredHeaders = (
   sheetName: string,
   headers: string[],
-  requiredHeaders: string[]
+  requiredHeaders: readonly string[]
 ) => {
   const headerSet = new Set(headers);
   const missingHeaders = requiredHeaders.filter((header) => !headerSet.has(header));
@@ -353,177 +327,90 @@ const readRows = (sheet: xlsx.WorkSheet) =>
 
 const getWorkbookUpdatedAt = () => fs.statSync(workbookPath).mtime.toISOString().slice(0, 10);
 
-const buildCapabilityTrackerRows = (sheet: xlsx.WorkSheet) =>
+const buildQuestionRows = (sheet: xlsx.WorkSheet) =>
   readRows(sheet)
-    .map((row): CapabilityTrackerRow => ({
-      capabilityId: toCellString(row["Capability ID"]),
-      dimension: toCellString(row["Dimension"]),
-      capability: toCellString(row["Capability"]),
-      definition: toCellString(row["Definition / what we want to track"]),
-      priority: toCellString(row["Priority"]),
-      coverageStatus: toCellString(row["Coverage status"]),
-      primaryBenchmark: toCellString(row["Recommended primary benchmark"]),
-      secondaryBenchmarks: splitList(
-        toCellString(row["Recommended secondary benchmarks"])
-      ),
-      sourceTier: toCellString(row["Primary benchmark source tier"]),
-      sourceType: toCellString(row["Primary benchmark source type"]),
-      sourceName: toCellString(row["Public leaderboard / source"]),
-      ingestMethod: toCellString(row["Ingest method"]),
-      recommendedForV1: toYesNoBoolean(toCellString(row["Recommended for v1?"])),
-      notes: toCellString(row["Notes / caveats"]),
-      assessmentStatus: parseStatus(toCellString(row["Assessment Status"])),
-      assessmentConfidence: parseConfidence(
-        toCellString(row["Assessment Confidence"])
-      ),
-      evaluationModes: parseEvaluationModes(toCellString(row["Evaluation Modes"])),
-      assessmentRationale: toCellString(row["Assessment Rationale"]),
-      assessmentUpdatedAt: toIsoDateString(toCellString(row["Assessment Updated At"]))
+    .map((row): QuestionRow => ({
+      milestoneId: toCellString(row.milestone_id),
+      milestoneTitle: toCellString(row.milestone_title),
+      milestoneDescription: toCellString(row.milestone_description),
+      milestoneCategory: toCellString(row.milestone_category),
+      milestoneSortOrder: toPositiveInteger(toCellString(row.milestone_sort_order)),
+      questionId: toCellString(row.question_id),
+      questionSortOrder: toPositiveInteger(toCellString(row.question_sort_order)),
+      questionTitle: toCellString(row.question_title),
+      questionDescription: toCellString(row.question_description),
+      status: parseStatus(toCellString(row.status)),
+      confidence: parseConfidence(toCellString(row.confidence)),
+      rationale: toCellString(row.rationale),
+      evaluationModes: parseEvaluationModes(toCellString(row.evaluation_modes)),
+      assessmentUpdatedAt: toIsoDateString(toCellString(row.assessment_updated_at)),
+      recommendedSource1Title: toCellString(row.recommended_source_1_title),
+      recommendedSource1Url: toCellString(row.recommended_source_1_url),
+      recommendedSource1Note: toCellString(row.recommended_source_1_note),
+      recommendedSource2Title: toCellString(row.recommended_source_2_title),
+      recommendedSource2Url: toCellString(row.recommended_source_2_url),
+      recommendedSource2Note: toCellString(row.recommended_source_2_note)
     }))
-    .filter((row) => row.capabilityId && row.dimension && row.capability);
+    .filter((row) => row.milestoneId && row.questionId && row.questionTitle);
 
-const buildBenchmarkRegistryRows = (sheet: xlsx.WorkSheet) =>
+const buildEvidenceRows = (sheet: xlsx.WorkSheet) =>
   readRows(sheet)
-    .map((row): BenchmarkRegistryRow => ({
-      benchmarkId: toCellString(row["Benchmark ID"]),
-      benchmark: toCellString(row["Benchmark"]),
-      primaryDimension: toCellString(row["Primary dimension"]),
-      primaryCapabilitiesCovered: toCellString(row["Primary capabilities covered"]),
-      measures: toCellString(row["What the benchmark actually measures"]),
-      leaderboardSource: toCellString(row["Leaderboard / source"]),
-      sourceOwner: toCellString(row["Source owner"]),
-      sourceTier: toCellString(row["Source tier"]),
-      trackerStatus: toCellString(row["Tracker status"]),
-      publicLeaderboard: toCellString(row["Public leaderboard?"]),
-      ingestPath: toCellString(row["API / ingest path"]),
-      updateCadence: toCellString(row["Update cadence"]),
-      whyUseIt: toCellString(row["Why use it"]),
-      mainCaveat: toCellString(row["Main caveat"]),
-      primaryUrl: toCellString(row["Primary URL"]),
-      secondaryUrl: toCellString(row["Secondary URL"])
+    .map((row): EvidenceRow => ({
+      evidenceId: toCellString(row.evidence_id),
+      questionId: toCellString(row.question_id),
+      evidenceTitle: toCellString(row.evidence_title),
+      sourceType: toCellString(row.source_type),
+      sourceName: toCellString(row.source_name),
+      url: toCellString(row.url),
+      publishedDate: toIsoDateString(toCellString(row.published_date)),
+      shortExplanation: toCellString(row.short_explanation),
+      metricName: toCellString(row.metric_name),
+      metricValue: toCellString(row.metric_value),
+      metricUnit: toCellString(row.metric_unit),
+      model: toCellString(row.model),
+      notes: toCellString(row.notes),
+      active: toYesNoBoolean(toCellString(row.active))
     }))
-    .filter((row) => row.benchmarkId && row.benchmark);
+    .filter((row) => row.questionId && row.evidenceTitle && row.url && row.active);
 
-const buildIngestionPriorityRows = (sheet: xlsx.WorkSheet) =>
-  readRows(sheet)
-    .map((row): IngestionPriorityRow => ({
-      priority: Number.parseInt(toCellString(row["Priority"]), 10) || null,
-      benchmark: toCellString(row["Benchmark"])
-    }))
-    .filter((row) => row.benchmark);
-
-const buildEvidenceEntryRows = (sheet: xlsx.WorkSheet) =>
-  readRows(sheet)
-    .map((row): EvidenceEntryRow => ({
-      evidenceId: toCellString(row["Evidence ID"]),
-      capabilityId: toCellString(row["Capability ID"]),
-      title: toCellString(row["Evidence Title"]),
-      sourceType: toCellString(row["Source Type"]),
-      sourceName: toCellString(row["Source Name"]),
-      url: toCellString(row["URL"]),
-      publishedDate: toIsoDateString(toCellString(row["Published Date"])),
-      shortExplanation: toCellString(row["Short Explanation"]),
-      benchmarkId: toCellString(row["Benchmark ID"]),
-      benchmarkName: toCellString(row["Benchmark Name"]),
-      metricName: toCellString(row["Metric Name"]),
-      metricValue: toCellString(row["Metric Value"]),
-      metricUnit: toCellString(row["Metric Unit"]),
-      model: toCellString(row["Model"]),
-      notes: toCellString(row["Notes"]),
-      active: toCellString(row["Active?"]) === ""
-        ? true
-        : toYesNoBoolean(toCellString(row["Active?"]))
-    }))
-    .filter((row) => row.capabilityId && row.title && row.url && row.active);
-
-const createSourceRecommendation = ({
-  capability,
-  benchmark,
-  priorityRank,
-  recommendedForV1
-}: {
-  capability: CapabilityTrackerRow;
-  benchmark: BenchmarkRegistryRow;
-  priorityRank: number | null;
-  recommendedForV1: boolean;
-}): SourceRecommendation => ({
-  id: `${slugify(capability.capabilityId)}-${slugify(benchmark.benchmarkId)}`,
-  benchmarkId: benchmark.benchmarkId,
-  title: benchmark.benchmark,
-  source: benchmark.leaderboardSource || benchmark.sourceOwner,
-  sourceTier: benchmark.sourceTier,
-  sourceType: capability.sourceType,
-  trackerStatus: benchmark.trackerStatus,
-  ingestMethod: benchmark.ingestPath,
-  updateCadence: benchmark.updateCadence,
-  whyUseIt: benchmark.whyUseIt,
-  caveat: benchmark.mainCaveat,
-  url: benchmark.primaryUrl,
-  secondaryUrl: benchmark.secondaryUrl,
-  recommendedForV1,
-  priorityRank
-});
-
-const buildSourceRecommendations = ({
-  capability,
-  benchmarkByKey,
-  priorityByBenchmark,
-  warnings
-}: {
-  capability: CapabilityTrackerRow;
-  benchmarkByKey: Map<string, BenchmarkRegistryRow>;
-  priorityByBenchmark: Map<string, number | null>;
-  warnings: string[];
-}) => {
-  const requestedBenchmarks = [
-    capability.primaryBenchmark,
-    ...capability.secondaryBenchmarks
-  ].filter(Boolean);
-  const seenKeys = new Set<string>();
-  const recommendations: SourceRecommendation[] = [];
-
-  for (const benchmarkName of requestedBenchmarks) {
-    const lookupKey = normalizeKey(benchmarkName);
-
-    if (!lookupKey || seenKeys.has(lookupKey)) {
-      continue;
+const createSourceRecommendations = (question: QuestionRow): SourceRecommendation[] => {
+  const recommendationInputs = [
+    {
+      slot: 1,
+      title: question.recommendedSource1Title,
+      url: question.recommendedSource1Url,
+      note: question.recommendedSource1Note
+    },
+    {
+      slot: 2,
+      title: question.recommendedSource2Title,
+      url: question.recommendedSource2Url,
+      note: question.recommendedSource2Note
     }
+  ];
 
-    seenKeys.add(lookupKey);
-
-    const benchmark =
-      benchmarkByKey.get(lookupKey) ?? benchmarkByKey.get(normalizeKey(benchmarkName));
-
-    if (!benchmark) {
-      warnings.push(
-        `Capability ${capability.capabilityId} references benchmark "${benchmarkName}" but it was not found in Benchmark Registry.`
-      );
-      continue;
-    }
-
-    recommendations.push(
-      createSourceRecommendation({
-        capability,
-        benchmark,
-        priorityRank: priorityByBenchmark.get(lookupKey) ?? null,
-        recommendedForV1: capability.recommendedForV1
-      })
-    );
-  }
-
-  return recommendations.sort((left, right) => {
-    const leftPriority = left.priorityRank ?? Number.MAX_SAFE_INTEGER;
-    const rightPriority = right.priorityRank ?? Number.MAX_SAFE_INTEGER;
-
-    if (leftPriority !== rightPriority) {
-      return leftPriority - rightPriority;
-    }
-
-    return left.title.localeCompare(right.title);
-  });
+  return recommendationInputs
+    .filter((recommendation) => recommendation.title || recommendation.url || recommendation.note)
+    .map((recommendation) => ({
+      id: `${question.questionId}-source-${recommendation.slot}`,
+      benchmarkId: `${question.questionId}-source-${recommendation.slot}`,
+      title: recommendation.title || `Suggested source ${recommendation.slot}`,
+      source: tryGetHostname(recommendation.url),
+      sourceTier: "",
+      sourceType: "",
+      trackerStatus: "",
+      ingestMethod: "",
+      updateCadence: "",
+      whyUseIt: recommendation.note,
+      caveat: "",
+      url: recommendation.url,
+      secondaryUrl: "",
+      recommendedForV1: true,
+      priorityRank: recommendation.slot
+    }));
 };
 
-const buildEvidenceItems = (rows: EvidenceEntryRow[]): ProofItem[] =>
+const buildEvidenceItems = (rows: EvidenceRow[], workbookUpdatedAt: string): ProofItem[] =>
   rows.map((row) => {
     const explanationParts = [
       row.shortExplanation,
@@ -535,137 +422,124 @@ const buildEvidenceItems = (rows: EvidenceEntryRow[]): ProofItem[] =>
     ].filter(Boolean);
 
     return {
-      id: row.evidenceId || slugify(`${row.capabilityId}-${row.title}`),
+      id: row.evidenceId || slugify(`${row.questionId}-${row.evidenceTitle}`),
       type: parseProofType(row.sourceType),
-      title: row.title,
-      source: row.sourceName || row.benchmarkName || row.benchmarkId,
+      title: row.evidenceTitle,
+      source: row.sourceName,
       url: row.url,
       shortExplanation: explanationParts.join(" | "),
-      date: row.publishedDate || getWorkbookUpdatedAt()
+      date: row.publishedDate || workbookUpdatedAt
     };
   });
-
-const buildCapabilityRationale = (capability: CapabilityTrackerRow) => {
-  const rationaleParts = [
-    `Capability ID: ${capability.capabilityId}.`,
-    capability.coverageStatus ? `Coverage status: ${capability.coverageStatus}.` : "",
-    capability.primaryBenchmark
-      ? `Primary benchmark anchor: ${capability.primaryBenchmark}.`
-      : "",
-    capability.ingestMethod
-      ? `Preferred ingest method: ${capability.ingestMethod}.`
-      : "",
-    capability.notes,
-    capability.assessmentRationale
-  ].filter(Boolean);
-
-  return rationaleParts.join(" ");
-};
 
 export const loadWorkbookMilestoneContents = (): WorkbookValidationResult => {
   const workbook = getWorkbook();
   const warnings: string[] = [];
-  const capabilitySheet = getSheet(workbook, SHEET_NAMES.capabilityTracker);
-  const benchmarkSheet = getSheet(workbook, SHEET_NAMES.benchmarkRegistry);
-  const ingestionSheet = workbook.Sheets[SHEET_NAMES.ingestionPriority];
-  const evidenceSheet = workbook.Sheets[SHEET_NAMES.evidenceEntries];
+  const questionsSheet = getSheet(workbook, SHEET_NAMES.questions);
+  const evidenceSheet = getSheet(workbook, SHEET_NAMES.evidence);
 
   assertRequiredHeaders(
-    SHEET_NAMES.capabilityTracker,
-    getSheetHeaders(capabilitySheet),
-    REQUIRED_CAPABILITY_HEADERS
+    SHEET_NAMES.questions,
+    getSheetHeaders(questionsSheet),
+    QUESTIONS_HEADERS
   );
   assertRequiredHeaders(
-    SHEET_NAMES.benchmarkRegistry,
-    getSheetHeaders(benchmarkSheet),
-    REQUIRED_BENCHMARK_HEADERS
+    SHEET_NAMES.evidence,
+    getSheetHeaders(evidenceSheet),
+    EVIDENCE_HEADERS
   );
 
-  if (evidenceSheet) {
-    assertRequiredHeaders(
-      SHEET_NAMES.evidenceEntries,
-      getSheetHeaders(evidenceSheet),
-      EVIDENCE_HEADERS
-    );
-  } else {
-    warnings.push(
-      `Workbook sheet "${SHEET_NAMES.evidenceEntries}" is missing. Actual evidence items will remain empty until that sheet is added.`
-    );
-  }
+  const questionRows = buildQuestionRows(questionsSheet).sort((left, right) => {
+    if (left.milestoneSortOrder !== right.milestoneSortOrder) {
+      return left.milestoneSortOrder - right.milestoneSortOrder;
+    }
 
-  const capabilityRows = buildCapabilityTrackerRows(capabilitySheet);
-  const benchmarkRows = buildBenchmarkRegistryRows(benchmarkSheet);
-  const priorityRows = ingestionSheet ? buildIngestionPriorityRows(ingestionSheet) : [];
-  const evidenceRows = evidenceSheet ? buildEvidenceEntryRows(evidenceSheet) : [];
-  const benchmarkByKey = new Map<string, BenchmarkRegistryRow>();
-  const priorityByBenchmark = new Map<string, number | null>();
-  const evidenceByCapability = new Map<string, EvidenceEntryRow[]>();
-  const workbookUpdatedAt = getWorkbookUpdatedAt();
+    if (left.questionSortOrder !== right.questionSortOrder) {
+      return left.questionSortOrder - right.questionSortOrder;
+    }
 
-  for (const benchmark of benchmarkRows) {
-    benchmarkByKey.set(normalizeKey(benchmark.benchmarkId), benchmark);
-    benchmarkByKey.set(normalizeKey(benchmark.benchmark), benchmark);
-  }
-
-  for (const priority of priorityRows) {
-    priorityByBenchmark.set(normalizeKey(priority.benchmark), priority.priority);
-  }
-
-  for (const evidence of evidenceRows) {
-    const key = normalizeKey(evidence.capabilityId);
-    const existingRows = evidenceByCapability.get(key) ?? [];
-
-    existingRows.push(evidence);
-    evidenceByCapability.set(key, existingRows);
-  }
-
-  const dimensionsInOrder = Array.from(
-    new Set(capabilityRows.map((capability) => capability.dimension))
-  );
-
-  const milestoneContents = dimensionsInOrder.map((dimension, dimensionIndex) => {
-    const capabilities = capabilityRows.filter(
-      (capability) => capability.dimension === dimension
-    );
-    const dimensionUpdatedAt =
-      [...capabilities]
-        .map((capability) => capability.assessmentUpdatedAt)
-        .filter(Boolean)
-        .sort((left, right) => right.localeCompare(left))[0] ?? workbookUpdatedAt;
-
-    return {
-      id: slugify(dimension),
-      title: dimension,
-      description: `Capabilities currently mapped in the workbook under ${dimension}. Assessment status and evidence remain manual until filled into the workbook.`,
-      category: "Capability dimension",
-      sortOrder: dimensionIndex + 1,
-      updatedAt: dimensionUpdatedAt,
-      subQuestions: capabilities.map((capability) => {
-        const capabilityKey = normalizeKey(capability.capabilityId);
-        const evidenceItems = buildEvidenceItems(
-          evidenceByCapability.get(capabilityKey) ?? []
-        );
-
-        return {
-          id: slugify(`capability-${capability.capabilityId}`),
-          title: capability.capability,
-          description: capability.definition,
-          status: capability.assessmentStatus,
-          confidence: capability.assessmentConfidence,
-          rationale: buildCapabilityRationale(capability),
-          evaluationModes: capability.evaluationModes,
-          coverage: [],
-          proofItems: evidenceItems,
-          sourceRecommendations: buildSourceRecommendations({
-            capability,
-            benchmarkByKey,
-            priorityByBenchmark,
-            warnings
-          })
-        };
-      })
-    } satisfies MilestoneContent;
+    return left.questionTitle.localeCompare(right.questionTitle);
   });
+  const evidenceRows = buildEvidenceRows(evidenceSheet);
+  const workbookUpdatedAt = getWorkbookUpdatedAt();
+  const evidenceByQuestion = new Map<string, EvidenceRow[]>();
+
+  for (const evidenceRow of evidenceRows) {
+    const existingRows = evidenceByQuestion.get(evidenceRow.questionId) ?? [];
+
+    existingRows.push(evidenceRow);
+    evidenceByQuestion.set(evidenceRow.questionId, existingRows);
+  }
+
+  const milestoneGroups = new Map<
+    string,
+    {
+      milestoneId: string;
+      milestoneTitle: string;
+      milestoneDescription: string;
+      milestoneCategory: string;
+      milestoneSortOrder: number;
+      questions: QuestionRow[];
+    }
+  >();
+
+  for (const questionRow of questionRows) {
+    const existingGroup = milestoneGroups.get(questionRow.milestoneId);
+
+    if (existingGroup) {
+      existingGroup.questions.push(questionRow);
+      continue;
+    }
+
+    milestoneGroups.set(questionRow.milestoneId, {
+      milestoneId: questionRow.milestoneId,
+      milestoneTitle: questionRow.milestoneTitle,
+      milestoneDescription: questionRow.milestoneDescription,
+      milestoneCategory: questionRow.milestoneCategory,
+      milestoneSortOrder: questionRow.milestoneSortOrder,
+      questions: [questionRow]
+    });
+  }
+
+  const milestoneContents = Array.from(milestoneGroups.values())
+    .sort((left, right) => left.milestoneSortOrder - right.milestoneSortOrder)
+    .map((milestoneGroup) => {
+      const updatedAt =
+        [...milestoneGroup.questions]
+          .map((question) => question.assessmentUpdatedAt)
+          .filter(Boolean)
+          .sort((left, right) => right.localeCompare(left))[0] ?? workbookUpdatedAt;
+
+      return {
+        id: milestoneGroup.milestoneId,
+        title: milestoneGroup.milestoneTitle,
+        description: milestoneGroup.milestoneDescription,
+        category: milestoneGroup.milestoneCategory,
+        sortOrder: milestoneGroup.milestoneSortOrder,
+        updatedAt,
+        subQuestions: milestoneGroup.questions
+          .sort((left, right) => left.questionSortOrder - right.questionSortOrder)
+          .map((question) => ({
+            id: question.questionId,
+            title: question.questionTitle,
+            description: question.questionDescription,
+            status: question.status,
+            confidence: question.confidence,
+            rationale: question.rationale,
+            evaluationModes: question.evaluationModes,
+            coverage: [],
+            proofItems: buildEvidenceItems(
+              evidenceByQuestion.get(question.questionId) ?? [],
+              workbookUpdatedAt
+            ),
+            sourceRecommendations: createSourceRecommendations(question)
+          }))
+      } satisfies MilestoneContent;
+    });
+
+  if (milestoneContents.length === 0) {
+    warnings.push("No milestone content could be built from the Questions sheet.");
+  }
 
   return {
     milestoneContents,

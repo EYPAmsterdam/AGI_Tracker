@@ -1,59 +1,39 @@
 import assert from "node:assert/strict";
 import {
   EVIDENCE_HEADERS,
-  OPTIONAL_CAPABILITY_HEADERS,
-  REQUIRED_BENCHMARK_HEADERS,
-  REQUIRED_CAPABILITY_HEADERS,
+  QUESTIONS_HEADERS,
   validateWorkbookData
 } from "./lib/workbook-validator.mjs";
 
 const createValidWorkbookData = () => ({
-  capabilityHeaders: [...REQUIRED_CAPABILITY_HEADERS, ...OPTIONAL_CAPABILITY_HEADERS],
-  benchmarkHeaders: [...REQUIRED_BENCHMARK_HEADERS],
+  questionHeaders: [...QUESTIONS_HEADERS],
   evidenceHeaders: [...EVIDENCE_HEADERS],
+  hasQuestionsSheet: true,
   hasEvidenceSheet: true,
-  capabilityRows: [
+  questionRows: [
     {
-      "Capability ID": "001",
-      Dimension: "Cognitive Reasoning & Task Execution",
-      Capability: "Problem understanding",
-      "Definition / what we want to track":
-        "Can the system infer the actual task from instructions and context?",
-      Priority: "High",
-      "Coverage status": "Mapped",
-      "Recommended primary benchmark": "GAIA",
-      "Recommended secondary benchmarks": "",
-      "Primary benchmark source tier": "A",
-      "Primary benchmark source type": "Benchmark",
-      "Public leaderboard / source": "Official GAIA Hugging Face leaderboard",
-      "Ingest method": "API",
-      "Recommended for v1?": "Yes",
-      "Notes / caveats": "Use with manual review.",
-      "Assessment Status": "Unassessed",
-      "Assessment Confidence": "Unassessed",
-      "Evaluation Modes": "Benchmark; Leaderboard",
-      "Assessment Rationale": "",
-      "Assessment Updated At": ""
-    }
-  ],
-  benchmarkRows: [
-    {
-      "Benchmark ID": "GAIA",
-      Benchmark: "GAIA",
-      "Primary dimension": "Cognitive Reasoning & Task Execution",
-      "Primary capabilities covered": "Problem understanding",
-      "What the benchmark actually measures": "Real-world task completion",
-      "Leaderboard / source": "Official GAIA Hugging Face leaderboard",
-      "Source owner": "GAIA",
-      "Source tier": "A",
-      "Tracker status": "Tracked",
-      "Public leaderboard?": "Yes",
-      "API / ingest path": "API",
-      "Update cadence": "Weekly",
-      "Why use it": "Strong task grounding signal",
-      "Main caveat": "Requires manual interpretation",
-      "Primary URL": "https://example.org/gaia",
-      "Secondary URL": ""
+      milestone_id: "task-understanding",
+      milestone_title: "AI can understand what a task is really asking",
+      milestone_description:
+        "An AI system can recover intent from messy instructions, isolate the real job to be done, and frame the task correctly before acting.",
+      milestone_category: "Task understanding",
+      milestone_sort_order: "1",
+      question_id: "task-understanding-goal-inference",
+      question_sort_order: "1",
+      question_title: "Can it infer the real goal from messy instructions?",
+      question_description:
+        "Tests whether the system can recover underlying intent when requests are informal, cluttered, or only partially specified.",
+      status: "met",
+      confidence: "high",
+      rationale: "Legacy placeholder rationale.",
+      evaluation_modes: "benchmark, controlled_study",
+      assessment_updated_at: "2026-03-10",
+      recommended_source_1_title: "",
+      recommended_source_1_url: "",
+      recommended_source_1_note: "",
+      recommended_source_2_title: "",
+      recommended_source_2_url: "",
+      recommended_source_2_note: ""
     }
   ],
   evidenceRows: []
@@ -79,58 +59,82 @@ runCase("valid workbook data passes with only no-evidence warning", () => {
 
 runCase("invalid enum values fail validation", () => {
   const workbookData = createValidWorkbookData();
-  workbookData.capabilityRows[0]["Assessment Status"] = "done";
+  workbookData.questionRows[0].status = "done";
 
   const report = validateWorkbookData(workbookData);
 
-  assert.ok(report.errors.some((error) => error.includes("invalid Assessment Status")));
+  assert.ok(report.errors.some((error) => error.includes("invalid status")));
 });
 
-runCase("bad URLs fail validation", () => {
+runCase("bad recommendation URLs fail validation", () => {
   const workbookData = createValidWorkbookData();
-  workbookData.benchmarkRows[0]["Primary URL"] = "notaurl";
+  workbookData.questionRows[0].recommended_source_1_url = "notaurl";
 
   const report = validateWorkbookData(workbookData);
 
-  assert.ok(report.errors.some((error) => error.includes("invalid Primary URL")));
+  assert.ok(
+    report.errors.some((error) => error.includes("invalid recommended_source_1_url"))
+  );
 });
 
-runCase("duplicate IDs fail validation", () => {
+runCase("duplicate question IDs fail validation", () => {
   const workbookData = createValidWorkbookData();
-  workbookData.capabilityRows.push({
-    ...workbookData.capabilityRows[0],
-    Capability: "Execution control"
+  workbookData.questionRows.push({
+    ...workbookData.questionRows[0],
+    question_title: "Can it identify missing constraints and ask clarifying questions?"
   });
 
   const report = validateWorkbookData(workbookData);
 
-  assert.ok(report.errors.some((error) => error.includes("duplicates Capability ID")));
+  assert.ok(report.errors.some((error) => error.includes("duplicates question_id")));
 });
 
-runCase("malformed dates fail validation", () => {
+runCase("malformed evidence dates fail validation", () => {
   const workbookData = createValidWorkbookData();
   workbookData.evidenceRows.push({
-    "Evidence ID": "ev-001",
-    "Capability ID": "001",
-    "Evidence Title": "Example evidence",
-    "Source Type": "benchmark",
-    "Source Name": "GAIA",
-    URL: "https://example.org/evidence",
-    "Published Date": "2026-02-30",
-    "Short Explanation": "Example explanation",
-    "Benchmark ID": "GAIA",
-    "Benchmark Name": "GAIA",
-    "Metric Name": "Score",
-    "Metric Value": "84.2",
-    "Metric Unit": "%",
-    Model: "Example model",
-    Notes: "",
-    "Active?": "Yes"
+    evidence_id: "ev-001",
+    question_id: "task-understanding-goal-inference",
+    evidence_title: "Example evidence",
+    source_type: "benchmark",
+    source_name: "Example benchmark",
+    url: "https://example.org/evidence",
+    published_date: "2026-02-30",
+    short_explanation: "Example explanation",
+    metric_name: "Score",
+    metric_value: "84.2",
+    metric_unit: "%",
+    model: "Example model",
+    notes: "",
+    active: "Yes"
   });
 
   const report = validateWorkbookData(workbookData);
 
-  assert.ok(report.errors.some((error) => error.includes("invalid Published Date")));
+  assert.ok(report.errors.some((error) => error.includes("invalid published_date")));
+});
+
+runCase("evidence must reference a known question", () => {
+  const workbookData = createValidWorkbookData();
+  workbookData.evidenceRows.push({
+    evidence_id: "ev-002",
+    question_id: "missing-question",
+    evidence_title: "Example evidence",
+    source_type: "benchmark",
+    source_name: "Example benchmark",
+    url: "https://example.org/evidence",
+    published_date: "2026-03-11",
+    short_explanation: "Example explanation",
+    metric_name: "",
+    metric_value: "",
+    metric_unit: "",
+    model: "",
+    notes: "",
+    active: "Yes"
+  });
+
+  const report = validateWorkbookData(workbookData);
+
+  assert.ok(report.errors.some((error) => error.includes('unknown question_id "missing-question"')));
 });
 
 console.log("Validator smoke tests passed.");

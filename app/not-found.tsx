@@ -8,7 +8,7 @@ export default function NotFound() {
       </p>
       <h1 className="mt-3 font-serif text-4xl text-ink-900">Milestone not found</h1>
       <p className="mt-4 max-w-2xl text-sm leading-7 text-ink-700">
-        The requested tracker entry does not exist in the workbook-backed dataset.
+        The requested milestone does not exist in the workbook-backed dataset.
       </p>
       <Link
         href="/milestones"

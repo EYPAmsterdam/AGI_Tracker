@@ -104,7 +104,36 @@ export const deriveMilestoneConfidence = (
   const total = proofItems.length;
 
   if (total === 0) {
-    return "unassessed";
+    const assessedConfidences = subQuestions
+      .map((item) => item.confidence)
+      .filter((confidence) => confidence !== "unassessed");
+
+    if (assessedConfidences.length === 0) {
+      return "unassessed";
+    }
+
+    const confidenceScore =
+      assessedConfidences.reduce((sum, confidence) => {
+        if (confidence === "high") {
+          return sum + 3;
+        }
+
+        if (confidence === "medium") {
+          return sum + 2;
+        }
+
+        return sum + 1;
+      }, 0) / assessedConfidences.length;
+
+    if (confidenceScore >= 2.5) {
+      return "high";
+    }
+
+    if (confidenceScore < 1.5) {
+      return "low";
+    }
+
+    return "medium";
   }
 
   const strongEvidenceCount = proofItems.filter((item) =>

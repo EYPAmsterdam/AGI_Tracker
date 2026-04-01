@@ -11,8 +11,8 @@ export default function MilestonesPage() {
     <div className="space-y-8">
       <SectionHeading
         eyebrow="Milestones"
-        title="Capability dimension registry"
-        description="Filter the workbook-backed capability dimensions by status, confidence, and category. Each result opens into a dedicated detail view with capability-level source recommendations and published evidence."
+        title="Full milestone registry"
+        description="Filter the milestone set by status, confidence, and category. Each result opens into a dedicated detail view with sub-question evidence and optional recommended sources."
       />
       <MethodologyNote />
       <MilestonesExplorer milestones={milestones} categories={milestoneCategories} />

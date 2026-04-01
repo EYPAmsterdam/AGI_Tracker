@@ -25,7 +25,7 @@ export const SiteHeader = () => {
               AGI Milestone Tracker
             </p>
             <p className="text-[10px] uppercase tracking-[0.2em] text-ink-600 md:text-xs md:tracking-[0.22em]">
-              Workbook-backed MVP
+              Workbook-backed tracker
             </p>
           </div>
         </Link>

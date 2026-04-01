@@ -23,10 +23,10 @@ export default function HomePage() {
                 Overview
               </p>
               <h1 className="max-w-4xl font-serif text-4xl leading-[0.98] tracking-tight text-ink-900 md:text-6xl md:leading-none">
-                AGI tracked through capability dimensions.
+                AGI tracked as milestone claims.
               </h1>
               <p className="max-w-3xl text-base leading-7 text-ink-700 md:text-lg md:leading-8">
-                This tracker turns your workbook into a published registry of capability dimensions, capability-level assessment slots, recommended benchmark sources, and curated evidence entries.
+                This tracker asks what needs to be true for AI to count as AGI, then breaks each milestone into lower-level questions backed by curated evidence and confidence judgments.
               </p>
             </div>
             <div className="flex flex-wrap gap-2 md:gap-3">
@@ -34,7 +34,7 @@ export default function HomePage() {
                 Last updated {formatLongDate(latestUpdatedAt)}
               </span>
               <span className="rounded-full border border-line bg-paper-50 px-3 py-1.5 text-xs font-medium text-ink-700 md:px-4 md:py-2 md:text-sm">
-                {milestones.length} capability dimensions
+                {milestones.length} top-level milestones
               </span>
               <span className="rounded-full border border-line bg-paper-50 px-3 py-1.5 text-xs font-medium text-ink-700 md:px-4 md:py-2 md:text-sm">
                 {stats.evidenceCount} published evidence items
@@ -53,8 +53,8 @@ export default function HomePage() {
       <section className="space-y-6">
         <SectionHeading
           eyebrow="Tracker board"
-          title="Capability dimensions"
-          description="Each card represents a workbook-backed capability dimension. Open a card to inspect the mapped capabilities, current assessment state, and recommended sources."
+          title="Implementation milestones"
+          description="Each card represents a high-level AGI statement. Open a card to inspect the current rationale, sub-question status, and published evidence."
         />
         <MilestoneBoard milestones={milestones} />
       </section>

@@ -110,7 +110,7 @@ export const validateMilestoneContents = (
     }
 
     if (milestone.subQuestions.length === 0) {
-      warnings.push(`${milestonePath} has no capabilities yet.`);
+      warnings.push(`${milestonePath} has no sub-questions yet.`);
     }
 
     milestone.subQuestions.forEach((subQuestion, subQuestionIndex) => {

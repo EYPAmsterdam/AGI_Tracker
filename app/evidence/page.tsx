@@ -12,7 +12,7 @@ export default function EvidencePage() {
       <SectionHeading
         eyebrow="Evidence"
         title="Published evidence library"
-        description="Browse the curated evidence entries published from the workbook. This MVP distinguishes between benchmark evidence, leaderboards, research, news, and implementation material."
+        description="Browse the curated evidence entries attached to milestone questions. This MVP distinguishes between benchmark evidence, leaderboards, research, news, and implementation material."
       />
       <MethodologyNote />
       <EvidenceExplorer records={evidenceRecords} milestones={milestones} />

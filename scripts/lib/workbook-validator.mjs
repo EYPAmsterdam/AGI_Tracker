@@ -9,72 +9,48 @@ export const WORKBOOK_RELATIVE_PATH = path.join(
 );
 
 export const SHEET_NAMES = {
-  capabilityTracker: "Capability Tracker",
-  benchmarkRegistry: "Benchmark Registry",
-  evidenceEntries: "Evidence Entries"
+  questions: "Questions",
+  evidence: "Evidence"
 };
 
-export const REQUIRED_CAPABILITY_HEADERS = [
-  "Capability ID",
-  "Dimension",
-  "Capability",
-  "Definition / what we want to track",
-  "Priority",
-  "Coverage status",
-  "Recommended primary benchmark",
-  "Recommended secondary benchmarks",
-  "Primary benchmark source tier",
-  "Primary benchmark source type",
-  "Public leaderboard / source",
-  "Ingest method",
-  "Recommended for v1?",
-  "Notes / caveats"
-];
-
-export const OPTIONAL_CAPABILITY_HEADERS = [
-  "Assessment Status",
-  "Assessment Confidence",
-  "Evaluation Modes",
-  "Assessment Rationale",
-  "Assessment Updated At"
-];
-
-export const REQUIRED_BENCHMARK_HEADERS = [
-  "Benchmark ID",
-  "Benchmark",
-  "Primary dimension",
-  "Primary capabilities covered",
-  "What the benchmark actually measures",
-  "Leaderboard / source",
-  "Source owner",
-  "Source tier",
-  "Tracker status",
-  "Public leaderboard?",
-  "API / ingest path",
-  "Update cadence",
-  "Why use it",
-  "Main caveat",
-  "Primary URL",
-  "Secondary URL"
+export const QUESTIONS_HEADERS = [
+  "milestone_id",
+  "milestone_title",
+  "milestone_description",
+  "milestone_category",
+  "milestone_sort_order",
+  "question_id",
+  "question_sort_order",
+  "question_title",
+  "question_description",
+  "status",
+  "confidence",
+  "rationale",
+  "evaluation_modes",
+  "assessment_updated_at",
+  "recommended_source_1_title",
+  "recommended_source_1_url",
+  "recommended_source_1_note",
+  "recommended_source_2_title",
+  "recommended_source_2_url",
+  "recommended_source_2_note"
 ];
 
 export const EVIDENCE_HEADERS = [
-  "Evidence ID",
-  "Capability ID",
-  "Evidence Title",
-  "Source Type",
-  "Source Name",
-  "URL",
-  "Published Date",
-  "Short Explanation",
-  "Benchmark ID",
-  "Benchmark Name",
-  "Metric Name",
-  "Metric Value",
-  "Metric Unit",
-  "Model",
-  "Notes",
-  "Active?"
+  "evidence_id",
+  "question_id",
+  "evidence_title",
+  "source_type",
+  "source_name",
+  "url",
+  "published_date",
+  "short_explanation",
+  "metric_name",
+  "metric_value",
+  "metric_unit",
+  "model",
+  "notes",
+  "active"
 ];
 
 const VALID_STATUS_VALUES = new Set([
@@ -100,6 +76,14 @@ const VALID_EVALUATION_MODES = new Set([
   "red team evaluation",
   "longitudinal trial",
   "expert blind review"
+]);
+
+const VALID_SOURCE_TYPES = new Set([
+  "benchmark",
+  "leaderboard",
+  "research paper",
+  "news",
+  "implementation"
 ]);
 
 const toCellString = (value) => String(value ?? "").trim();
@@ -179,6 +163,9 @@ const readRows = (sheet) =>
     raw: false
   });
 
+const isMeaningfulRow = (row) =>
+  Object.values(row).some((value) => toCellString(value).length > 0);
+
 const pushMissingHeaderErrors = (errors, sheetName, headers, requiredHeaders) => {
   const headerSet = new Set(headers);
   const missingHeaders = requiredHeaders.filter((header) => !headerSet.has(header));
@@ -192,218 +179,224 @@ export const resolveWorkbookPath = (projectRoot) =>
   path.join(projectRoot, WORKBOOK_RELATIVE_PATH);
 
 export const validateWorkbookData = ({
-  capabilityHeaders,
-  benchmarkHeaders,
+  questionHeaders,
   evidenceHeaders,
-  capabilityRows,
-  benchmarkRows,
-  evidenceRows,
+  questionRows: rawQuestionRows,
+  evidenceRows: rawEvidenceRows,
+  hasQuestionsSheet,
   hasEvidenceSheet
 }) => {
+  const questionRows = rawQuestionRows.filter(isMeaningfulRow);
+  const evidenceRows = rawEvidenceRows.filter(isMeaningfulRow);
   const errors = [];
   const warnings = [];
-  const capabilityIdPaths = new Map();
-  const benchmarkIdPaths = new Map();
-  const benchmarkLookup = new Map();
-  const dimensionNames = new Set();
-  const activeEvidenceRows = evidenceRows.filter((row) => isActiveEvidenceRow(row["Active?"]));
+  const milestonePaths = new Map();
+  const questionPaths = new Map();
+  const questionToMilestone = new Map();
+  const evidencePaths = new Map();
+  const milestoneSnapshots = new Map();
+  const activeEvidenceRows = evidenceRows.filter((row) => isActiveEvidenceRow(row.active));
   const summary = {
-    dimensions: 0,
-    capabilities: capabilityRows.length,
-    benchmarks: benchmarkRows.length,
+    milestones: 0,
+    questions: questionRows.length,
     evidenceEntries: activeEvidenceRows.length
   };
 
-  pushMissingHeaderErrors(
-    errors,
-    SHEET_NAMES.capabilityTracker,
-    capabilityHeaders,
-    REQUIRED_CAPABILITY_HEADERS
-  );
-  pushMissingHeaderErrors(
-    errors,
-    SHEET_NAMES.benchmarkRegistry,
-    benchmarkHeaders,
-    REQUIRED_BENCHMARK_HEADERS
-  );
+  if (!hasQuestionsSheet) {
+    errors.push(`${SHEET_NAMES.questions} is missing.`);
+  } else {
+    pushMissingHeaderErrors(errors, SHEET_NAMES.questions, questionHeaders, QUESTIONS_HEADERS);
+  }
 
   if (!hasEvidenceSheet) {
-    errors.push(
-      `${SHEET_NAMES.evidenceEntries} is missing. Run "npm run setup-workbook" to add the evidence-entry sheet and required columns.`
-    );
+    errors.push(`${SHEET_NAMES.evidence} is missing.`);
   } else {
-    pushMissingHeaderErrors(
-      errors,
-      SHEET_NAMES.evidenceEntries,
-      evidenceHeaders,
-      EVIDENCE_HEADERS
-    );
+    pushMissingHeaderErrors(errors, SHEET_NAMES.evidence, evidenceHeaders, EVIDENCE_HEADERS);
   }
 
-  const missingOptionalCapabilityHeaders = OPTIONAL_CAPABILITY_HEADERS.filter(
-    (header) => !new Set(capabilityHeaders).has(header)
-  );
-
-  if (missingOptionalCapabilityHeaders.length > 0) {
-    warnings.push(
-      `${SHEET_NAMES.capabilityTracker} is missing optional workflow columns: ${missingOptionalCapabilityHeaders.join(
-        ", "
-      )}`
-    );
+  if (questionRows.length === 0) {
+    errors.push(`${SHEET_NAMES.questions} does not contain any question rows.`);
   }
 
-  if (capabilityRows.length === 0) {
-    errors.push(`${SHEET_NAMES.capabilityTracker} does not contain any capability rows.`);
-  }
+  questionRows.forEach((row, index) => {
+    const pathLabel = `${SHEET_NAMES.questions}[${index + 2}]`;
+    const milestoneId = toCellString(row.milestone_id);
+    const milestoneTitle = toCellString(row.milestone_title);
+    const milestoneDescription = toCellString(row.milestone_description);
+    const milestoneCategory = toCellString(row.milestone_category);
+    const milestoneSortOrder = Number.parseInt(toCellString(row.milestone_sort_order), 10);
+    const questionId = toCellString(row.question_id);
+    const questionSortOrder = Number.parseInt(toCellString(row.question_sort_order), 10);
+    const questionTitle = toCellString(row.question_title);
+    const questionDescription = toCellString(row.question_description);
+    const status = normalizeKey(row.status);
+    const confidence = normalizeKey(row.confidence);
+    const evaluationModes = splitList(row.evaluation_modes).map((value) => normalizeKey(value));
+    const assessmentUpdatedAt = toCellString(row.assessment_updated_at);
+    const recommendationUrls = [
+      toCellString(row.recommended_source_1_url),
+      toCellString(row.recommended_source_2_url)
+    ];
 
-  if (benchmarkRows.length === 0) {
-    errors.push(`${SHEET_NAMES.benchmarkRegistry} does not contain any benchmark rows.`);
-  }
+    if (!milestoneId) {
+      errors.push(`${pathLabel} is missing milestone_id.`);
+    }
 
-  benchmarkRows.forEach((row, index) => {
-    const pathLabel = `${SHEET_NAMES.benchmarkRegistry}[${index + 2}]`;
-    const benchmarkId = toCellString(row["Benchmark ID"]);
-    const benchmarkName = toCellString(row["Benchmark"]);
-    const primaryDimension = toCellString(row["Primary dimension"]);
-    const primaryUrl = toCellString(row["Primary URL"]);
-    const secondaryUrl = toCellString(row["Secondary URL"]);
+    if (!milestoneTitle) {
+      errors.push(`${pathLabel} is missing milestone_title.`);
+    }
 
-    if (!benchmarkId) {
-      errors.push(`${pathLabel} is missing Benchmark ID.`);
-    } else if (benchmarkIdPaths.has(normalizeKey(benchmarkId))) {
-      errors.push(
-        `${pathLabel} duplicates Benchmark ID from ${benchmarkIdPaths.get(normalizeKey(benchmarkId))}.`
-      );
+    if (!milestoneDescription) {
+      errors.push(`${pathLabel} is missing milestone_description.`);
+    }
+
+    if (!milestoneCategory) {
+      errors.push(`${pathLabel} is missing milestone_category.`);
+    }
+
+    if (!Number.isInteger(milestoneSortOrder) || milestoneSortOrder < 1) {
+      errors.push(`${pathLabel} has an invalid milestone_sort_order.`);
+    }
+
+    if (!questionId) {
+      errors.push(`${pathLabel} is missing question_id.`);
+    } else if (questionPaths.has(questionId)) {
+      errors.push(`${pathLabel} duplicates question_id from ${questionPaths.get(questionId)}.`);
     } else {
-      benchmarkIdPaths.set(normalizeKey(benchmarkId), pathLabel);
-      benchmarkLookup.set(normalizeKey(benchmarkId), pathLabel);
+      questionPaths.set(questionId, pathLabel);
+      questionToMilestone.set(questionId, milestoneId);
     }
 
-    if (!benchmarkName) {
-      errors.push(`${pathLabel} is missing Benchmark.`);
-    } else {
-      benchmarkLookup.set(normalizeKey(benchmarkName), pathLabel);
+    if (!Number.isInteger(questionSortOrder) || questionSortOrder < 1) {
+      errors.push(`${pathLabel} has an invalid question_sort_order.`);
     }
 
-    if (!primaryDimension) {
-      errors.push(`${pathLabel} is missing Primary dimension.`);
+    if (!questionTitle) {
+      errors.push(`${pathLabel} is missing question_title.`);
     }
 
-    if (!isOptionalHttpUrl(primaryUrl)) {
-      errors.push(`${pathLabel} has an invalid Primary URL.`);
-    } else if (!primaryUrl) {
-      warnings.push(`${pathLabel} is missing Primary URL.`);
+    if (!questionDescription) {
+      errors.push(`${pathLabel} is missing question_description.`);
     }
 
-    if (!isOptionalHttpUrl(secondaryUrl)) {
-      errors.push(`${pathLabel} has an invalid Secondary URL.`);
-    }
-  });
-
-  capabilityRows.forEach((row, index) => {
-    const pathLabel = `${SHEET_NAMES.capabilityTracker}[${index + 2}]`;
-    const capabilityId = toCellString(row["Capability ID"]);
-    const dimension = toCellString(row["Dimension"]);
-    const capability = toCellString(row["Capability"]);
-    const definition = toCellString(row["Definition / what we want to track"]);
-    const assessmentStatus = normalizeKey(row["Assessment Status"]);
-    const assessmentConfidence = normalizeKey(row["Assessment Confidence"]);
-    const assessmentUpdatedAt = toCellString(row["Assessment Updated At"]);
-    const requestedBenchmarks = [
-      toCellString(row["Recommended primary benchmark"]),
-      ...splitList(row["Recommended secondary benchmarks"])
-    ].filter(Boolean);
-
-    if (!capabilityId) {
-      errors.push(`${pathLabel} is missing Capability ID.`);
-    } else if (capabilityIdPaths.has(normalizeKey(capabilityId))) {
-      errors.push(
-        `${pathLabel} duplicates Capability ID from ${capabilityIdPaths.get(normalizeKey(capabilityId))}.`
-      );
-    } else {
-      capabilityIdPaths.set(normalizeKey(capabilityId), pathLabel);
+    if (!VALID_STATUS_VALUES.has(status)) {
+      errors.push(`${pathLabel} has an invalid status.`);
     }
 
-    if (!dimension) {
-      errors.push(`${pathLabel} is missing Dimension.`);
-    } else {
-      dimensionNames.add(dimension);
-    }
-
-    if (!capability) {
-      errors.push(`${pathLabel} is missing Capability.`);
-    }
-
-    if (!definition) {
-      errors.push(`${pathLabel} is missing Definition / what we want to track.`);
-    }
-
-    if (assessmentStatus && !VALID_STATUS_VALUES.has(assessmentStatus)) {
-      errors.push(`${pathLabel} has an invalid Assessment Status.`);
-    }
-
-    if (assessmentConfidence && !VALID_CONFIDENCE_VALUES.has(assessmentConfidence)) {
-      errors.push(`${pathLabel} has an invalid Assessment Confidence.`);
-    }
-
-    const evaluationModes = splitList(row["Evaluation Modes"]).map((value) => normalizeKey(value));
-    const invalidModes = evaluationModes.filter((value) => !VALID_EVALUATION_MODES.has(value));
-
-    if (invalidModes.length > 0) {
-      errors.push(`${pathLabel} has invalid Evaluation Modes: ${invalidModes.join(", ")}.`);
+    if (!VALID_CONFIDENCE_VALUES.has(confidence)) {
+      errors.push(`${pathLabel} has an invalid confidence.`);
     }
 
     if (assessmentUpdatedAt && !isOptionalDateString(assessmentUpdatedAt)) {
-      errors.push(`${pathLabel} has an invalid Assessment Updated At value.`);
+      errors.push(`${pathLabel} has an invalid assessment_updated_at.`);
     }
 
-    requestedBenchmarks.forEach((benchmarkName) => {
-      if (!benchmarkLookup.has(normalizeKey(benchmarkName))) {
-        warnings.push(
-          `${pathLabel} references benchmark "${benchmarkName}" but it was not found in ${SHEET_NAMES.benchmarkRegistry}.`
+    const invalidModes = evaluationModes.filter((value) => !VALID_EVALUATION_MODES.has(value));
+
+    if (invalidModes.length > 0) {
+      errors.push(`${pathLabel} has invalid evaluation_modes: ${invalidModes.join(", ")}.`);
+    }
+
+    recommendationUrls.forEach((url, recommendationIndex) => {
+      if (!isOptionalHttpUrl(url)) {
+        errors.push(
+          `${pathLabel} has an invalid recommended_source_${recommendationIndex + 1}_url.`
         );
       }
     });
+
+    if (milestoneId) {
+      const existingSnapshot = milestoneSnapshots.get(milestoneId);
+      const currentSnapshot = {
+        milestoneTitle,
+        milestoneDescription,
+        milestoneCategory,
+        milestoneSortOrder
+      };
+
+      if (!existingSnapshot) {
+        milestoneSnapshots.set(milestoneId, currentSnapshot);
+        milestonePaths.set(milestoneId, pathLabel);
+      } else {
+        if (existingSnapshot.milestoneTitle !== currentSnapshot.milestoneTitle) {
+          errors.push(
+            `${pathLabel} changes milestone_title for ${milestoneId}; first seen at ${milestonePaths.get(milestoneId)}.`
+          );
+        }
+
+        if (existingSnapshot.milestoneDescription !== currentSnapshot.milestoneDescription) {
+          errors.push(
+            `${pathLabel} changes milestone_description for ${milestoneId}; first seen at ${milestonePaths.get(milestoneId)}.`
+          );
+        }
+
+        if (existingSnapshot.milestoneCategory !== currentSnapshot.milestoneCategory) {
+          errors.push(
+            `${pathLabel} changes milestone_category for ${milestoneId}; first seen at ${milestonePaths.get(milestoneId)}.`
+          );
+        }
+
+        if (existingSnapshot.milestoneSortOrder !== currentSnapshot.milestoneSortOrder) {
+          errors.push(
+            `${pathLabel} changes milestone_sort_order for ${milestoneId}; first seen at ${milestonePaths.get(milestoneId)}.`
+          );
+        }
+      }
+    }
   });
 
-  activeEvidenceRows.forEach((row, index) => {
-    const pathLabel = `${SHEET_NAMES.evidenceEntries}[${index + 2}]`;
-    const capabilityId = toCellString(row["Capability ID"]);
-    const evidenceTitle = toCellString(row["Evidence Title"]);
-    const url = toCellString(row["URL"]);
-    const publishedDate = toCellString(row["Published Date"]);
-    const benchmarkId = toCellString(row["Benchmark ID"]);
+  summary.milestones = milestoneSnapshots.size;
 
-    if (!capabilityId) {
-      errors.push(`${pathLabel} is missing Capability ID.`);
-    } else if (!capabilityIdPaths.has(normalizeKey(capabilityId))) {
-      errors.push(`${pathLabel} references unknown Capability ID "${capabilityId}".`);
+  activeEvidenceRows.forEach((row, index) => {
+    const pathLabel = `${SHEET_NAMES.evidence}[${index + 2}]`;
+    const evidenceId = toCellString(row.evidence_id);
+    const questionId = toCellString(row.question_id);
+    const evidenceTitle = toCellString(row.evidence_title);
+    const sourceType = normalizeKey(row.source_type);
+    const sourceName = toCellString(row.source_name);
+    const url = toCellString(row.url);
+    const publishedDate = toCellString(row.published_date);
+
+    if (!evidenceId) {
+      errors.push(`${pathLabel} is missing evidence_id.`);
+    } else if (evidencePaths.has(evidenceId)) {
+      errors.push(`${pathLabel} duplicates evidence_id from ${evidencePaths.get(evidenceId)}.`);
+    } else {
+      evidencePaths.set(evidenceId, pathLabel);
+    }
+
+    if (!questionId) {
+      errors.push(`${pathLabel} is missing question_id.`);
+    } else if (!questionToMilestone.has(questionId)) {
+      errors.push(`${pathLabel} references unknown question_id "${questionId}".`);
     }
 
     if (!evidenceTitle) {
-      errors.push(`${pathLabel} is missing Evidence Title.`);
+      errors.push(`${pathLabel} is missing evidence_title.`);
+    }
+
+    if (!VALID_SOURCE_TYPES.has(sourceType)) {
+      errors.push(`${pathLabel} has an invalid source_type.`);
+    }
+
+    if (!sourceName) {
+      errors.push(`${pathLabel} is missing source_name.`);
     }
 
     if (!url) {
-      errors.push(`${pathLabel} is missing URL.`);
+      errors.push(`${pathLabel} is missing url.`);
     } else if (!isOptionalHttpUrl(url)) {
-      errors.push(`${pathLabel} has an invalid URL.`);
+      errors.push(`${pathLabel} has an invalid url.`);
     }
 
     if (publishedDate && !isDateString(publishedDate)) {
-      errors.push(`${pathLabel} has an invalid Published Date.`);
-    }
-
-    if (benchmarkId && !benchmarkIdPaths.has(normalizeKey(benchmarkId))) {
-      errors.push(`${pathLabel} references unknown Benchmark ID "${benchmarkId}".`);
+      errors.push(`${pathLabel} has an invalid published_date.`);
     }
   });
 
-  summary.dimensions = dimensionNames.size;
-
   if (summary.evidenceEntries === 0) {
     warnings.push(
-      `${SHEET_NAMES.evidenceEntries} currently has no published evidence rows. This is valid for the MVP until you start filling evidence entries manually.`
+      `${SHEET_NAMES.evidence} currently has no published evidence rows. This is valid for the MVP until you start filling evidence entries manually.`
     );
   }
 
@@ -419,9 +412,8 @@ export const validateWorkbook = (projectRoot) => {
       errors: [`Workbook not found: ${workbookPath}`],
       warnings: [],
       summary: {
-        dimensions: 0,
-        capabilities: 0,
-        benchmarks: 0,
+        milestones: 0,
+        questions: 0,
         evidenceEntries: 0
       }
     };
@@ -430,23 +422,19 @@ export const validateWorkbook = (projectRoot) => {
   const workbook = xlsx.readFile(workbookPath, {
     cellDates: false
   });
-  const capabilitySheet = workbook.Sheets[SHEET_NAMES.capabilityTracker];
-  const benchmarkSheet = workbook.Sheets[SHEET_NAMES.benchmarkRegistry];
-  const evidenceSheet = workbook.Sheets[SHEET_NAMES.evidenceEntries];
-  const capabilityHeaders = capabilitySheet ? getSheetHeaders(capabilitySheet) : [];
-  const benchmarkHeaders = benchmarkSheet ? getSheetHeaders(benchmarkSheet) : [];
+  const questionsSheet = workbook.Sheets[SHEET_NAMES.questions];
+  const evidenceSheet = workbook.Sheets[SHEET_NAMES.evidence];
+  const questionHeaders = questionsSheet ? getSheetHeaders(questionsSheet) : [];
   const evidenceHeaders = evidenceSheet ? getSheetHeaders(evidenceSheet) : [];
-  const capabilityRows = capabilitySheet ? readRows(capabilitySheet) : [];
-  const benchmarkRows = benchmarkSheet ? readRows(benchmarkSheet) : [];
+  const questionRows = questionsSheet ? readRows(questionsSheet) : [];
   const evidenceRows = evidenceSheet ? readRows(evidenceSheet) : [];
 
   const report = validateWorkbookData({
-    capabilityHeaders,
-    benchmarkHeaders,
+    questionHeaders,
     evidenceHeaders,
-    capabilityRows,
-    benchmarkRows,
+    questionRows,
     evidenceRows,
+    hasQuestionsSheet: Boolean(questionsSheet),
     hasEvidenceSheet: Boolean(evidenceSheet)
   });
 
@@ -459,7 +447,7 @@ export const validateWorkbook = (projectRoot) => {
 export const formatWorkbookValidationReport = ({ workbookPath, summary, warnings, errors }) => {
   const lines = [
     `Workbook: ${workbookPath}`,
-    `Validated ${summary.dimensions} dimensions, ${summary.capabilities} capabilities, ${summary.benchmarks} benchmarks, and ${summary.evidenceEntries} published evidence entries.`
+    `Validated ${summary.milestones} milestones, ${summary.questions} questions, and ${summary.evidenceEntries} published evidence entries.`
   ];
 
   if (warnings.length > 0) {
