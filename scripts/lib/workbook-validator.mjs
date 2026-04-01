@@ -14,11 +14,11 @@ export const SHEET_NAMES = {
 };
 
 export const QUESTIONS_HEADERS = [
-  "milestone_id",
-  "milestone_title",
-  "milestone_description",
-  "milestone_category",
-  "milestone_sort_order",
+  "dimension_id",
+  "dimension_title",
+  "dimension_description",
+  "dimension_category",
+  "dimension_sort_order",
   "question_id",
   "question_sort_order",
   "question_title",
@@ -190,11 +190,11 @@ export const validateWorkbookData = ({
   const evidenceRows = rawEvidenceRows.filter(isMeaningfulRow);
   const errors = [];
   const warnings = [];
-  const milestonePaths = new Map();
+  const dimensionPaths = new Map();
   const questionPaths = new Map();
-  const questionToMilestone = new Map();
+  const questionToDimension = new Map();
   const evidencePaths = new Map();
-  const milestoneSnapshots = new Map();
+  const dimensionSnapshots = new Map();
   const activeEvidenceRows = evidenceRows.filter((row) => isActiveEvidenceRow(row.active));
   const summary = {
     milestones: 0,
@@ -220,11 +220,11 @@ export const validateWorkbookData = ({
 
   questionRows.forEach((row, index) => {
     const pathLabel = `${SHEET_NAMES.questions}[${index + 2}]`;
-    const milestoneId = toCellString(row.milestone_id);
-    const milestoneTitle = toCellString(row.milestone_title);
-    const milestoneDescription = toCellString(row.milestone_description);
-    const milestoneCategory = toCellString(row.milestone_category);
-    const milestoneSortOrder = Number.parseInt(toCellString(row.milestone_sort_order), 10);
+    const dimensionId = toCellString(row.dimension_id);
+    const dimensionTitle = toCellString(row.dimension_title);
+    const dimensionDescription = toCellString(row.dimension_description);
+    const dimensionCategory = toCellString(row.dimension_category);
+    const dimensionSortOrder = Number.parseInt(toCellString(row.dimension_sort_order), 10);
     const questionId = toCellString(row.question_id);
     const questionSortOrder = Number.parseInt(toCellString(row.question_sort_order), 10);
     const questionTitle = toCellString(row.question_title);
@@ -238,24 +238,24 @@ export const validateWorkbookData = ({
       toCellString(row.recommended_source_2_url)
     ];
 
-    if (!milestoneId) {
-      errors.push(`${pathLabel} is missing milestone_id.`);
+    if (!dimensionId) {
+      errors.push(`${pathLabel} is missing dimension_id.`);
     }
 
-    if (!milestoneTitle) {
-      errors.push(`${pathLabel} is missing milestone_title.`);
+    if (!dimensionTitle) {
+      errors.push(`${pathLabel} is missing dimension_title.`);
     }
 
-    if (!milestoneDescription) {
-      errors.push(`${pathLabel} is missing milestone_description.`);
+    if (!dimensionDescription) {
+      errors.push(`${pathLabel} is missing dimension_description.`);
     }
 
-    if (!milestoneCategory) {
-      errors.push(`${pathLabel} is missing milestone_category.`);
+    if (!dimensionCategory) {
+      errors.push(`${pathLabel} is missing dimension_category.`);
     }
 
-    if (!Number.isInteger(milestoneSortOrder) || milestoneSortOrder < 1) {
-      errors.push(`${pathLabel} has an invalid milestone_sort_order.`);
+    if (!Number.isInteger(dimensionSortOrder) || dimensionSortOrder < 1) {
+      errors.push(`${pathLabel} has an invalid dimension_sort_order.`);
     }
 
     if (!questionId) {
@@ -264,7 +264,7 @@ export const validateWorkbookData = ({
       errors.push(`${pathLabel} duplicates question_id from ${questionPaths.get(questionId)}.`);
     } else {
       questionPaths.set(questionId, pathLabel);
-      questionToMilestone.set(questionId, milestoneId);
+      questionToDimension.set(questionId, dimensionId);
     }
 
     if (!Number.isInteger(questionSortOrder) || questionSortOrder < 1) {
@@ -305,47 +305,47 @@ export const validateWorkbookData = ({
       }
     });
 
-    if (milestoneId) {
-      const existingSnapshot = milestoneSnapshots.get(milestoneId);
+    if (dimensionId) {
+      const existingSnapshot = dimensionSnapshots.get(dimensionId);
       const currentSnapshot = {
-        milestoneTitle,
-        milestoneDescription,
-        milestoneCategory,
-        milestoneSortOrder
+        dimensionTitle,
+        dimensionDescription,
+        dimensionCategory,
+        dimensionSortOrder
       };
 
       if (!existingSnapshot) {
-        milestoneSnapshots.set(milestoneId, currentSnapshot);
-        milestonePaths.set(milestoneId, pathLabel);
+        dimensionSnapshots.set(dimensionId, currentSnapshot);
+        dimensionPaths.set(dimensionId, pathLabel);
       } else {
-        if (existingSnapshot.milestoneTitle !== currentSnapshot.milestoneTitle) {
+        if (existingSnapshot.dimensionTitle !== currentSnapshot.dimensionTitle) {
           errors.push(
-            `${pathLabel} changes milestone_title for ${milestoneId}; first seen at ${milestonePaths.get(milestoneId)}.`
+            `${pathLabel} changes dimension_title for ${dimensionId}; first seen at ${dimensionPaths.get(dimensionId)}.`
           );
         }
 
-        if (existingSnapshot.milestoneDescription !== currentSnapshot.milestoneDescription) {
+        if (existingSnapshot.dimensionDescription !== currentSnapshot.dimensionDescription) {
           errors.push(
-            `${pathLabel} changes milestone_description for ${milestoneId}; first seen at ${milestonePaths.get(milestoneId)}.`
+            `${pathLabel} changes dimension_description for ${dimensionId}; first seen at ${dimensionPaths.get(dimensionId)}.`
           );
         }
 
-        if (existingSnapshot.milestoneCategory !== currentSnapshot.milestoneCategory) {
+        if (existingSnapshot.dimensionCategory !== currentSnapshot.dimensionCategory) {
           errors.push(
-            `${pathLabel} changes milestone_category for ${milestoneId}; first seen at ${milestonePaths.get(milestoneId)}.`
+            `${pathLabel} changes dimension_category for ${dimensionId}; first seen at ${dimensionPaths.get(dimensionId)}.`
           );
         }
 
-        if (existingSnapshot.milestoneSortOrder !== currentSnapshot.milestoneSortOrder) {
+        if (existingSnapshot.dimensionSortOrder !== currentSnapshot.dimensionSortOrder) {
           errors.push(
-            `${pathLabel} changes milestone_sort_order for ${milestoneId}; first seen at ${milestonePaths.get(milestoneId)}.`
+            `${pathLabel} changes dimension_sort_order for ${dimensionId}; first seen at ${dimensionPaths.get(dimensionId)}.`
           );
         }
       }
     }
   });
 
-  summary.milestones = milestoneSnapshots.size;
+  summary.milestones = dimensionSnapshots.size;
 
   activeEvidenceRows.forEach((row, index) => {
     const pathLabel = `${SHEET_NAMES.evidence}[${index + 2}]`;
@@ -367,7 +367,7 @@ export const validateWorkbookData = ({
 
     if (!questionId) {
       errors.push(`${pathLabel} is missing question_id.`);
-    } else if (!questionToMilestone.has(questionId)) {
+    } else if (!questionToDimension.has(questionId)) {
       errors.push(`${pathLabel} references unknown question_id "${questionId}".`);
     }
 
@@ -447,7 +447,7 @@ export const validateWorkbook = (projectRoot) => {
 export const formatWorkbookValidationReport = ({ workbookPath, summary, warnings, errors }) => {
   const lines = [
     `Workbook: ${workbookPath}`,
-    `Validated ${summary.milestones} milestones, ${summary.questions} questions, and ${summary.evidenceEntries} published evidence entries.`
+    `Validated ${summary.milestones} dimensions, ${summary.questions} questions, and ${summary.evidenceEntries} published evidence entries.`
   ];
 
   if (warnings.length > 0) {

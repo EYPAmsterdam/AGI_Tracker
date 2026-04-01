@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ConfidenceBadge, ProofTypeBadge, StatusBadge } from "@/components/badges";
+import { FeedbackLink } from "@/components/feedback-link";
 import { ProgressMeter } from "@/components/progress-meter";
 import { cn } from "@/lib/cn";
 import { formatLongDate } from "@/lib/format";
@@ -107,9 +108,17 @@ export const MilestoneRowPanel = ({
 
         <aside className="rounded-[1.35rem] border border-line/80 bg-white/88 p-4 shadow-panel md:rounded-[1.6rem] md:p-5">
           <div className="space-y-3.5 border-b border-line/70 pb-4 md:space-y-4 md:pb-5">
-            <div className="flex flex-wrap gap-1.5 md:gap-2">
-              <StatusBadge status={selectedSubQuestion.status} />
-              <ConfidenceBadge confidence={selectedSubQuestion.confidence} />
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex flex-wrap gap-1.5 md:gap-2">
+                <StatusBadge status={selectedSubQuestion.status} />
+                <ConfidenceBadge confidence={selectedSubQuestion.confidence} />
+              </div>
+              <FeedbackLink
+                dimensionId={milestone.id}
+                questionId={selectedSubQuestion.id}
+                source="dimension-board"
+                className="shrink-0"
+              />
             </div>
             <div className="space-y-2">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.22em]">
@@ -225,7 +234,7 @@ export const MilestoneRowPanel = ({
             href={`/milestones/${milestone.id}`}
             className="mt-4 inline-flex rounded-full border border-ink-900 bg-ink-900 px-3.5 py-2 text-xs font-medium text-paper-50 transition hover:bg-ink-800 md:mt-5 md:px-4 md:text-sm"
           >
-            Open full milestone detail
+            Open full dimension detail
           </Link>
         </aside>
       </div>

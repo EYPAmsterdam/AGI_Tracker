@@ -220,7 +220,7 @@ export const MilestoneBoard = ({ milestones }: { milestones: Milestone[] }) => {
 
                     <div className="mt-3 flex items-center justify-between gap-3 text-xs text-ink-700 md:mt-4 md:text-sm">
                       <span>
-                        {metCount}/{milestone.subQuestions.length} sub-questions met
+                        {metCount}/{milestone.subQuestions.length} questions met
                       </span>
                       <span className="font-medium text-ink-900">
                         {isOpen ? "Close detail" : "Open detail"}

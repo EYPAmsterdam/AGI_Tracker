@@ -16,11 +16,11 @@ const legacyMilestones = loadLegacyMilestones(projectRoot);
 
 const questionsRows = legacyMilestones.flatMap(({ content }) =>
   content.subQuestions.map((subQuestion, questionIndex) => ({
-    milestone_id: content.id,
-    milestone_title: content.title,
-    milestone_description: content.description,
-    milestone_category: content.category,
-    milestone_sort_order: content.sortOrder,
+    dimension_id: content.id,
+    dimension_title: content.title,
+    dimension_description: content.description,
+    dimension_category: content.category,
+    dimension_sort_order: content.sortOrder,
     question_id: subQuestion.id,
     question_sort_order: questionIndex + 1,
     question_title: subQuestion.title,
@@ -40,11 +40,11 @@ const questionsRows = legacyMilestones.flatMap(({ content }) =>
 );
 
 const questionsColumns = [
-  { header: "milestone_id", key: "milestone_id", width: 22 },
-  { header: "milestone_title", key: "milestone_title", width: 30 },
-  { header: "milestone_description", key: "milestone_description", width: 48 },
-  { header: "milestone_category", key: "milestone_category", width: 22 },
-  { header: "milestone_sort_order", key: "milestone_sort_order", width: 16 },
+  { header: "dimension_id", key: "dimension_id", width: 22 },
+  { header: "dimension_title", key: "dimension_title", width: 30 },
+  { header: "dimension_description", key: "dimension_description", width: 48 },
+  { header: "dimension_category", key: "dimension_category", width: 22 },
+  { header: "dimension_sort_order", key: "dimension_sort_order", width: 16 },
   { header: "question_id", key: "question_id", width: 28 },
   { header: "question_sort_order", key: "question_sort_order", width: 16 },
   { header: "question_title", key: "question_title", width: 44 },
@@ -80,7 +80,7 @@ const evidenceColumns = [
 ];
 
 const wrapColumns = new Set([
-  "milestone_description",
+  "dimension_description",
   "question_title",
   "question_description",
   "rationale",
@@ -100,11 +100,11 @@ const wrapColumns = new Set([
 
 const headerGroups = {
   milestone: new Set([
-    "milestone_id",
-    "milestone_title",
-    "milestone_description",
-    "milestone_category",
-    "milestone_sort_order"
+    "dimension_id",
+    "dimension_title",
+    "dimension_description",
+    "dimension_category",
+    "dimension_sort_order"
   ]),
   question: new Set([
     "question_id",
@@ -314,8 +314,8 @@ fs.mkdirSync(path.dirname(workbookPath), { recursive: true });
 await workbook.xlsx.writeFile(workbookPath);
 
 console.log(`Workbook rebuilt: ${workbookPath}`);
-console.log(`Legacy milestone source: ${legacyDirectory}`);
+console.log(`Legacy tracker source: ${legacyDirectory}`);
 console.log(
-  `Seeded ${legacyMilestones.length} milestones and ${questionsRows.length} question rows into ${SHEET_NAMES.questions}.`
+  `Seeded ${legacyMilestones.length} dimensions and ${questionsRows.length} question rows into ${SHEET_NAMES.questions}.`
 );
 console.log(`Created empty ${SHEET_NAMES.evidence} sheet for manual evidence entry.`);

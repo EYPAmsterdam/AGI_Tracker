@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ConfidenceBadge, ProofTypeBadge, StatusBadge } from "@/components/badges";
+import { FeedbackLink } from "@/components/feedback-link";
 import { cn } from "@/lib/cn";
 import { formatLongDate } from "@/lib/format";
 import { EVALUATION_MODE_LABELS } from "@/lib/milestone-utils";
@@ -64,7 +65,7 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
               </span>
             </p>
             <p>
-              Sub-questions{" "}
+              Questions{" "}
               <span className="font-medium text-ink-900">
                 {milestone.subQuestions.length}
               </span>
@@ -119,9 +120,17 @@ export const MilestoneDetailView = ({ milestone }: { milestone: Milestone }) => 
 
         <aside className="rounded-[1.75rem] border border-line/80 bg-white/85 p-6 shadow-panel">
           <div className="border-b border-line/70 pb-5">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink-600">
-              Question panel
-            </p>
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink-600">
+                Question panel
+              </p>
+              <FeedbackLink
+                dimensionId={milestone.id}
+                questionId={selectedSubQuestion.id}
+                source="dimension-detail"
+                className="shrink-0"
+              />
+            </div>
             <h2 className="mt-2 font-serif text-2xl text-ink-900">
               {selectedSubQuestion.title}
             </h2>

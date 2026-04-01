@@ -6,8 +6,9 @@ import { cn } from "@/lib/cn";
 
 const navigation = [
   { href: "/", label: "Overview" },
-  { href: "/milestones", label: "Milestones" },
-  { href: "/evidence", label: "Evidence" }
+  { href: "/milestones", label: "Dimensions" },
+  { href: "/evidence", label: "Evidence" },
+  { href: "/community", label: "Community" }
 ];
 
 export const SiteHeader = () => {

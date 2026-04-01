@@ -1,3 +1,4 @@
+import { FeedbackLink } from "@/components/feedback-link";
 import { MethodologyNote } from "@/components/methodology-note";
 import { MilestonesExplorer } from "@/components/milestones-explorer";
 import { SectionHeading } from "@/components/section-heading";
@@ -10,9 +11,10 @@ export default function MilestonesPage() {
   return (
     <div className="space-y-8">
       <SectionHeading
-        eyebrow="Milestones"
-        title="Full milestone registry"
-        description="Filter the milestone set by status, confidence, and category. Each result opens into a dedicated detail view with sub-question evidence and optional recommended sources."
+        eyebrow="Dimensions"
+        title="Full dimension registry"
+        description="Filter the dimension set by status, confidence, and category. Each result opens into a dedicated detail view with question evidence and optional recommended sources."
+        actions={<FeedbackLink source="dimensions-page" />}
       />
       <MethodologyNote />
       <MilestonesExplorer milestones={milestones} categories={milestoneCategories} />

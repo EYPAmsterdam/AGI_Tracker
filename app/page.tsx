@@ -1,3 +1,5 @@
+import { CommunitySnapshot } from "@/components/community-snapshot";
+import { FeedbackLink } from "@/components/feedback-link";
 import { MethodologyNote } from "@/components/methodology-note";
 import { MilestoneBoard } from "@/components/milestone-board";
 import { RecentUpdatesPanel } from "@/components/recent-updates-panel";
@@ -23,10 +25,10 @@ export default function HomePage() {
                 Overview
               </p>
               <h1 className="max-w-4xl font-serif text-4xl leading-[0.98] tracking-tight text-ink-900 md:text-6xl md:leading-none">
-                AGI tracked as milestone claims.
+                AGI tracked as dimension claims.
               </h1>
               <p className="max-w-3xl text-base leading-7 text-ink-700 md:text-lg md:leading-8">
-                This tracker asks what needs to be true for AI to count as AGI, then breaks each milestone into lower-level questions backed by curated evidence and confidence judgments.
+                This tracker asks what needs to be true for AI to count as AGI, then breaks each dimension into lower-level questions backed by curated evidence and confidence judgments.
               </p>
             </div>
             <div className="flex flex-wrap gap-2 md:gap-3">
@@ -34,7 +36,7 @@ export default function HomePage() {
                 Last updated {formatLongDate(latestUpdatedAt)}
               </span>
               <span className="rounded-full border border-line bg-paper-50 px-3 py-1.5 text-xs font-medium text-ink-700 md:px-4 md:py-2 md:text-sm">
-                {milestones.length} top-level milestones
+                {milestones.length} top-level dimensions
               </span>
               <span className="rounded-full border border-line bg-paper-50 px-3 py-1.5 text-xs font-medium text-ink-700 md:px-4 md:py-2 md:text-sm">
                 {stats.evidenceCount} published evidence items
@@ -53,14 +55,16 @@ export default function HomePage() {
       <section className="space-y-6">
         <SectionHeading
           eyebrow="Tracker board"
-          title="Implementation milestones"
-          description="Each card represents a high-level AGI statement. Open a card to inspect the current rationale, sub-question status, and published evidence."
+          title="Implementation dimensions"
+          description="Each card represents a high-level AGI statement. Open a card to inspect the current rationale, question status, and published evidence."
+          actions={<FeedbackLink source="overview-section" />}
         />
         <MilestoneBoard milestones={milestones} />
       </section>
 
-      <section>
+      <section className="grid gap-4 md:gap-6 xl:grid-cols-[1fr_1fr]">
         <RecentUpdatesPanel milestones={recentMilestones} />
+        <CommunitySnapshot />
       </section>
     </div>
   );

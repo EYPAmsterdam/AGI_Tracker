@@ -39,10 +39,10 @@ export const TrackerOverviewPanel = ({
               Tracker overview
             </p>
             <h2 className="font-serif text-[2rem] leading-[1.02] tracking-tight text-ink-900 md:text-[2.4rem] md:leading-none">
-              One clean snapshot of the milestone progression.
+              One clean snapshot of the dimension progression.
             </h2>
             <p className="max-w-2xl text-[13px] leading-6 text-ink-700 md:text-sm md:leading-7">
-              The board summarizes high-level milestone status, published evidence volume, and
+              The board summarizes high-level dimension status, published evidence volume, and
               overall progress across the tracker.
             </p>
           </div>
@@ -53,7 +53,7 @@ export const TrackerOverviewPanel = ({
                 Status distribution
               </p>
               <p className="text-[11px] uppercase tracking-[0.16em] text-ink-600 md:text-xs md:tracking-[0.18em]">
-                {milestoneCount} milestones
+                {milestoneCount} dimensions
               </p>
             </div>
 
@@ -119,7 +119,7 @@ export const TrackerOverviewPanel = ({
           <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
             <div className="rounded-[1.2rem] border border-line/80 bg-paper-50/68 p-3.5 md:rounded-[1.45rem] md:p-4">
               <p className="text-[11px] uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.2em]">
-                Milestones tracked
+                Dimensions tracked
               </p>
               <p className="mt-2 text-3xl font-semibold text-ink-900 md:mt-3 md:text-4xl">{milestoneCount}</p>
             </div>

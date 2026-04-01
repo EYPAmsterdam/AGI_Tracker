@@ -51,7 +51,7 @@ export const EvidenceExplorer = ({
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           className={cn(fieldClass, "lg:col-span-2")}
-          placeholder="Search source, milestone, sub-question, or evidence text"
+          placeholder="Search source, dimension, question, or evidence text"
         />
         <select value={type} onChange={(event) => setType(event.target.value)} className={fieldClass}>
           <option value="all">All proof types</option>
@@ -69,7 +69,7 @@ export const EvidenceExplorer = ({
           }}
           className={fieldClass}
         >
-          <option value="all">All milestones</option>
+          <option value="all">All dimensions</option>
           {milestones.map((milestone) => (
             <option key={milestone.id} value={milestone.id}>
               {milestone.title}
@@ -86,7 +86,7 @@ export const EvidenceExplorer = ({
           onChange={(event) => setSubQuestionId(event.target.value)}
           className={fieldClass}
         >
-          <option value="all">All sub-questions</option>
+          <option value="all">All questions</option>
           {(selectedMilestone?.subQuestions ?? milestones.flatMap((milestone) => milestone.subQuestions)).map(
             (subQuestion) => (
               <option key={subQuestion.id} value={subQuestion.id}>

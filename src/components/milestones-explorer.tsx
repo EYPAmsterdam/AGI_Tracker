@@ -66,7 +66,7 @@ export const MilestonesExplorer = ({
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           className={cn(fieldClass, "lg:col-span-2")}
-          placeholder="Search milestones, descriptions, or sub-questions"
+          placeholder="Search dimensions, descriptions, or questions"
         />
         <select
           value={status}
@@ -104,7 +104,7 @@ export const MilestonesExplorer = ({
         </select>
         <div className="lg:col-span-4">
           <p className="text-xs uppercase tracking-[0.18em] text-ink-600">
-            {filteredMilestones.length} milestones shown
+            {filteredMilestones.length} dimensions shown
           </p>
         </div>
         <select

@@ -12,12 +12,12 @@ const createValidWorkbookData = () => ({
   hasEvidenceSheet: true,
   questionRows: [
     {
-      milestone_id: "task-understanding",
-      milestone_title: "AI can understand what a task is really asking",
-      milestone_description:
+      dimension_id: "task-understanding",
+      dimension_title: "AI can understand what a task is really asking",
+      dimension_description:
         "An AI system can recover intent from messy instructions, isolate the real job to be done, and frame the task correctly before acting.",
-      milestone_category: "Task understanding",
-      milestone_sort_order: "1",
+      dimension_category: "Task understanding",
+      dimension_sort_order: "1",
       question_id: "task-understanding-goal-inference",
       question_sort_order: "1",
       question_title: "Can it infer the real goal from messy instructions?",

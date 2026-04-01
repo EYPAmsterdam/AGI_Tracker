@@ -28,11 +28,11 @@ const SHEET_NAMES = {
 } as const;
 
 const QUESTIONS_HEADERS = [
-  "milestone_id",
-  "milestone_title",
-  "milestone_description",
-  "milestone_category",
-  "milestone_sort_order",
+  "dimension_id",
+  "dimension_title",
+  "dimension_description",
+  "dimension_category",
+  "dimension_sort_order",
   "question_id",
   "question_sort_order",
   "question_title",
@@ -75,11 +75,11 @@ type WorkbookValidationResult = {
 };
 
 type QuestionRow = {
-  milestoneId: string;
-  milestoneTitle: string;
-  milestoneDescription: string;
-  milestoneCategory: string;
-  milestoneSortOrder: number;
+  dimensionId: string;
+  dimensionTitle: string;
+  dimensionDescription: string;
+  dimensionCategory: string;
+  dimensionSortOrder: number;
   questionId: string;
   questionSortOrder: number;
   questionTitle: string;
@@ -330,11 +330,11 @@ const getWorkbookUpdatedAt = () => fs.statSync(workbookPath).mtime.toISOString()
 const buildQuestionRows = (sheet: xlsx.WorkSheet) =>
   readRows(sheet)
     .map((row): QuestionRow => ({
-      milestoneId: toCellString(row.milestone_id),
-      milestoneTitle: toCellString(row.milestone_title),
-      milestoneDescription: toCellString(row.milestone_description),
-      milestoneCategory: toCellString(row.milestone_category),
-      milestoneSortOrder: toPositiveInteger(toCellString(row.milestone_sort_order)),
+      dimensionId: toCellString(row.dimension_id),
+      dimensionTitle: toCellString(row.dimension_title),
+      dimensionDescription: toCellString(row.dimension_description),
+      dimensionCategory: toCellString(row.dimension_category),
+      dimensionSortOrder: toPositiveInteger(toCellString(row.dimension_sort_order)),
       questionId: toCellString(row.question_id),
       questionSortOrder: toPositiveInteger(toCellString(row.question_sort_order)),
       questionTitle: toCellString(row.question_title),
@@ -351,7 +351,7 @@ const buildQuestionRows = (sheet: xlsx.WorkSheet) =>
       recommendedSource2Url: toCellString(row.recommended_source_2_url),
       recommendedSource2Note: toCellString(row.recommended_source_2_note)
     }))
-    .filter((row) => row.milestoneId && row.questionId && row.questionTitle);
+    .filter((row) => row.dimensionId && row.questionId && row.questionTitle);
 
 const buildEvidenceRows = (sheet: xlsx.WorkSheet) =>
   readRows(sheet)
@@ -450,8 +450,8 @@ export const loadWorkbookMilestoneContents = (): WorkbookValidationResult => {
   );
 
   const questionRows = buildQuestionRows(questionsSheet).sort((left, right) => {
-    if (left.milestoneSortOrder !== right.milestoneSortOrder) {
-      return left.milestoneSortOrder - right.milestoneSortOrder;
+    if (left.dimensionSortOrder !== right.dimensionSortOrder) {
+      return left.dimensionSortOrder - right.dimensionSortOrder;
     }
 
     if (left.questionSortOrder !== right.questionSortOrder) {
@@ -484,19 +484,19 @@ export const loadWorkbookMilestoneContents = (): WorkbookValidationResult => {
   >();
 
   for (const questionRow of questionRows) {
-    const existingGroup = milestoneGroups.get(questionRow.milestoneId);
+    const existingGroup = milestoneGroups.get(questionRow.dimensionId);
 
     if (existingGroup) {
       existingGroup.questions.push(questionRow);
       continue;
     }
 
-    milestoneGroups.set(questionRow.milestoneId, {
-      milestoneId: questionRow.milestoneId,
-      milestoneTitle: questionRow.milestoneTitle,
-      milestoneDescription: questionRow.milestoneDescription,
-      milestoneCategory: questionRow.milestoneCategory,
-      milestoneSortOrder: questionRow.milestoneSortOrder,
+    milestoneGroups.set(questionRow.dimensionId, {
+      milestoneId: questionRow.dimensionId,
+      milestoneTitle: questionRow.dimensionTitle,
+      milestoneDescription: questionRow.dimensionDescription,
+      milestoneCategory: questionRow.dimensionCategory,
+      milestoneSortOrder: questionRow.dimensionSortOrder,
       questions: [questionRow]
     });
   }
@@ -538,7 +538,7 @@ export const loadWorkbookMilestoneContents = (): WorkbookValidationResult => {
     });
 
   if (milestoneContents.length === 0) {
-    warnings.push("No milestone content could be built from the Questions sheet.");
+    warnings.push("No dimension content could be built from the Questions sheet.");
   }
 
   return {

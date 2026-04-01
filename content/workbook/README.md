@@ -5,15 +5,15 @@ The published tracker now reads from `AGI benchmark mapping.xlsx` at build time.
 ## Sheets
 
 - `Questions`
-  This is the main editing sheet. Each row is one tracker sub-question, with the parent milestone fields repeated so the hierarchy stays editable in one place.
+  This is the main editing sheet. Each row is one tracker question, with the parent dimension fields repeated so the hierarchy stays editable in one place.
 - `Evidence`
-  This is the published evidence sheet. Each row is one evidence item linked to a sub-question by `question_id`.
+  This is the published evidence sheet. Each row is one evidence item linked to a question by `question_id`.
 
 There are no other workbook sheets in the MVP.
 
 ## Questions Columns
 
-- `milestone_id`, `milestone_title`, `milestone_description`, `milestone_category`, `milestone_sort_order`
+- `dimension_id`, `dimension_title`, `dimension_description`, `dimension_category`, `dimension_sort_order`
 - `question_id`, `question_sort_order`, `question_title`, `question_description`
 - `status`, `confidence`, `rationale`, `evaluation_modes`, `assessment_updated_at`
 - `recommended_source_1_title`, `recommended_source_1_url`, `recommended_source_1_note`
@@ -36,7 +36,7 @@ There are no other workbook sheets in the MVP.
 ## Commands
 
 - `npm run setup-workbook`
-  Rebuilds the workbook from the archived legacy milestone JSON and writes the simplified two-sheet workbook.
+  Rebuilds the workbook from the archived legacy tracker JSON and writes the simplified two-sheet workbook.
 - `npm run validate-content`
   Validates workbook structure, IDs, URLs, dates, and evidence references.
 - `npm run build`
