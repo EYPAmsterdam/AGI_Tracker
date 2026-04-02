@@ -1,7 +1,6 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
-import { ConfidenceBadge, StatusBadge } from "@/components/badges";
 import { MilestoneRowPanel } from "@/components/milestone-row-panel";
 import { ProgressMeter } from "@/components/progress-meter";
 import { cn } from "@/lib/cn";
@@ -200,21 +199,23 @@ export const MilestoneBoard = ({ milestones }: { milestones: Milestone[] }) => {
                         : "border-line/80 hover:-translate-y-0.5 hover:border-ink-700/40"
                     )}
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <p className="max-w-[12rem] font-serif text-lg leading-tight text-ink-900 md:max-w-[16rem] md:text-xl">
-                        {milestone.title}
-                      </p>
-                      <span className="rounded-full border border-line bg-paper-50 px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-ink-700 md:px-2.5 md:text-xs md:tracking-[0.18em]">
-                        {milestone.category}
+                    <div className="grid min-h-[5.75rem] grid-cols-[minmax(7.5rem,0.38fr)_1px_minmax(0,0.62fr)] items-stretch gap-3 md:min-h-[6rem] md:gap-4">
+                      <div className="flex min-w-0 items-start">
+                        <p className="max-w-full break-words font-serif text-[1.22rem] leading-tight tracking-tight text-ink-900 md:text-[1.20rem] xl:text-[1.22rem]">
+                          {milestone.category}
+                        </p>
+                      </div>
+                      <span aria-hidden className="flex items-center justify-center">
+                        <span className="h-[72%] w-px rounded-full bg-line/60" />
                       </span>
+                      <div className="flex min-w-0 items-start">
+                        <p className="text-[14px] leading-6 text-ink-800 md:text-[15px] md:leading-6">
+                          {milestone.title}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="mt-3 flex flex-wrap gap-1.5 md:mt-4 md:gap-2">
-                      <StatusBadge status={milestone.status} />
-                      <ConfidenceBadge confidence={milestone.confidence} />
-                    </div>
-
-                    <div className="mt-4 md:mt-5">
+                    <div className="mt-0 md:mt-0">
                       <ProgressMeter value={milestone.progressPercent} compact />
                     </div>
 

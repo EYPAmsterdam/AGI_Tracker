@@ -6,6 +6,7 @@ interface TrackerOverviewPanelProps {
     notMet: number;
     unassessed: number;
     progressAverage: number;
+    trackedMilestoneCount: number;
     evidenceCount: number;
   };
 }
@@ -80,14 +81,14 @@ export const TrackerOverviewPanel = ({
 
             <div className="mt-3 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4 md:mt-4 md:gap-3">
               <div className="rounded-[1rem] border border-line/70 bg-white/78 px-3 py-2.5 md:rounded-[1.2rem] md:px-4 md:py-3">
-                <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.16em] text-ink-600 md:gap-2 md:text-xs md:tracking-[0.18em]">
+                <p className="flex min-h-[2.5rem] items-start gap-1.5 text-[11px] uppercase tracking-[0.16em] text-ink-600 md:min-h-[2.75rem] md:gap-2 md:text-xs md:tracking-[0.18em]">
                   <span className="h-2 w-2 rounded-full bg-sage" />
                   Met
                 </p>
                 <p className="mt-1.5 text-xl font-semibold text-ink-900 md:mt-2 md:text-2xl">{stats.met}</p>
               </div>
               <div className="rounded-[1rem] border border-line/70 bg-white/78 px-3 py-2.5 md:rounded-[1.2rem] md:px-4 md:py-3">
-                <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.16em] text-ink-600 md:gap-2 md:text-xs md:tracking-[0.18em]">
+                <p className="flex min-h-[2.5rem] items-start gap-1.5 text-[11px] uppercase tracking-[0.16em] text-ink-600 md:min-h-[2.75rem] md:gap-2 md:text-xs md:tracking-[0.18em]">
                   <span className="h-2 w-2 rounded-full bg-amber" />
                   In progress
                 </p>
@@ -96,14 +97,14 @@ export const TrackerOverviewPanel = ({
                 </p>
               </div>
               <div className="rounded-[1rem] border border-line/70 bg-white/78 px-3 py-2.5 md:rounded-[1.2rem] md:px-4 md:py-3">
-                <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.16em] text-ink-600 md:gap-2 md:text-xs md:tracking-[0.18em]">
+                <p className="flex min-h-[2.5rem] items-start gap-1.5 text-[11px] uppercase tracking-[0.16em] text-ink-600 md:min-h-[2.75rem] md:gap-2 md:text-xs md:tracking-[0.18em]">
                   <span className="h-2 w-2 rounded-full bg-rust" />
                   Not met
                 </p>
                 <p className="mt-1.5 text-xl font-semibold text-ink-900 md:mt-2 md:text-2xl">{stats.notMet}</p>
               </div>
               <div className="rounded-[1rem] border border-line/70 bg-white/78 px-3 py-2.5 md:rounded-[1.2rem] md:px-4 md:py-3">
-                <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.16em] text-ink-600 md:gap-2 md:text-xs md:tracking-[0.18em]">
+                <p className="flex min-h-[2.5rem] items-start gap-1.5 text-[11px] uppercase tracking-[0.16em] text-ink-600 md:min-h-[2.75rem] md:gap-2 md:text-xs md:tracking-[0.18em]">
                   <span className="h-2 w-2 rounded-full bg-paper-100 ring-1 ring-line" />
                   Unassessed
                 </p>
@@ -119,24 +120,26 @@ export const TrackerOverviewPanel = ({
           <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
             <div className="rounded-[1.2rem] border border-line/80 bg-paper-50/68 p-3.5 md:rounded-[1.45rem] md:p-4">
               <p className="text-[11px] uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.2em]">
-                Dimensions tracked
-              </p>
-              <p className="mt-2 text-3xl font-semibold text-ink-900 md:mt-3 md:text-4xl">{milestoneCount}</p>
-            </div>
-            <div className="rounded-[1.2rem] border border-line/80 bg-paper-50/68 p-3.5 md:rounded-[1.45rem] md:p-4">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.2em]">
-                Evidence items
-              </p>
-              <p className="mt-2 text-3xl font-semibold text-ink-900 md:mt-3 md:text-4xl">
-                {stats.evidenceCount}
-              </p>
-            </div>
-            <div className="rounded-[1.2rem] border border-line/80 bg-paper-50/68 p-3.5 md:rounded-[1.45rem] md:p-4">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.2em]">
                 Average progress
               </p>
               <p className="mt-2 text-3xl font-semibold text-ink-900 md:mt-3 md:text-4xl">
                 {stats.progressAverage}%
+              </p>
+            </div>
+            <div className="rounded-[1.2rem] border border-line/80 bg-paper-50/68 p-3.5 md:rounded-[1.45rem] md:p-4">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.2em]">
+                Dimensions
+              </p>
+              <p className="mt-2 text-3xl font-semibold text-ink-900 md:mt-3 md:text-4xl">
+                {milestoneCount}
+              </p>
+            </div>
+            <div className="rounded-[1.2rem] border border-line/80 bg-paper-50/68 p-3.5 md:rounded-[1.45rem] md:p-4">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-ink-600 md:text-xs md:tracking-[0.2em]">
+                Milestones
+              </p>
+              <p className="mt-2 text-3xl font-semibold text-ink-900 md:mt-3 md:text-4xl">
+                {stats.trackedMilestoneCount}
               </p>
             </div>
           </div>

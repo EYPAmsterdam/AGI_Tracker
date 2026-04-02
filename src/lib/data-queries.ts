@@ -29,6 +29,10 @@ export const getOverviewStats = () => {
     (milestones.reduce((sum, milestone) => sum + milestone.progressPercent, 0) /
       milestoneCount)
   );
+  const trackedMilestoneCount = milestones.reduce(
+    (sum, milestone) => sum + milestone.subQuestions.length,
+    0
+  );
   const subQuestionCoverage = milestones.reduce(
     (sum, milestone) =>
       sum +
@@ -45,6 +49,7 @@ export const getOverviewStats = () => {
     notMet,
     unassessed,
     progressAverage,
+    trackedMilestoneCount,
     evidenceCount: evidenceRecords.length,
     subQuestionCoverage
   };
