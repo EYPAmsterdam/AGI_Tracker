@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navigation = [
   { href: "/", label: "Overview" },
@@ -30,29 +31,32 @@ export const SiteHeader = () => {
             </p>
           </div>
         </Link>
-        <nav className="flex flex-wrap gap-1.5 md:gap-2">
-          {navigation.map((item) => {
-            const active =
-              item.href === "/"
-                ? pathname === item.href
-                : pathname === item.href || pathname.startsWith(`${item.href}/`);
+        <div className="flex flex-wrap items-center gap-1.5 md:gap-2">
+          <nav className="flex flex-wrap gap-1.5 md:gap-2">
+            {navigation.map((item) => {
+              const active =
+                item.href === "/"
+                  ? pathname === item.href
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "rounded-full border px-3 py-1.5 text-xs font-medium transition md:px-4 md:py-2 md:text-sm",
-                  active
-                    ? "border-ink-900 bg-ink-900 text-paper-50"
-                    : "border-line bg-white/60 text-ink-700 hover:border-ink-700 hover:text-ink-900"
-                )}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "rounded-full border px-3 py-1.5 text-xs font-medium transition md:px-4 md:py-2 md:text-sm",
+                    active
+                      ? "border-ink-900 bg-ink-900 text-paper-50"
+                      : "border-line bg-white/60 text-ink-700 hover:border-ink-700 hover:text-ink-900"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );

@@ -4,6 +4,54 @@
 
 :root {
   color-scheme: light;
+  --paper-50: 247 244 238;
+  --paper-100: 239 232 220;
+  --paper-200: 221 210 193;
+  --ink-900: 19 24 29;
+  --ink-800: 29 37 45;
+  --ink-700: 51 65 80;
+  --ink-600: 77 94 113;
+  --line: 211 200 184;
+  --sage: 50 101 83;
+  --amber: 151 115 61;
+  --rust: 155 74 62;
+  --sky: 53 82 107;
+  --surface-strong: 255 255 255;
+  --selection-rgb: 53 82 107;
+  --focus-rgb: 53 82 107;
+  --shadow-panel-rgb: 19 24 29;
+  --shadow-inset-rgb: 255 255 255;
+  --lattice-rgb: 51 65 80;
+  --page-atmosphere:
+    radial-gradient(circle_at_top_left, rgba(53, 82, 107, 0.18), transparent 40%),
+    radial-gradient(circle_at_top_right, rgba(50, 101, 83, 0.15), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7), transparent);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --paper-50: 17 21 25;
+  --paper-100: 27 32 37;
+  --paper-200: 39 46 53;
+  --ink-900: 241 235 225;
+  --ink-800: 223 215 204;
+  --ink-700: 189 180 168;
+  --ink-600: 148 141 132;
+  --line: 93 88 81;
+  --sage: 102 159 136;
+  --amber: 192 155 92;
+  --rust: 191 109 97;
+  --sky: 140 176 210;
+  --surface-strong: 33 38 44;
+  --selection-rgb: 120 156 190;
+  --focus-rgb: 120 156 190;
+  --shadow-panel-rgb: 0 0 0;
+  --shadow-inset-rgb: 255 255 255;
+  --lattice-rgb: 228 219 206;
+  --page-atmosphere:
+    radial-gradient(circle_at_top_left, rgba(140, 176, 210, 0.18), transparent 42%),
+    radial-gradient(circle_at_top_right, rgba(102, 159, 136, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(10, 12, 15, 0.42), transparent);
 }
 
 html {
@@ -11,8 +59,8 @@ html {
 }
 
 body {
-  background: #f7f4ee;
-  color: #13181d;
+  background: rgb(var(--paper-50));
+  color: rgb(var(--ink-900));
   font-family: "IBM Plex Sans", "Segoe UI Variable Text", "Segoe UI", sans-serif;
 }
 
@@ -24,7 +72,7 @@ h4 {
 }
 
 ::selection {
-  background: rgba(53, 82, 107, 0.18);
+  background: rgb(var(--selection-rgb) / 0.22);
 }
 
 a,
@@ -43,8 +91,52 @@ a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid rgba(53, 82, 107, 0.45);
+  outline: 2px solid rgb(var(--focus-rgb) / 0.45);
   outline-offset: 2px;
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: rgb(var(--surface-strong)) !important;
+}
+
+[data-theme="dark"] .bg-white\/60 {
+  background-color: rgb(var(--surface-strong) / 0.6) !important;
+}
+
+[data-theme="dark"] .bg-white\/70 {
+  background-color: rgb(var(--surface-strong) / 0.7) !important;
+}
+
+[data-theme="dark"] .bg-white\/75 {
+  background-color: rgb(var(--surface-strong) / 0.75) !important;
+}
+
+[data-theme="dark"] .bg-white\/78 {
+  background-color: rgb(var(--surface-strong) / 0.78) !important;
+}
+
+[data-theme="dark"] .bg-white\/80 {
+  background-color: rgb(var(--surface-strong) / 0.8) !important;
+}
+
+[data-theme="dark"] .bg-white\/82 {
+  background-color: rgb(var(--surface-strong) / 0.82) !important;
+}
+
+[data-theme="dark"] .bg-white\/85 {
+  background-color: rgb(var(--surface-strong) / 0.85) !important;
+}
+
+[data-theme="dark"] .bg-white\/86 {
+  background-color: rgb(var(--surface-strong) / 0.86) !important;
+}
+
+[data-theme="dark"] .bg-white\/88 {
+  background-color: rgb(var(--surface-strong) / 0.88) !important;
+}
+
+[data-theme="dark"] .hover\:bg-white:hover {
+  background-color: rgb(var(--surface-strong)) !important;
 }
 
 @layer utilities {

@@ -9,25 +9,25 @@ const config: Config = {
     extend: {
       colors: {
         paper: {
-          50: "#f7f4ee",
-          100: "#efe8dc",
-          200: "#ddd2c1"
+          50: "rgb(var(--paper-50) / <alpha-value>)",
+          100: "rgb(var(--paper-100) / <alpha-value>)",
+          200: "rgb(var(--paper-200) / <alpha-value>)"
         },
         ink: {
-          900: "#13181d",
-          800: "#1d252d",
-          700: "#334150",
-          600: "#4d5e71"
+          900: "rgb(var(--ink-900) / <alpha-value>)",
+          800: "rgb(var(--ink-800) / <alpha-value>)",
+          700: "rgb(var(--ink-700) / <alpha-value>)",
+          600: "rgb(var(--ink-600) / <alpha-value>)"
         },
-        line: "#d3c8b8",
-        sage: "#326553",
-        amber: "#97733d",
-        rust: "#9b4a3e",
-        sky: "#35526b"
+        line: "rgb(var(--line) / <alpha-value>)",
+        sage: "rgb(var(--sage) / <alpha-value>)",
+        amber: "rgb(var(--amber) / <alpha-value>)",
+        rust: "rgb(var(--rust) / <alpha-value>)",
+        sky: "rgb(var(--sky) / <alpha-value>)"
       },
       boxShadow: {
-        panel: "0 22px 60px -36px rgba(19, 24, 29, 0.35)",
-        inset: "inset 0 1px 0 rgba(255, 255, 255, 0.4)"
+        panel: "0 22px 60px -36px rgb(var(--shadow-panel-rgb) / 0.35)",
+        inset: "inset 0 1px 0 rgb(var(--shadow-inset-rgb) / 0.4)"
       },
       fontFamily: {
         sans: [
@@ -45,7 +45,7 @@ const config: Config = {
       },
       backgroundImage: {
         lattice:
-          "linear-gradient(to right, rgba(51, 65, 80, 0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(51, 65, 80, 0.07) 1px, transparent 1px)"
+          "linear-gradient(to right, rgb(var(--lattice-rgb) / 0.07) 1px, transparent 1px), linear-gradient(to bottom, rgb(var(--lattice-rgb) / 0.07) 1px, transparent 1px)"
       }
     }
   },
