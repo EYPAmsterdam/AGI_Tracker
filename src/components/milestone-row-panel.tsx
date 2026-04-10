@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { ConfidenceBadge, ProofTypeBadge, StatusBadge } from "@/components/badges";
 import { FeedbackLink } from "@/components/feedback-link";
-import { ProgressMeter } from "@/components/progress-meter";
 import { cn } from "@/lib/cn";
 import { formatLongDate } from "@/lib/format";
 import { EVALUATION_MODE_LABELS } from "@/lib/milestone-utils";
@@ -136,8 +135,6 @@ export const MilestoneRowPanel = ({
                 </p>
               ) : null}
             </div>
-
-            <ProgressMeter value={milestone.progressPercent} />
 
             <p className="text-[11px] uppercase tracking-[0.16em] text-ink-600 md:text-xs md:tracking-[0.18em]">
               Best evidence forms:{" "}

@@ -54,3 +54,11 @@ export const getOverviewStats = () => {
     subQuestionCoverage
   };
 };
+
+export const getOverviewDimensionProgress = () =>
+  getMilestoneDataset().milestones.map((milestone) => ({
+    id: milestone.id,
+    label: milestone.category,
+    progressPercent: milestone.progressPercent,
+    status: milestone.status
+  }));
