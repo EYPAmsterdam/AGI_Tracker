@@ -24,11 +24,6 @@ export const getOverviewStats = () => {
   const unassessed = milestones.filter(
     (milestone) => milestone.status === "unassessed"
   ).length;
-  const milestoneCount = Math.max(1, milestones.length);
-  const progressAverage = Math.round(
-    (milestones.reduce((sum, milestone) => sum + milestone.progressPercent, 0) /
-      milestoneCount)
-  );
   const trackedMilestoneCount = milestones.reduce(
     (sum, milestone) => sum + milestone.subQuestions.length,
     0
@@ -42,6 +37,18 @@ export const getOverviewStats = () => {
       ),
     0
   );
+  const subQuestionStatusCounts = milestones.reduce(
+    (acc, milestone) => {
+      for (const subQuestion of milestone.subQuestions) {
+        acc[subQuestion.status] += 1;
+      }
+      return acc;
+    },
+    { met: 0, in_progress: 0, not_met: 0, unassessed: 0 }
+  );
+  const progressAverage = Math.round(
+    (subQuestionCoverage / Math.max(1, trackedMilestoneCount)) * 100
+  );
 
   return {
     met,
@@ -51,7 +58,13 @@ export const getOverviewStats = () => {
     progressAverage,
     trackedMilestoneCount,
     evidenceCount: evidenceRecords.length,
-    subQuestionCoverage
+    subQuestionCoverage,
+    subQuestionsMet: subQuestionStatusCounts.met,
+    subQuestionsInProgress: subQuestionStatusCounts.in_progress,
+    subQuestionsNotMet:
+      trackedMilestoneCount -
+      subQuestionStatusCounts.met -
+      subQuestionStatusCounts.in_progress
   };
 };
 

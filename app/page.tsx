@@ -7,7 +7,6 @@ import { SectionHeading } from "@/components/section-heading";
 import { TrackerOverviewPanel } from "@/components/tracker-overview-panel";
 import { getLatestUpdatedAt, getMilestones } from "@/data/milestones";
 import {
-  getOverviewDimensionProgress,
   getOverviewStats,
   getRecentMilestoneUpdates
 } from "@/lib/data-queries";
@@ -17,7 +16,6 @@ export default function HomePage() {
   const latestUpdatedAt = getLatestUpdatedAt();
   const milestones = getMilestones();
   const stats = getOverviewStats();
-  const dimensionProgress = getOverviewDimensionProgress();
   const recentMilestones = getRecentMilestoneUpdates();
 
   return (
@@ -50,7 +48,6 @@ export default function HomePage() {
           </div>
           <TrackerOverviewPanel
             milestoneCount={milestones.length}
-            dimensionProgress={dimensionProgress}
             stats={stats}
           />
         </div>
